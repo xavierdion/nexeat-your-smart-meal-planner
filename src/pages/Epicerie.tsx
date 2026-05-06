@@ -115,11 +115,11 @@ const Epicerie = () => {
 
       {/* Budget summary */}
       <div className="bg-white border-b border-[#E8E8E4] px-4 py-3 flex items-start justify-between">
-        <div className="text-[13px] text-[#2A2D35] pt-1">
+        <div className="text-[13px] text-[#2A2D35]">
           {totalItems} articles · {CATEGORIES.length} categories
         </div>
         <div className="text-right">
-          <div className="text-[16px] font-semibold text-[#4A6670] leading-none">94 $</div>
+          <div className="text-[28px] font-bold text-[#4A6670] leading-none">94 $</div>
           <div className="text-[11px] text-[#2A2D35]/50 mt-1">Budget : 85 $</div>
           <div className="mt-1 inline-flex items-center gap-1 text-[11px] text-[#E07A5F]">
             <AlertCircle size={11} strokeWidth={2.5} />
