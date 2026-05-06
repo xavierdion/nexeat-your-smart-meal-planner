@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Coffee, Salad, Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
+import SwapSheet from "@/components/SwapSheet";
 
 type Score = "A" | "B" | "C" | "D" | "E";
 type MealType = "DEJEUNER" | "DINER" | "SOUPER";
@@ -102,6 +103,7 @@ const MealIcon = ({ type }: { type: MealType }) => {
 const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
   const [accepted, setAccepted] = useState(false);
+  const [swapMeal, setSwapMeal] = useState<{ type: MealType; dayLabel: string } | null>(null);
   const navigate = useNavigate();
   const day = DAYS.find((d) => d.key === activeKey)!;
 
@@ -158,7 +160,7 @@ const Semaine = () => {
             <button
               key={i}
               type="button"
-              onClick={() => navigate("/swap")}
+              onClick={() => setSwapMeal({ type: meal.type, dayLabel: day.label })}
               className="block w-[calc(100%-32px)] mx-4 mb-3 bg-white rounded-2xl shadow-card text-left overflow-hidden"
             >
               <div className="p-4">
@@ -211,6 +213,11 @@ const Semaine = () => {
         </button>
       </div>
       <div className="h-24" aria-hidden />
+      <SwapSheet
+        open={!!swapMeal}
+        onClose={() => setSwapMeal(null)}
+        contextLabel={swapMeal ? `${swapMeal.type} ${swapMeal.dayLabel.toUpperCase()}` : ""}
+      />
     </div>
   );
 };
