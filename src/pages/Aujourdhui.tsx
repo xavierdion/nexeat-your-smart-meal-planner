@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Calendar, Coffee, Salad, Utensils, BookOpen, ChevronRight } from "lucide-react";
+import { Calendar, Coffee, Salad, Utensils } from "lucide-react";
 import RecipeSheet from "@/components/RecipeSheet";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -60,8 +60,6 @@ interface UpcomingItem {
 const UPCOMING: UpcomingItem[] = [
   { time: "12h", label: "Dîner", kind: "meal", icon: "DÎNER" },
   { time: "13h", label: "IFT-2008", kind: "class" },
-  { time: "15h30", label: "Souper", kind: "meal", icon: "SOUPER" },
-  { time: "18h", label: "Examen IFT-2008", kind: "class" },
 ];
 
 const Aujourdhui = () => {
@@ -96,48 +94,35 @@ const Aujourdhui = () => {
           <span className="text-[12px] uppercase font-semibold text-[#2A2D35]/50 tracking-wide">
             À venir
           </span>
-          <span className="text-[11px] text-[#2A2D35]/50">Prochaines heures</span>
+          <span className="text-[11px] text-[#2A2D35]/50">Maintenant · Ensuite</span>
         </div>
 
-        <div className="flex items-stretch gap-1 overflow-x-auto -mx-4 px-4 pb-1">
+        <div className="grid grid-cols-2 gap-2">
           {UPCOMING.map((item, i) => {
             const isMeal = item.kind === "meal";
             const isFirst = i === 0;
             return (
-              <div key={i} className="flex items-center gap-1 shrink-0">
-                <div className="flex flex-col items-center shrink-0 w-[88px]">
-                  {isFirst ? (
-                    <span className="text-[10px] font-semibold text-[#E07A5F] mb-1 uppercase tracking-wide">
-                      Prochain
-                    </span>
-                  ) : (
-                    <span className="h-[14px] mb-1" />
-                  )}
-                  <div
-                    className={
-                      "w-full rounded-xl px-2 py-3 flex flex-col items-center gap-1 " +
-                      (isMeal
-                        ? "bg-[#A8C5BC]/40 "
-                        : "bg-[#FEF0ED] border border-[#E07A5F]/20 ") +
-                      (isFirst ? "ring-2 ring-[#E07A5F]" : "")
-                    }
-                  >
-                    <span className="text-[11px] font-semibold text-[#2A2D35]/70">
-                      {item.time}
-                    </span>
-                    {isMeal && item.icon ? (
-                      <MealIcon type={item.icon} />
-                    ) : (
-                      <BookOpen size={22} className="text-[#E07A5F]" strokeWidth={2} />
-                    )}
-                    <span className="text-[11px] font-semibold text-[#2A2D35] text-center leading-tight truncate w-full">
-                      {item.label}
-                    </span>
-                  </div>
+              <div
+                key={i}
+                className={
+                  "rounded-xl px-3 py-2 flex items-center justify-between gap-2 " +
+                  (isMeal
+                    ? "bg-[#A8C5BC]/40 "
+                    : "bg-[#FEF0ED] border border-[#E07A5F]/20 ") +
+                  (isFirst ? "ring-2 ring-[#E07A5F]" : "")
+                }
+              >
+                <div className="flex flex-col min-w-0">
+                  <span className="text-[10px] font-semibold uppercase tracking-wide text-[#E07A5F]">
+                    {isFirst ? "Maintenant" : "Ensuite"}
+                  </span>
+                  <span className="text-[13px] font-semibold text-[#2A2D35] truncate leading-tight">
+                    {item.label}
+                  </span>
                 </div>
-                {i < UPCOMING.length - 1 && (
-                  <ChevronRight size={16} className="text-[#2A2D35]/30 shrink-0 mt-3" />
-                )}
+                <span className="text-[12px] font-semibold text-[#2A2D35]/70 shrink-0">
+                  {item.time}
+                </span>
               </div>
             );
           })}
