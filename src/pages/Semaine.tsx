@@ -113,32 +113,40 @@ const Semaine = () => {
 
   return (
     <div className="-mt-11 flex flex-col">
-      {/* Header */}
-      <header className="sticky top-0 z-30 h-14 bg-white border-b border-[#E8E8E4] flex items-center justify-between px-4">
-        <h1 className="font-display text-[20px] text-[#2A2D35] leading-none">Ma semaine</h1>
-        <span className="text-[13px] text-[#2A2D35]/60">17-23 mai</span>
-      </header>
+      {/* Curved hero header */}
+      <div className="sticky top-0 z-30 -mx-0">
+        <div className="relative bg-[#4A6670] rounded-b-[40px] pt-6 pb-4 px-4 shadow-card">
+          <div className="flex items-center justify-center relative h-9">
+            <h1 className="font-display text-[20px] text-white leading-none">Ma semaine</h1>
+            <span className="absolute right-0 text-[12px] text-white/70">17-23 mai</span>
+          </div>
 
-      {/* Day tabs */}
-      <div className="sticky top-14 z-20 bg-background h-12 border-b border-[#E8E8E4]">
-        <div className="h-full flex items-end gap-5 px-4 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {DAYS.map((d) => {
-            const active = d.key === activeKey;
-            return (
-              <button
-                key={d.key}
-                onClick={() => setActiveKey(d.key)}
-                className={cn(
-                  "shrink-0 h-full flex items-center text-[13px] transition-colors border-b-2",
-                  active
-                    ? "text-[#4A6670] font-semibold border-[#4A6670]"
-                    : "text-[#2A2D35]/60 border-transparent",
-                )}
-              >
-                {d.label}
-              </button>
-            );
-          })}
+          {/* Day pills */}
+          <div className="mt-5 flex items-center justify-between gap-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {DAYS.map((d) => {
+              const active = d.key === activeKey;
+              const [weekday, num] = d.label.split(" ");
+              return (
+                <button
+                  key={d.key}
+                  onClick={() => setActiveKey(d.key)}
+                  className={cn(
+                    "shrink-0 flex flex-col items-center justify-center rounded-full transition-all",
+                    active
+                      ? "bg-white text-[#4A6670] w-12 h-14 shadow-card"
+                      : "bg-white/10 text-white/80 w-10 h-12",
+                  )}
+                >
+                  <span className={cn("font-display leading-none", active ? "text-[18px]" : "text-[15px]")}>
+                    {num}
+                  </span>
+                  <span className={cn("mt-1 leading-none", active ? "text-[10px] font-semibold" : "text-[10px] opacity-80")}>
+                    {weekday}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
