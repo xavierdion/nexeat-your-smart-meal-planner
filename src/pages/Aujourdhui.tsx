@@ -151,7 +151,7 @@ const Aujourdhui = () => {
       </div>
 
       {/* Meals */}
-      <p className="mt-0 mb-2 pt-4 text-[12px] text-[#A8C5BC] font-normal">
+      <p className="mt-4 mb-2 text-[12px] text-[#A8C5BC] font-normal">
         2 repas sur 3 completes aujourd'hui
       </p>
       <div className="flex flex-col gap-3">
