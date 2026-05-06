@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Calendar, Coffee, Salad, Utensils } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Calendar, Coffee, Salad, Utensils, BookOpen, ChevronRight } from "lucide-react";
 import RecipeSheet from "@/components/RecipeSheet";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -51,31 +50,23 @@ const MealIcon = ({ type }: { type: MealType }) => {
   return <Icon size={24} className="text-[#4A6670] opacity-40" strokeWidth={2} />;
 };
 
-// Timeline: 7h → 19h (12 hours)
-const TIMELINE_START = 7;
-const TIMELINE_END = 20;
-const TIMELINE_HOURS = TIMELINE_END - TIMELINE_START;
-
-interface TimelineBlock {
-  startH: number;
-  endH: number;
+interface UpcomingItem {
+  time: string;
   label: string;
   kind: "meal" | "class";
   icon?: MealType;
 }
 
-const BLOCKS: TimelineBlock[] = [
-  { startH: 7, endH: 7.25, label: "Dej.", kind: "meal", icon: "DEJEUNER" },
-  { startH: 12, endH: 12.5, label: "Diner", kind: "meal", icon: "DINER" },
-  { startH: 13, endH: 15, label: "IFT-2008", kind: "class" },
-  { startH: 15.5, endH: 16, label: "Souper", kind: "meal", icon: "SOUPER" },
-  { startH: 18, endH: 20, label: "Examen IFT-2008", kind: "class" },
+const UPCOMING: UpcomingItem[] = [
+  { time: "12h", label: "Diner", kind: "meal", icon: "DINER" },
+  { time: "13h", label: "IFT-2008", kind: "class" },
+  { time: "15h30", label: "Souper", kind: "meal", icon: "SOUPER" },
+  { time: "18h", label: "Examen IFT-2008", kind: "class" },
 ];
 
 const Aujourdhui = () => {
   const navigate = useNavigate();
   const [recipeOpen, setRecipeOpen] = useState(false);
-  const pct = (h: number) => ((h - TIMELINE_START) / TIMELINE_HOURS) * 100;
 
   return (
     <div className="px-4 pt-2 pb-6">
@@ -85,80 +76,57 @@ const Aujourdhui = () => {
         <p className="text-[14px] text-[#2A2D35]/60 mt-1">Lundi 17 mai — Aujourd'hui</p>
       </div>
 
-      {/* Timeline */}
+      {/* Upcoming */}
       <div className="mt-4 bg-white rounded-2xl shadow-card p-4">
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center justify-between mb-3">
           <span className="text-[12px] uppercase font-semibold text-[#2A2D35]/50 tracking-wide">
-            Ta journee
+            A venir
           </span>
-          <span className="text-[11px] text-[#2A2D35]/50">7h — 20h</span>
+          <span className="text-[11px] text-[#2A2D35]/50">Prochaines heures</span>
         </div>
 
-        {/* Hour markers */}
-        <div className="relative h-3 mb-1">
-          {[7, 10, 13, 16, 19].map((h) => (
-            <span
-              key={h}
-              className="absolute -translate-x-1/2 text-[10px] text-[#2A2D35]/40"
-              style={{ left: `${pct(h)}%` }}
-            >
-              {h}h
-            </span>
-          ))}
-        </div>
-
-        {/* Track */}
-        <div className="relative h-12 rounded-lg bg-[#F5F5F0] border border-[#E8E8E4] overflow-hidden">
-          {/* Gridlines */}
-          {[10, 13, 16, 19].map((h) => (
-            <div
-              key={h}
-              className="absolute top-0 bottom-0 w-px bg-[#E8E8E4]"
-              style={{ left: `${pct(h)}%` }}
-            />
-          ))}
-          {/* Now indicator at ~9h30 (mock) */}
-          <div
-            className="absolute top-[-2px] bottom-[-2px] w-[2px] bg-[#E07A5F] z-10"
-            style={{ left: `${pct(9.5)}%` }}
-          />
-          {/* Blocks */}
-          {BLOCKS.map((b, i) => {
-            const left = pct(b.startH);
-            const width = ((b.endH - b.startH) / TIMELINE_HOURS) * 100;
-            const isMeal = b.kind === "meal";
+        <div className="flex items-stretch gap-1 overflow-x-auto -mx-4 px-4 pb-1">
+          {UPCOMING.map((item, i) => {
+            const isMeal = item.kind === "meal";
+            const isFirst = i === 0;
             return (
-              <div
-                key={i}
-                className={cn(
-                  "absolute top-1 bottom-1 rounded-md flex items-center justify-center px-1.5 overflow-hidden",
-                  isMeal
-                    ? "bg-[#A8C5BC]/60 text-[#2A2D35]"
-                    : "bg-[#FEF0ED] text-[#E07A5F] border border-[#E07A5F]/20",
+              <div key={i} className="flex items-center gap-1 shrink-0">
+                <div className="flex flex-col items-center shrink-0 w-[88px]">
+                  {isFirst ? (
+                    <span className="text-[10px] font-semibold text-[#E07A5F] mb-1 uppercase tracking-wide">
+                      Prochain
+                    </span>
+                  ) : (
+                    <span className="h-[14px] mb-1" />
+                  )}
+                  <div
+                    className={
+                      "w-full rounded-xl px-2 py-3 flex flex-col items-center gap-1 " +
+                      (isMeal
+                        ? "bg-[#A8C5BC]/40 "
+                        : "bg-[#FEF0ED] border border-[#E07A5F]/20 ") +
+                      (isFirst ? "ring-2 ring-[#E07A5F]" : "")
+                    }
+                  >
+                    <span className="text-[11px] font-semibold text-[#2A2D35]/70">
+                      {item.time}
+                    </span>
+                    {isMeal && item.icon ? (
+                      <MealIcon type={item.icon} />
+                    ) : (
+                      <BookOpen size={22} className="text-[#E07A5F]" strokeWidth={2} />
+                    )}
+                    <span className="text-[11px] font-semibold text-[#2A2D35] text-center leading-tight truncate w-full">
+                      {item.label}
+                    </span>
+                  </div>
+                </div>
+                {i < UPCOMING.length - 1 && (
+                  <ChevronRight size={16} className="text-[#2A2D35]/30 shrink-0 mt-3" />
                 )}
-                style={{ left: `${left}%`, width: `${width}%` }}
-              >
-                {isMeal && b.icon && (
-                  <span className="mr-1 shrink-0">
-                    <MealIcon type={b.icon} />
-                  </span>
-                )}
-                <span className="text-[10px] font-semibold truncate">{b.label}</span>
               </div>
             );
           })}
-        </div>
-
-        <div className="mt-2 flex items-center gap-3 text-[10px] text-[#2A2D35]/50">
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-sm bg-[#A8C5BC]" /> Repas
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-2 h-2 rounded-sm bg-[#FEF0ED] border border-[#E07A5F]/30" /> Cours
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-[2px] h-3 bg-[#E07A5F]" /> Maintenant
-          </span>
         </div>
       </div>
 
