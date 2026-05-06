@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Coffee, Salad, Utensils, Shuffle, Calendar } from "lucide-react";
+import { Coffee, Salad, Utensils, Calendar } from "lucide-react";
+import { motion, useMotionValue, animate } from "framer-motion";
 import { cn } from "@/lib/utils";
-import SwapSheet from "@/components/SwapSheet";
 import RecipeSheet from "@/components/RecipeSheet";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -102,11 +102,119 @@ const MealIcon = ({ type }: { type: MealType }) => {
   return <Icon size={28} className="text-[#4A6670] opacity-40" strokeWidth={2} />;
 };
 
+const ALTERNATIVES: Record<MealType, Meal[]> = {
+  DEJEUNER: [
+    { type: "DEJEUNER", name: "Bol acai-granola-banane", category: "Vegetarien", score: "A", prep: "8 min" },
+    { type: "DEJEUNER", name: "Tartines avocat-oeuf poche", category: "Proteines", score: "B", prep: "12 min" },
+    { type: "DEJEUNER", name: "Yogourt grec-fruits-miel", category: "Vegetarien", score: "A", prep: "5 min" },
+  ],
+  DINER: [
+    { type: "DINER", name: "Riz saute tofu-legumes-sauce gingembre", category: "Vegetarien", score: "A", prep: "18 min" },
+    { type: "DINER", name: "Salade quinoa-pois chiches-feta", category: "Vegetarien", score: "A", prep: "15 min" },
+    { type: "DINER", name: "Wrap poulet-legumes grilles", category: "Proteines", score: "B", prep: "12 min" },
+  ],
+  SOUPER: [
+    { type: "SOUPER", name: "Pates pesto-tomates cerises-parmesan", category: "Vegetarien", score: "B", prep: "20 min" },
+    { type: "SOUPER", name: "Curry lentilles-epinards-riz basmati", category: "Vegetarien", score: "A", prep: "25 min" },
+    { type: "SOUPER", name: "Saumon teriyaki-edamames-riz", category: "Omega-3", score: "A", prep: "22 min" },
+  ],
+};
+
+interface SwipeableMealCardProps {
+  meal: Meal;
+  onOpen: () => void;
+  onSwipeLeft: () => void;
+  onSwipeRight: () => void;
+}
+
+const SwipeableMealCard = ({ meal, onOpen, onSwipeLeft, onSwipeRight }: SwipeableMealCardProps) => {
+  const x = useMotionValue(0);
+  const score = SCORE_STYLES[meal.score];
+
+  return (
+    <motion.div
+      drag="x"
+      style={{ x }}
+      dragConstraints={{ left: -200, right: 200 }}
+      dragElastic={0.7}
+      onDragEnd={(_, info) => {
+        if (info.offset.x < -100) {
+          onSwipeLeft();
+          animate(x, 0, { type: "spring", stiffness: 300, damping: 30 });
+        } else if (info.offset.x > 100) {
+          onSwipeRight();
+          animate(x, 0, { type: "spring", stiffness: 300, damping: 30 });
+        } else {
+          animate(x, 0, { type: "spring", stiffness: 300, damping: 30 });
+        }
+      }}
+      onClick={() => {
+        if (Math.abs(x.get()) < 5) onOpen();
+      }}
+      className="bg-white rounded-2xl shadow-card cursor-pointer touch-pan-y"
+    >
+      <div className="p-4">
+        <span
+          className="inline-block rounded-md"
+          style={
+            meal.isNew
+              ? { background: "#FEF0ED", color: "#E07A5F", fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "6px" }
+              : { background: "#F0F4F3", color: "#4A6670", fontSize: "11px", padding: "3px 10px", borderRadius: "6px" }
+          }
+        >
+          {meal.category}
+        </span>
+        {meal.badge && (
+          <div
+            className="flex items-start gap-2 mt-2"
+            style={{
+              background: "#FEF0ED",
+              color: "#E07A5F",
+              padding: "10px 12px",
+              borderRadius: "10px",
+              fontSize: "12px",
+              lineHeight: 1.4,
+              fontWeight: 500,
+            }}
+          >
+            <Calendar size={14} strokeWidth={2} className="shrink-0 mt-0.5" />
+            <span>{meal.badge}</span>
+          </div>
+        )}
+        <div className="mt-2 flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="text-[11px] uppercase tracking-wide text-[#2A2D35]/50">
+              {MEAL_LABEL[meal.type]}
+            </div>
+            <div className="font-display text-[17px] text-[#2A2D35] leading-snug mt-0.5">
+              {meal.name}
+            </div>
+          </div>
+          <div className="w-16 h-16 rounded-xl bg-[#F0F4F3] flex items-center justify-center shrink-0">
+            <MealIcon type={meal.type} />
+          </div>
+        </div>
+        <div className="mt-3 flex items-center gap-2">
+          <span className="text-[13px] text-[#2A2D35]/60">{meal.prep}</span>
+          <span className="text-[11px] text-[#2A2D35]/50 ml-auto">Nutri-Score</span>
+          <span
+            className="text-[11px] font-semibold rounded-md px-[7px] py-[3px]"
+            style={{ background: score.bg, color: score.text }}
+          >
+            {meal.score}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
   const [accepted, setAccepted] = useState(false);
-  const [swapMeal, setSwapMeal] = useState<{ type: MealType; dayLabel: string } | null>(null);
   const [recipeOpen, setRecipeOpen] = useState(false);
+  const [mealAlternatives, setMealAlternatives] = useState<Record<string, number>>({});
+  const [dismissedHint, setDismissedHint] = useState(false);
   const navigate = useNavigate();
   const day = DAYS.find((d) => d.key === activeKey)!;
 
@@ -114,6 +222,23 @@ const Semaine = () => {
     if (accepted) return;
     setAccepted(true);
     setTimeout(() => navigate("/epicerie"), 400);
+  };
+
+  const cycleAlt = (dayKey: string, type: MealType, dir: 1 | -1) => {
+    const k = `${dayKey}-${type}`;
+    setMealAlternatives((prev) => {
+      const cur = prev[k] ?? 0;
+      const next = (cur + dir + 3) % 3;
+      return { ...prev, [k]: next };
+    });
+    setDismissedHint(true);
+  };
+
+  const getDisplayMeal = (dayKey: string, original: Meal): Meal => {
+    const k = `${dayKey}-${original.type}`;
+    const idx = mealAlternatives[k];
+    if (idx === undefined) return original;
+    return ALTERNATIVES[original.type][idx];
   };
 
   return (
@@ -155,82 +280,23 @@ const Semaine = () => {
 
       {/* Meals */}
       <div className="pt-3 pb-2">
-        {day.meals.map((meal, i) => {
-          const score = SCORE_STYLES[meal.score];
+        {day.meals.map((original, i) => {
+          const meal = getDisplayMeal(day.key, original);
+          const isFirstDay = day.key === DAYS[0].key;
+          const showHint = isFirstDay && i === 0 && !dismissedHint;
           return (
-            <div
-              key={i}
-              className="relative w-[calc(100%-32px)] mx-4 mb-7 bg-white rounded-2xl shadow-card"
-            >
-              <button
-                type="button"
-                onClick={() => setRecipeOpen(true)}
-                className="block w-full text-left rounded-2xl overflow-hidden"
-              >
-              <div className="p-4">
-                <span
-                  className="inline-block rounded-md"
-                  style={
-                    meal.isNew
-                      ? { background: "#FEF0ED", color: "#E07A5F", fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "6px" }
-                      : { background: "#F0F4F3", color: "#4A6670", fontSize: "11px", padding: "3px 10px", borderRadius: "6px" }
-                  }
-                >
-                  {meal.category}
-                </span>
-                {meal.badge && (
-                  <div
-                    className="flex items-start gap-2 mt-2"
-                    style={{
-                      background: "#FEF0ED",
-                      color: "#E07A5F",
-                      padding: "10px 12px",
-                      borderRadius: "10px",
-                      fontSize: "12px",
-                      lineHeight: 1.4,
-                      fontWeight: 500,
-                    }}
-                  >
-                    <Calendar size={14} strokeWidth={2} className="shrink-0 mt-0.5" />
-                    <span>{meal.badge}</span>
-                  </div>
-                )}
-                <div className="mt-2 flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="text-[11px] uppercase tracking-wide text-[#2A2D35]/50">
-                      {MEAL_LABEL[meal.type]}
-                    </div>
-                    <div className="font-display text-[17px] text-[#2A2D35] leading-snug mt-0.5">
-                      {meal.name}
-                    </div>
-                  </div>
-                  <div className="w-16 h-16 rounded-xl bg-[#F0F4F3] flex items-center justify-center shrink-0">
-                    <MealIcon type={meal.type} />
-                  </div>
+            <div key={i} className="w-[calc(100%-32px)] mx-4 mb-5">
+              <SwipeableMealCard
+                meal={meal}
+                onOpen={() => setRecipeOpen(true)}
+                onSwipeLeft={() => cycleAlt(day.key, original.type, 1)}
+                onSwipeRight={() => cycleAlt(day.key, original.type, -1)}
+              />
+              {showHint && (
+                <div className="text-center text-[12px] text-[#A8C5BC] mt-2">
+                  ← Glisse pour decouvrir d'autres options →
                 </div>
-                <div className="mt-3 flex items-center gap-2">
-                  <span className="text-[13px] text-[#2A2D35]/60">{meal.prep}</span>
-                  <span className="text-[11px] text-[#2A2D35]/50 ml-auto">Nutri-Score</span>
-                  <span
-                    className="text-[11px] font-semibold rounded-md px-[7px] py-[3px]"
-                    style={{ background: score.bg, color: score.text }}
-                  >
-                    {meal.score}
-                  </span>
-                </div>
-              </div>
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSwapMeal({ type: meal.type, dayLabel: day.label });
-                }}
-                aria-label="Changer ce repas"
-                className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-11 h-11 rounded-full bg-white shadow-card border border-[#E8E8E4] flex items-center justify-center"
-              >
-                <Shuffle size={16} className="text-[#4A6670]" />
-              </button>
+              )}
             </div>
           );
         })}
@@ -249,11 +315,6 @@ const Semaine = () => {
         </button>
       </div>
       <div className="h-24" aria-hidden />
-      <SwapSheet
-        open={!!swapMeal}
-        onClose={() => setSwapMeal(null)}
-        contextLabel={swapMeal ? `${swapMeal.type} ${swapMeal.dayLabel.toUpperCase()}` : ""}
-      />
       <RecipeSheet open={recipeOpen} onClose={() => setRecipeOpen(false)} />
     </div>
   );
