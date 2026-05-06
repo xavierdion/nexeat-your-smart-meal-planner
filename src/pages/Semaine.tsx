@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Coffee, Salad, Utensils, Shuffle } from "lucide-react";
+import { Coffee, Salad, Utensils, Shuffle, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SwapSheet from "@/components/SwapSheet";
 import RecipeSheet from "@/components/RecipeSheet";
@@ -180,6 +180,23 @@ const Semaine = () => {
                 >
                   {meal.category}
                 </span>
+                {meal.badge && (
+                  <div
+                    className="flex items-start gap-2 mt-2"
+                    style={{
+                      background: "#FEF0ED",
+                      color: "#E07A5F",
+                      padding: "10px 12px",
+                      borderRadius: "10px",
+                      fontSize: "12px",
+                      lineHeight: 1.4,
+                      fontWeight: 500,
+                    }}
+                  >
+                    <Calendar size={14} strokeWidth={2} className="shrink-0 mt-0.5" />
+                    <span>{meal.badge}</span>
+                  </div>
+                )}
                 <div className="mt-2 flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="text-[11px] uppercase tracking-wide text-[#2A2D35]/50">
