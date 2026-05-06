@@ -138,11 +138,11 @@ const Semaine = () => {
                   className={cn(
                     "shrink-0 flex flex-col items-center justify-center rounded-full transition-all",
                     active
-                      ? "bg-white text-[#4A6670] w-12 h-14"
+                      ? "bg-white text-[#4A6670] w-12 h-14 shadow-md"
                       : "bg-white/10 text-white/80 w-11 h-12",
                   )}
                 >
-                  <span className={cn("font-display leading-none", active ? "text-[18px]" : "text-[15px]")}>
+                  <span className={cn("font-display leading-none", active ? "text-[20px]" : "text-[15px]")}>
                     {num}
                   </span>
                   <span className={cn("mt-1 leading-none", active ? "text-[10px] font-semibold" : "text-[10px] opacity-80")}>
