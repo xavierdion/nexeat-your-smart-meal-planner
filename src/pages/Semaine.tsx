@@ -262,8 +262,8 @@ const Semaine = () => {
                 className={cn(
                   "shrink-0 flex flex-col items-center justify-center rounded-full transition-all",
                   active
-                    ? "bg-[#E8F0EE] text-[#2A2D35] w-12 h-14 shadow-md"
-                    : "bg-[#F0F4F3] text-[#2A2D35]/60 w-11 h-12",
+                    ? "bg-[#E8F0EE] text-[#2A2D35] w-11 h-16 shadow-md ring-2 ring-[#5B8579]"
+                    : "bg-[#F0F4F3] text-[#2A2D35]/60 w-10 h-14",
                 )}
               >
                 <span className={cn("font-display leading-none", active ? "text-[20px] font-bold" : "text-[15px]")}>
