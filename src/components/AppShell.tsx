@@ -27,13 +27,17 @@ const AppShell = () => {
               to={to}
               className={({ isActive }) =>
                 cn(
-                  "flex-1 flex flex-col items-center justify-center gap-1 transition-opacity",
-                  isActive ? "text-primary opacity-100" : "text-foreground opacity-40"
+                  "flex-1 flex flex-col items-center justify-center gap-1 transition-colors",
+                  isActive ? "text-[#A8C5BC]" : "text-[#2A2D35]/40"
                 )
               }
             >
-              <Icon size={22} strokeWidth={2} />
-              <span className="text-[11px] font-medium">{label}</span>
+              {({ isActive }) => (
+                <>
+                  <Icon size={22} strokeWidth={2} />
+                  <span className={cn("text-[11px]", isActive ? "font-semibold" : "font-medium")}>{label}</span>
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
