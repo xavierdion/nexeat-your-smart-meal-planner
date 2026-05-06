@@ -162,7 +162,7 @@ const Semaine = () => {
           return (
             <div
               key={i}
-              className="relative w-[calc(100%-32px)] mx-4 mb-5 bg-white rounded-2xl shadow-card"
+              className="relative w-[calc(100%-32px)] mx-4 mb-7 bg-white rounded-2xl shadow-card"
             >
               <button
                 type="button"
