@@ -187,6 +187,7 @@ const Semaine = () => {
                 </div>
                 <div className="mt-3 flex items-center gap-2">
                   <span className="text-[13px] text-[#2A2D35]/60">{meal.prep}</span>
+                  <span className="text-[11px] text-[#2A2D35]/50 ml-auto">Nutri-Score</span>
                   <span
                     className="text-[11px] font-semibold rounded-md px-[7px] py-[3px]"
                     style={{ background: score.bg, color: score.text }}
