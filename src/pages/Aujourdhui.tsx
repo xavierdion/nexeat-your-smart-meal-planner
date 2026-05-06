@@ -151,7 +151,10 @@ const Aujourdhui = () => {
       </div>
 
       {/* Meals */}
-      <div className="mt-4 flex flex-col gap-3">
+      <p className="mt-4 mb-2 text-[12px] text-[#A8C5BC] font-normal">
+        2 repas sur 3 completes aujourd'hui
+      </p>
+      <div className="flex flex-col gap-3">
         {MEALS.map((meal, i) => {
           const score = SCORE_STYLES[meal.score];
           return (
