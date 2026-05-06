@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "./pages/NotFound.tsx";
 import AppShell from "./components/AppShell";
 import Onboarding from "./pages/Onboarding";
+import OnboardingStep2 from "./pages/OnboardingStep2";
 import Semaine from "./pages/Semaine";
 import Aujourdhui from "./pages/Aujourdhui";
 import Epicerie from "./pages/Epicerie";
@@ -22,6 +23,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Navigate to="/onboarding" replace />} />
           <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/onboarding/2" element={<OnboardingStep2 />} />
           <Route element={<AppShell />}>
             <Route path="/semaine" element={<Semaine />} />
             <Route path="/aujourd-hui" element={<Aujourdhui />} />
