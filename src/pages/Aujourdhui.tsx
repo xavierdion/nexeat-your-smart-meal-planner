@@ -29,7 +29,7 @@ const MEALS: MealCard[] = [
     type: "DEJEUNER", time: "7H",
     name: "Smoothie bowl mangue-kefir-granola",
     category: "Vegetarien", score: "A", prep: "10 min",
-    status: { label: "Termine", bg: "#A8C5BC", text: "#FFFFFF" },
+    status: { label: "Termine", bg: "#E8F0EE", text: "#4A7060" },
   },
   {
     type: "DINER", time: "12H",
