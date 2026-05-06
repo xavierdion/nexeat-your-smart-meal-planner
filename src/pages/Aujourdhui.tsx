@@ -4,7 +4,7 @@ import { Calendar, Coffee, Salad, Utensils, BookOpen, ChevronRight } from "lucid
 import RecipeSheet from "@/components/RecipeSheet";
 
 type Score = "A" | "B" | "C" | "D" | "E";
-type MealType = "DEJEUNER" | "DINER" | "SOUPER";
+type MealType = "DÉJEUNER" | "DÎNER" | "SOUPER";
 
 const SCORE_STYLES: Record<Score, { bg: string; text: string }> = {
   A: { bg: "#3E8B3E", text: "#FFFFFF" },
@@ -26,27 +26,27 @@ interface MealCard {
 
 const MEALS: MealCard[] = [
   {
-    type: "DEJEUNER", time: "7H",
+    type: "DÉJEUNER", time: "7H",
     name: "Smoothie bowl mangue-kefir-granola",
-    category: "Vegetarien", score: "A", prep: "10 min",
-    status: { label: "Termine", bg: "#E8F0EE", text: "#4A7060" },
+    category: "Végétarien", score: "A", prep: "10 min",
+    status: { label: "Terminé", bg: "#E8F0EE", text: "#4A7060" },
   },
   {
-    type: "DINER", time: "12H",
+    type: "DÎNER", time: "12H",
     name: "Bol coreen bibimbap vegetarien",
-    category: "Vegetarien", score: "A", prep: "25 min",
+    category: "Végétarien", score: "A", prep: "25 min",
     status: { label: "Dans 2h30", bg: "#E07A5F", text: "#FFFFFF" },
   },
   {
     type: "SOUPER", time: "15H30",
     name: "Soupe miso riz edamames",
-    category: "Vegetarien", score: "A", prep: "12 min",
+    category: "Végétarien", score: "A", prep: "12 min",
     status: { label: "Ce soir — avant 15h30", bg: "#E8E8E4", text: "rgba(42,45,53,0.6)" },
   },
 ];
 
 const MealIcon = ({ type }: { type: MealType }) => {
-  const Icon = type === "DEJEUNER" ? Coffee : type === "DINER" ? Salad : Utensils;
+  const Icon = type === "DÉJEUNER" ? Coffee : type === "DÎNER" ? Salad : Utensils;
   return <Icon size={24} className="text-[#4A6670] opacity-40" strokeWidth={2} />;
 };
 
@@ -58,7 +58,7 @@ interface UpcomingItem {
 }
 
 const UPCOMING: UpcomingItem[] = [
-  { time: "12h", label: "Diner", kind: "meal", icon: "DINER" },
+  { time: "12h", label: "Dîner", kind: "meal", icon: "DÎNER" },
   { time: "13h", label: "IFT-2008", kind: "class" },
   { time: "15h30", label: "Souper", kind: "meal", icon: "SOUPER" },
   { time: "18h", label: "Examen IFT-2008", kind: "class" },
@@ -94,7 +94,7 @@ const Aujourdhui = () => {
       <div className="mt-4 mx-4 bg-white rounded-2xl shadow-card p-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-[12px] uppercase font-semibold text-[#2A2D35]/50 tracking-wide">
-            A venir
+            À venir
           </span>
           <span className="text-[11px] text-[#2A2D35]/50">Prochaines heures</span>
         </div>
@@ -183,7 +183,7 @@ const Aujourdhui = () => {
               <div className="mt-2 flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="text-[11px] uppercase tracking-wide text-[#2A2D35]/50">
-                    {meal.type === "DEJEUNER" ? "Dejeuner" : meal.type === "DINER" ? "Diner" : "Souper"} · {meal.time}
+                    {meal.type === "DÉJEUNER" ? "Déjeuner" : meal.type === "DÎNER" ? "Dîner" : "Souper"} · {meal.time}
                   </div>
                   <div className="font-display text-[17px] text-[#2A2D35] leading-snug mt-0.5">
                     {meal.name}

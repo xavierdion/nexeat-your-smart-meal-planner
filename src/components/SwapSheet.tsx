@@ -17,9 +17,9 @@ export interface Alternative {
 }
 
 const ALTS: Alternative[] = [
-  { name: "Riz saute tofu-legumes-sauce gingembre", category: "Vegetarien", score: "A", prep: "18 min", calories: "520 kcal", proteines: "22 g", glucides: "68 g", lipides: "14 g" },
-  { name: "Pates au pesto et tomates cerises", category: "Vegetarien", score: "B", prep: "15 min", calories: "560 kcal", proteines: "18 g", glucides: "82 g", lipides: "18 g" },
-  { name: "Bol lentilles-carottes-vinaigrette moutarde", category: "Vegetarien", score: "A", prep: "10 min", calories: "430 kcal", proteines: "20 g", glucides: "58 g", lipides: "10 g" },
+  { name: "Riz sauté tofu-légumes-sauce gingembre", category: "Végétarien", score: "A", prep: "18 min", calories: "520 kcal", proteines: "22 g", glucides: "68 g", lipides: "14 g" },
+  { name: "Pâtes au pesto et tomates cerises", category: "Végétarien", score: "B", prep: "15 min", calories: "560 kcal", proteines: "18 g", glucides: "82 g", lipides: "18 g" },
+  { name: "Bol lentilles-carottes-vinaigrette moutarde", category: "Végétarien", score: "A", prep: "10 min", calories: "430 kcal", proteines: "20 g", glucides: "58 g", lipides: "10 g" },
 ];
 
 const SCORE_STYLES: Record<Score, { bg: string; text: string }> = {
@@ -33,7 +33,7 @@ const SCORE_STYLES: Record<Score, { bg: string; text: string }> = {
 interface Props {
   open: boolean;
   onClose: () => void;
-  contextLabel: string; // e.g. "DINER LUNDI 17"
+  contextLabel: string; // e.g. "DÎNER LUNDI 17"
   onConfirm?: (alt: Alternative) => void;
 }
 
@@ -176,7 +176,7 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
               <div className="mt-5 flex justify-center gap-2">
                 {[
                   { label: "Calories", value: current.calories },
-                  { label: "Proteines", value: current.proteines },
+                  { label: "Protéines", value: current.proteines },
                   { label: "Glucides", value: current.glucides },
                   { label: "Lipides", value: current.lipides },
                 ].map((p) => (
