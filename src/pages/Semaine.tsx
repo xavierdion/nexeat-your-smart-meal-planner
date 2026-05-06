@@ -229,7 +229,7 @@ const Semaine = () => {
                   setSwapMeal({ type: meal.type, dayLabel: day.label });
                 }}
                 aria-label="Changer ce repas"
-                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-9 h-9 rounded-full bg-white shadow-card border border-[#E8E8E4] flex items-center justify-center"
+                className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-11 h-11 rounded-full bg-white shadow-card border border-[#E8E8E4] flex items-center justify-center"
               >
                 <Shuffle size={16} className="text-[#4A6670]" />
               </button>
