@@ -10,9 +10,9 @@ interface Item {
 
 const CATEGORIES: { name: string; items: Item[] }[] = [
   {
-    name: "Fruits et legumes",
+    name: "Fruits et légumes",
     items: [
-      { name: "Epinards", qty: "150 g", price: "1,99 $" },
+      { name: "Épinards", qty: "150 g", price: "1,99 $" },
       { name: "Mangue", qty: "2x", price: "3,49 $" },
       { name: "Avocats", qty: "3x", price: "4,49 $" },
       { name: "Tomates cerises", qty: "250 g", price: "2,99 $" },
@@ -21,7 +21,7 @@ const CATEGORIES: { name: string; items: Item[] }[] = [
     ],
   },
   {
-    name: "Proteines",
+    name: "Protéines",
     items: [
       { name: "Poulet poitrines", qty: "500 g", price: "7,99 $" },
       { name: "Thon en conserve", qty: "2x", price: "3,49 $" },
@@ -31,9 +31,9 @@ const CATEGORIES: { name: string; items: Item[] }[] = [
     ],
   },
   {
-    name: "Grains et fecules",
+    name: "Grains et féculés",
     items: [
-      { name: "Pates soba", qty: "250 g", price: "3,49 $" },
+      { name: "Pâtes soba", qty: "250 g", price: "3,49 $" },
       { name: "Riz basmati", qty: "1 kg", price: "3,99 $" },
       { name: "Muffins anglais", qty: "6x", price: "3,29 $" },
       { name: "Pain de seigle", qty: "1x", price: "3,49 $" },
@@ -43,12 +43,12 @@ const CATEGORIES: { name: string; items: Item[] }[] = [
     name: "Produits laitiers et substituts",
     items: [
       { name: "Yogourt kefir", qty: "500 ml", price: "4,49 $" },
-      { name: "Creme sure", qty: "250 ml", price: "2,49 $" },
+      { name: "Crème sure", qty: "250 ml", price: "2,49 $" },
       { name: "Parmesan", qty: "100 g", price: "4,49 $" },
     ],
   },
   {
-    name: "Epicerie seche",
+    name: "Épicerie sèche",
     items: [
       { name: "Lait de coco", qty: "400 ml", price: "2,49 $" },
       { name: "Pesto", qty: "190 ml", price: "4,49 $" },
@@ -68,11 +68,11 @@ const CATEGORIES: { name: string; items: Item[] }[] = [
 const totalItems = CATEGORIES.reduce((s, c) => s + c.items.length, 0);
 
 const CATEGORY_ICONS: Record<string, typeof Apple> = {
-  "Fruits et legumes": Apple,
-  "Proteines": Beef,
-  "Grains et fecules": Wheat,
+  "Fruits et légumes": Apple,
+  "Protéines": Beef,
+  "Grains et féculés": Wheat,
   "Produits laitiers et substituts": Milk,
-  "Epicerie seche": Package,
+  "Épicerie sèche": Package,
   "Herbes et condiments": Leaf,
 };
 
@@ -118,7 +118,7 @@ const Epicerie = () => {
       )}
       {/* Header */}
       <header className="sticky top-0 z-30 h-14 bg-white border-b border-[#E8E8E4] flex items-center justify-between px-4">
-        <h1 className="font-display text-[20px] text-[#2A2D35] leading-none">Epicerie</h1>
+        <h1 className="font-display text-[20px] text-[#2A2D35] leading-none">Épicerie</h1>
         <span className="text-[13px] text-[#2A2D35]/60">Semaine du 17 mai</span>
       </header>
 

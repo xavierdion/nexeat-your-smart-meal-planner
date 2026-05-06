@@ -9,7 +9,7 @@ interface Props {
 const INGREDIENTS = [
   { name: "Riz cuit", qty: "180 g" },
   { name: "Carottes rapees", qty: "60 g" },
-  { name: "Epinards", qty: "50 g" },
+  { name: "Épinards", qty: "50 g" },
   { name: "Oeuf", qty: "1" },
   { name: "Sauce gochujang", qty: "1 c. a soupe" },
   { name: "Huile de sesame", qty: "1 c. a the" },
@@ -17,8 +17,8 @@ const INGREDIENTS = [
 ];
 
 const STEPS = [
-  "Faire cuire le riz et le laisser tiedir. Preparer les legumes : raper les carottes, faire sauter les epinards 2 min a feu vif avec un filet d'huile.",
-  "Faire un oeuf au plat ou brouille selon ta preference. Disposer le riz dans un bol, puis arranger les legumes et l'oeuf par-dessus.",
+  "Faire cuire le riz et le laisser tiedir. Preparer les légumes : raper les carottes, faire sauter les epinards 2 min a feu vif avec un filet d'huile.",
+  "Faire un oeuf au plat ou brouille selon ta preference. Disposer le riz dans un bol, puis arranger les légumes et l'oeuf par-dessus.",
   "Ajouter la sauce gochujang et l'huile de sesame. Garnir de graines de sesame. Melanger avant de manger.",
 ];
 
@@ -70,7 +70,7 @@ const RecipeSheet = ({ open, onClose }: Props) => {
           <div className="px-4 pt-5">
             <div className="flex items-center justify-between">
               <span className="inline-block text-[11px] bg-[#F0F4F3] text-[#4A6670] rounded-md px-2.5 py-[3px]">
-                Vegetarien
+                Végétarien
               </span>
               <span
                 className="text-[11px] font-semibold rounded-md px-[7px] py-[3px]"
@@ -91,7 +91,7 @@ const RecipeSheet = ({ open, onClose }: Props) => {
           <div className="grid grid-cols-2 gap-2 mx-4 mt-4">
             {[
               { label: "Calories", value: "540 kcal" },
-              { label: "Proteines", value: "22 g" },
+              { label: "Protéines", value: "22 g" },
               { label: "Glucides", value: "68 g" },
               { label: "Lipides", value: "16 g" },
             ].map((p) => (

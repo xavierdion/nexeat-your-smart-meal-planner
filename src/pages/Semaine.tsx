@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 
 type Score = "A" | "B" | "C" | "D" | "E";
-type MealType = "DEJEUNER" | "DINER" | "SOUPER";
+type MealType = "DÉJEUNER" | "DÎNER" | "SOUPER";
 
 interface Meal {
   type: MealType;
@@ -28,57 +28,57 @@ const DAYS: Day[] = [
   {
     key: "lun", label: "Lun 17",
     meals: [
-      { type: "DEJEUNER", name: "Smoothie bowl mangue-kefir-granola", category: "Vegetarien", score: "A", prep: "10 min" },
-      { type: "DINER", name: "Bol coreen bibimbap vegetarien", category: "Nouveau pour toi", score: "A", prep: "25 min", badge: "Examen IFT-2008 ce soir — repas proteines pour rester concentre", isNew: true },
-      { type: "SOUPER", name: "Soupe miso riz edamames", category: "Vegetarien", score: "A", prep: "12 min", badge: "Examen dans 2h — repas leger et digeste" },
+      { type: "DÉJEUNER", name: "Smoothie bowl mangue-kefir-granola", category: "Végétarien", score: "A", prep: "10 min" },
+      { type: "DÎNER", name: "Bol coreen bibimbap vegetarien", category: "Nouveau pour toi", score: "A", prep: "25 min", badge: "Examen IFT-2008 ce soir — repas proteines pour rester concentre", isNew: true },
+      { type: "SOUPER", name: "Soupe miso riz edamames", category: "Végétarien", score: "A", prep: "12 min", badge: "Examen dans 2h — repas leger et digeste" },
     ],
   },
   {
     key: "mar", label: "Mar 18",
     meals: [
-      { type: "DEJEUNER", name: "Pancakes sarrasin-bleuets-sirop d'erable", category: "Sans viande", score: "B", prep: "20 min" },
-      { type: "DINER", name: "Salade thai vermicelles-poulet-arachides", category: "Proteines", score: "B", prep: "20 min" },
-      { type: "SOUPER", name: "Burrito bowl poulet-salsa-creme sure", category: "Proteines", score: "B", prep: "25 min", badge: "Session d'etude 6h ce soir — repas copieux avant de commencer" },
+      { type: "DÉJEUNER", name: "Pancakes sarrasin-bleuets-sirop d'erable", category: "Sans viande", score: "B", prep: "20 min" },
+      { type: "DÎNER", name: "Salade thai vermicelles-poulet-arachides", category: "Protéines", score: "B", prep: "20 min" },
+      { type: "SOUPER", name: "Burrito bowl poulet-salsa-creme sure", category: "Protéines", score: "B", prep: "25 min", badge: "Session d'etude 6h ce soir — repas copieux avant de commencer" },
     ],
   },
   {
     key: "mer", label: "Mer 19",
     meals: [
-      { type: "DEJEUNER", name: "Acai bowl amandes-banane-noix de coco", category: "Nouveau pour toi", score: "A", prep: "8 min", isNew: true },
-      { type: "DINER", name: "Poke bowl thon-mangue-avocat", category: "Omega-3", score: "A", prep: "20 min" },
-      { type: "SOUPER", name: "Cari pois chiches-epinards-lait de coco", category: "Vegetarien", score: "A", prep: "30 min", badge: "Travail d'equipe IFT-2007 a 17h — souper avant 16h30" },
+      { type: "DÉJEUNER", name: "Acai bowl amandes-banane-noix de coco", category: "Nouveau pour toi", score: "A", prep: "8 min", isNew: true },
+      { type: "DÎNER", name: "Poke bowl thon-mangue-avocat", category: "Omega-3", score: "A", prep: "20 min" },
+      { type: "SOUPER", name: "Cari pois chiches-epinards-lait de coco", category: "Végétarien", score: "A", prep: "30 min", badge: "Travail d'equipe IFT-2007 a 17h — souper avant 16h30" },
     ],
   },
   {
     key: "jeu", label: "Jeu 20",
     meals: [
-      { type: "DEJEUNER", name: "Oeufs benedictine vege sur muffin anglais", category: "Proteines", score: "B", prep: "20 min" },
-      { type: "DINER", name: "Ramen vegetarien bouillon miso", category: "Vegetarien", score: "B", prep: "25 min" },
-      { type: "SOUPER", name: "Tacos haricots noirs-mais-salsa verde", category: "Vegetarien", score: "B", prep: "20 min" },
+      { type: "DÉJEUNER", name: "Oeufs benedictine vege sur muffin anglais", category: "Protéines", score: "B", prep: "20 min" },
+      { type: "DÎNER", name: "Ramen vegetarien bouillon miso", category: "Végétarien", score: "B", prep: "25 min" },
+      { type: "SOUPER", name: "Tacos haricots noirs-mais-salsa verde", category: "Végétarien", score: "B", prep: "20 min" },
     ],
   },
   {
     key: "ven", label: "Ven 21",
     meals: [
-      { type: "DEJEUNER", name: "French toast cannelle-compote de pommes", category: "Sans viande", score: "B", prep: "15 min", badge: "Examen STT-1000 ce soir — bien demarrer la journee" },
-      { type: "DINER", name: "Wrap mediterraneen falafel-tzatziki", category: "Vegetarien", score: "B", prep: "15 min", badge: "Fenetre diner 30 min — repas express prevu" },
-      { type: "SOUPER", name: "Bol soba-tofu-sauce tahini-concombre", category: "Vegetarien", score: "A", prep: "20 min", badge: "Examen dans 2h30 — glycemie stable" },
+      { type: "DÉJEUNER", name: "French toast cannelle-compote de pommes", category: "Sans viande", score: "B", prep: "15 min", badge: "Examen STT-1000 ce soir — bien demarrer la journee" },
+      { type: "DÎNER", name: "Wrap mediterraneen falafel-tzatziki", category: "Végétarien", score: "B", prep: "15 min", badge: "Fenetre diner 30 min — repas express prevu" },
+      { type: "SOUPER", name: "Bol soba-tofu-sauce tahini-concombre", category: "Végétarien", score: "A", prep: "20 min", badge: "Examen dans 2h30 — glycemie stable" },
     ],
   },
   {
     key: "sam", label: "Sam 22",
     meals: [
-      { type: "DEJEUNER", name: "Crepes sarrasin-compote-sirop d'erable", category: "Sans viande", score: "B", prep: "25 min" },
-      { type: "DINER", name: "Buddha bowl quinoa-legumes rotis-tahini", category: "Vegetarien", score: "A", prep: "20 min" },
-      { type: "SOUPER", name: "Pizza maison pate mince-legumes-fromage", category: "Sans viande", score: "C", prep: "30 min" },
+      { type: "DÉJEUNER", name: "Crepes sarrasin-compote-sirop d'erable", category: "Sans viande", score: "B", prep: "25 min" },
+      { type: "DÎNER", name: "Buddha bowl quinoa-légumes rotis-tahini", category: "Végétarien", score: "A", prep: "20 min" },
+      { type: "SOUPER", name: "Pizza maison pate mince-légumes-fromage", category: "Sans viande", score: "C", prep: "30 min" },
     ],
   },
   {
     key: "dim", label: "Dim 23",
     meals: [
-      { type: "DEJEUNER", name: "Granola maison-yogourt grec-fruits frais", category: "Vegetarien", score: "A", prep: "5 min" },
-      { type: "DINER", name: "Souvlaki poulet-legumes grilles-riz", category: "Proteines", score: "B", prep: "30 min" },
-      { type: "SOUPER", name: "Soupe lentilles-legumes-pain de seigle", category: "Vegetarien", score: "A", prep: "25 min" },
+      { type: "DÉJEUNER", name: "Granola maison-yogourt grec-fruits frais", category: "Végétarien", score: "A", prep: "5 min" },
+      { type: "DÎNER", name: "Souvlaki poulet-légumes grilles-riz", category: "Protéines", score: "B", prep: "30 min" },
+      { type: "SOUPER", name: "Soupe lentilles-légumes-pain de seigle", category: "Végétarien", score: "A", prep: "25 min" },
     ],
   },
 ];
@@ -92,30 +92,30 @@ const SCORE_STYLES: Record<Score, { bg: string; text: string }> = {
 };
 
 const MEAL_LABEL: Record<MealType, string> = {
-  DEJEUNER: "DEJEUNER",
-  DINER: "DINER",
+  DÉJEUNER: "DÉJEUNER",
+  DÎNER: "DÎNER",
   SOUPER: "SOUPER",
 };
 
 const MealIcon = ({ type }: { type: MealType }) => {
-  const Icon = type === "DEJEUNER" ? Coffee : type === "DINER" ? Salad : Utensils;
+  const Icon = type === "DÉJEUNER" ? Coffee : type === "DÎNER" ? Salad : Utensils;
   return <Icon size={28} className="text-[#4A6670] opacity-40" strokeWidth={2} />;
 };
 
 const ALTERNATIVES: Record<MealType, Meal[]> = {
-  DEJEUNER: [
-    { type: "DEJEUNER", name: "Bol acai-granola-banane", category: "Vegetarien", score: "A", prep: "8 min" },
-    { type: "DEJEUNER", name: "Tartines avocat-oeuf poche", category: "Proteines", score: "B", prep: "12 min" },
-    { type: "DEJEUNER", name: "Yogourt grec-fruits-miel", category: "Vegetarien", score: "A", prep: "5 min" },
+  DÉJEUNER: [
+    { type: "DÉJEUNER", name: "Bol acai-granola-banane", category: "Végétarien", score: "A", prep: "8 min" },
+    { type: "DÉJEUNER", name: "Tartines avocat-oeuf poche", category: "Protéines", score: "B", prep: "12 min" },
+    { type: "DÉJEUNER", name: "Yogourt grec-fruits-miel", category: "Végétarien", score: "A", prep: "5 min" },
   ],
-  DINER: [
-    { type: "DINER", name: "Riz saute tofu-legumes-sauce gingembre", category: "Vegetarien", score: "A", prep: "18 min" },
-    { type: "DINER", name: "Salade quinoa-pois chiches-feta", category: "Vegetarien", score: "A", prep: "15 min" },
-    { type: "DINER", name: "Wrap poulet-legumes grilles", category: "Proteines", score: "B", prep: "12 min" },
+  DÎNER: [
+    { type: "DÎNER", name: "Riz sauté tofu-légumes-sauce gingembre", category: "Végétarien", score: "A", prep: "18 min" },
+    { type: "DÎNER", name: "Salade quinoa-pois chiches-feta", category: "Végétarien", score: "A", prep: "15 min" },
+    { type: "DÎNER", name: "Wrap poulet-légumes grilles", category: "Protéines", score: "B", prep: "12 min" },
   ],
   SOUPER: [
-    { type: "SOUPER", name: "Pates pesto-tomates cerises-parmesan", category: "Vegetarien", score: "B", prep: "20 min" },
-    { type: "SOUPER", name: "Curry lentilles-epinards-riz basmati", category: "Vegetarien", score: "A", prep: "25 min" },
+    { type: "SOUPER", name: "Pâtes pesto-tomates cerises-parmesan", category: "Végétarien", score: "B", prep: "20 min" },
+    { type: "SOUPER", name: "Curry lentilles-epinards-riz basmati", category: "Végétarien", score: "A", prep: "25 min" },
     { type: "SOUPER", name: "Saumon teriyaki-edamames-riz", category: "Omega-3", score: "A", prep: "22 min" },
   ],
 };
