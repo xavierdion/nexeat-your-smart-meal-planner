@@ -161,12 +161,12 @@ const Semaine = () => {
           return (
             <div
               key={i}
-              className="relative w-[calc(100%-32px)] mx-4 mb-3 bg-white rounded-2xl shadow-card overflow-hidden"
+              className="relative w-[calc(100%-32px)] mx-4 mb-5 bg-white rounded-2xl shadow-card"
             >
               <button
                 type="button"
                 onClick={() => setRecipeOpen(true)}
-                className="block w-full text-left"
+                className="block w-full text-left rounded-2xl overflow-hidden"
               >
               <div className="p-4">
                 <span className="inline-block text-[11px] bg-[#F0F4F3] text-[#4A6670] rounded-md px-2.5 py-[3px]">
