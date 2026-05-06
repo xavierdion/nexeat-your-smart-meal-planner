@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Check, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -69,11 +69,44 @@ const totalItems = CATEGORIES.reduce((s, c) => s + c.items.length, 0);
 
 const Epicerie = () => {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [toastState, setToastState] = useState<"hidden" | "in" | "out">("hidden");
+
+  useEffect(() => {
+    if (sessionStorage.getItem("planToastShown")) return;
+    const t1 = setTimeout(() => {
+      sessionStorage.setItem("planToastShown", "1");
+      setToastState("in");
+    }, 1000);
+    const t2 = setTimeout(() => setToastState("out"), 1000 + 4000);
+    const t3 = setTimeout(() => setToastState("hidden"), 1000 + 4000 + 300);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
+
   const toggle = (key: string) =>
     setChecked((c) => ({ ...c, [key]: !c[key] }));
 
   return (
     <div className="-mt-11 flex flex-col">
+      {toastState !== "hidden" && (
+        <div
+          className="fixed left-4 right-4 z-50"
+          style={{
+            top: "12px",
+            background: "#4A6670",
+            color: "#FFFFFF",
+            fontSize: "14px",
+            fontWeight: 500,
+            textAlign: "center",
+            borderRadius: "12px",
+            padding: "12px 16px",
+            transition: toastState === "in" ? "transform 200ms ease-out, opacity 200ms ease-out" : "opacity 300ms ease-in",
+            transform: toastState === "in" ? "translateY(0)" : "translateY(-8px)",
+            opacity: toastState === "in" ? 1 : 0,
+          }}
+        >
+          Plan de la semaine sauvegarde. Rendez-vous dimanche prochain ?
+        </div>
+      )}
       {/* Header */}
       <header className="sticky top-0 z-30 h-14 bg-white border-b border-[#E8E8E4] flex items-center justify-between px-4">
         <h1 className="font-display text-[20px] text-[#2A2D35] leading-none">Epicerie</h1>
