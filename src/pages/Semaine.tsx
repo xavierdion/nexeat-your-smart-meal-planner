@@ -115,7 +115,7 @@ const Semaine = () => {
     <div className="-mt-11 flex flex-col">
       {/* Curved hero header */}
       <div className="sticky top-0 z-30 -mx-0">
-        <div className="relative bg-[#4A6670] rounded-b-[40px] pt-6 pb-4 px-4 shadow-card">
+        <div className="relative pt-6 pb-4 px-4 bg-gradient-to-b from-[#4A6670] to-[#A8C5BC]">
           <div className="flex items-center justify-center relative h-9">
             <h1 className="font-display text-[20px] text-white leading-none">Ma semaine</h1>
             <span className="absolute right-0 text-[12px] text-white/70">17-23 mai</span>
@@ -133,7 +133,7 @@ const Semaine = () => {
                   className={cn(
                     "shrink-0 flex flex-col items-center justify-center rounded-full transition-all",
                     active
-                      ? "bg-white text-[#4A6670] w-12 h-14 shadow-card"
+                      ? "bg-white text-[#4A6670] w-12 h-14"
                       : "bg-white/10 text-white/80 w-10 h-12",
                   )}
                 >
