@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Coffee, Salad, Utensils } from "lucide-react";
+import { Coffee, Salad, Utensils, Shuffle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SwapSheet from "@/components/SwapSheet";
+import RecipeSheet from "@/components/RecipeSheet";
 
 type Score = "A" | "B" | "C" | "D" | "E";
 type MealType = "DEJEUNER" | "DINER" | "SOUPER";
@@ -104,6 +105,7 @@ const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
   const [accepted, setAccepted] = useState(false);
   const [swapMeal, setSwapMeal] = useState<{ type: MealType; dayLabel: string } | null>(null);
+  const [recipeOpen, setRecipeOpen] = useState(false);
   const navigate = useNavigate();
   const day = DAYS.find((d) => d.key === activeKey)!;
 
@@ -157,12 +159,15 @@ const Semaine = () => {
         {day.meals.map((meal, i) => {
           const score = SCORE_STYLES[meal.score];
           return (
-            <button
+            <div
               key={i}
-              type="button"
-              onClick={() => setSwapMeal({ type: meal.type, dayLabel: day.label })}
-              className="block w-[calc(100%-32px)] mx-4 mb-3 bg-white rounded-2xl shadow-card text-left overflow-hidden"
+              className="relative w-[calc(100%-32px)] mx-4 mb-3 bg-white rounded-2xl shadow-card overflow-hidden"
             >
+              <button
+                type="button"
+                onClick={() => setRecipeOpen(true)}
+                className="block w-full text-left"
+              >
               <div className="p-4">
                 <span className="inline-block text-[11px] bg-[#F0F4F3] text-[#4A6670] rounded-md px-2.5 py-[3px]">
                   {meal.category}
@@ -195,7 +200,19 @@ const Semaine = () => {
                   {meal.badge}
                 </div>
               )}
-            </button>
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSwapMeal({ type: meal.type, dayLabel: day.label });
+                }}
+                aria-label="Changer ce repas"
+                className="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-[#F0F4F3] flex items-center justify-center"
+              >
+                <Shuffle size={16} className="text-[#4A6670]" />
+              </button>
+            </div>
           );
         })}
       </div>
@@ -218,6 +235,7 @@ const Semaine = () => {
         onClose={() => setSwapMeal(null)}
         contextLabel={swapMeal ? `${swapMeal.type} ${swapMeal.dayLabel.toUpperCase()}` : ""}
       />
+      <RecipeSheet open={recipeOpen} onClose={() => setRecipeOpen(false)} />
     </div>
   );
 };
