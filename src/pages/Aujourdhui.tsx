@@ -72,7 +72,14 @@ const Aujourdhui = () => {
     <div className="px-4 pt-2 pb-6">
       {/* Header */}
       <div>
-        <h1 className="font-display text-[22px] text-[#2A2D35] leading-tight">Bonjour</h1>
+        <h1 className="font-display text-[22px] text-[#2A2D35] leading-tight">{(() => {
+          const h = new Date().getHours();
+          if (h >= 6 && h < 10) return "Bonjour — voici ta journee";
+          if (h >= 10 && h < 13) return "Bonne matinee — ton diner approche";
+          if (h >= 13 && h < 17) return "Bon apres-midi — pense a ton souper";
+          if (h >= 17 && h < 21) return "Ce soir, avant de commencer";
+          return "Bonne soiree — demain est planifie";
+        })()}</h1>
         <p className="text-[14px] text-[#2A2D35]/60 mt-1">Lundi 17 mai — Aujourd'hui</p>
       </div>
 
