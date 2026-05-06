@@ -127,7 +127,7 @@ const Semaine = () => {
           </div>
 
           {/* Day pills */}
-          <div className="mt-5 flex items-center justify-between gap-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div className="mt-5 flex items-center justify-between gap-1 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {DAYS.map((d) => {
               const active = d.key === activeKey;
               const [weekday, num] = d.label.split(" ");
@@ -139,7 +139,7 @@ const Semaine = () => {
                     "shrink-0 flex flex-col items-center justify-center rounded-full transition-all",
                     active
                       ? "bg-white text-[#4A6670] w-12 h-14"
-                      : "bg-white/10 text-white/80 w-10 h-12",
+                      : "bg-white/10 text-white/80 w-11 h-12",
                   )}
                 >
                   <span className={cn("font-display leading-none", active ? "text-[18px]" : "text-[15px]")}>
