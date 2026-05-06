@@ -12,7 +12,7 @@ const OnboardingStep3 = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const goNext = () => navigate("/choix-style");
+  const goNext = () => navigate("/generation");
 
   const connect = () => {
     setLoading(true);
