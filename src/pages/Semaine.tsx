@@ -15,6 +15,7 @@ interface Meal {
   score: Score;
   prep: string;
   badge?: string;
+  isNew?: boolean;
 }
 
 interface Day {
@@ -28,7 +29,7 @@ const DAYS: Day[] = [
     key: "lun", label: "Lun 17",
     meals: [
       { type: "DEJEUNER", name: "Smoothie bowl mangue-kefir-granola", category: "Vegetarien", score: "A", prep: "10 min" },
-      { type: "DINER", name: "Bol coreen bibimbap vegetarien", category: "Vegetarien", score: "A", prep: "25 min", badge: "Examen IFT-2008 ce soir — repas proteines pour rester concentre" },
+      { type: "DINER", name: "Bol coreen bibimbap vegetarien", category: "Nouveau pour toi", score: "A", prep: "25 min", badge: "Examen IFT-2008 ce soir — repas proteines pour rester concentre", isNew: true },
       { type: "SOUPER", name: "Soupe miso riz edamames", category: "Vegetarien", score: "A", prep: "12 min", badge: "Examen dans 2h — repas leger et digeste" },
     ],
   },
@@ -43,7 +44,7 @@ const DAYS: Day[] = [
   {
     key: "mer", label: "Mer 19",
     meals: [
-      { type: "DEJEUNER", name: "Acai bowl amandes-banane-noix de coco", category: "Vegetarien", score: "A", prep: "8 min" },
+      { type: "DEJEUNER", name: "Acai bowl amandes-banane-noix de coco", category: "Nouveau pour toi", score: "A", prep: "8 min", isNew: true },
       { type: "DINER", name: "Poke bowl thon-mangue-avocat", category: "Omega-3", score: "A", prep: "20 min" },
       { type: "SOUPER", name: "Cari pois chiches-epinards-lait de coco", category: "Vegetarien", score: "A", prep: "30 min", badge: "Travail d'equipe IFT-2007 a 17h — souper avant 16h30" },
     ],
@@ -169,7 +170,14 @@ const Semaine = () => {
                 className="block w-full text-left rounded-2xl overflow-hidden"
               >
               <div className="p-4">
-                <span className="inline-block text-[11px] bg-[#F0F4F3] text-[#4A6670] rounded-md px-2.5 py-[3px]">
+                <span
+                  className="inline-block rounded-md"
+                  style={
+                    meal.isNew
+                      ? { background: "#FEF0ED", color: "#E07A5F", fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "6px" }
+                      : { background: "#F0F4F3", color: "#4A6670", fontSize: "11px", padding: "3px 10px", borderRadius: "6px" }
+                  }
+                >
                   {meal.category}
                 </span>
                 <div className="mt-2 flex items-start justify-between gap-3">
