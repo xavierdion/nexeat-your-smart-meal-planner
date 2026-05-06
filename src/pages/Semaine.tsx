@@ -195,11 +195,6 @@ const Semaine = () => {
                   </span>
                 </div>
               </div>
-              {meal.badge && (
-                <div className="bg-[#FEF0ED] border-t border-[#FEF0ED] px-3 py-2 text-[11px] font-semibold text-[#E07A5F]">
-                  {meal.badge}
-                </div>
-              )}
               </button>
               <button
                 type="button"
