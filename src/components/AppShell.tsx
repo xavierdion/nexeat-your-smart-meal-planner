@@ -13,12 +13,17 @@ const AppShell = () => {
   return (
     <div className="min-h-screen w-full bg-background flex justify-center">
       <div className="relative w-full max-w-[390px] min-h-screen bg-background flex flex-col">
-        <div className="h-11 shrink-0" aria-hidden />
-        <main className="flex-1 pb-20">
+        <div
+          className="shrink-0"
+          style={{ height: "max(env(safe-area-inset-top), 44px)" }}
+          aria-hidden
+        />
+        <main className="flex-1" style={{ paddingBottom: "calc(64px + env(safe-area-inset-bottom))" }}>
           <Outlet />
         </main>
         <nav
-          className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] h-16 bg-white border-t border-border flex items-stretch z-50"
+          className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white border-t border-border flex items-stretch z-50"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)", height: "calc(64px + env(safe-area-inset-bottom))" }}
           aria-label="Navigation principale"
         >
           {navItems.map(({ to, label, icon: Icon }) => (
