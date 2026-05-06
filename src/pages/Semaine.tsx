@@ -120,7 +120,7 @@ const Semaine = () => {
     <div className="-mt-11 flex flex-col">
       {/* Curved hero header */}
       <div className="sticky top-0 z-30 -mx-0">
-        <div className="relative pt-6 pb-4 px-4 bg-gradient-to-b from-[#4A6670] to-[#A8C5BC]">
+        <div className="relative pt-6 pb-4 px-4 bg-[#4A6670]">
           <div className="flex items-center justify-center relative h-9">
             <h1 className="font-display text-[20px] text-white leading-none">Ma semaine</h1>
             <span className="absolute right-0 text-[12px] text-white/70">17-23 mai</span>
