@@ -250,8 +250,8 @@ const Semaine = () => {
       </header>
 
       {/* Day pills */}
-      <div className="bg-white pt-2 pb-4 px-4">
-        <div className="flex items-center justify-between gap-2 py-1 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+      <div className="bg-white pt-2 pb-4 px-3 overflow-visible">
+        <div className="flex items-center justify-between gap-2 px-1.5 py-1 overflow-visible">
           {DAYS.map((d) => {
             const active = d.key === activeKey;
             const [weekday, num] = d.label.split(" ");
