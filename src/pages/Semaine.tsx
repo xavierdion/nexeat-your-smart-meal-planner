@@ -117,41 +117,39 @@ const Semaine = () => {
   };
 
   return (
-    <div className="-mt-11 flex flex-col">
-      {/* Curved hero header */}
-      <div className="sticky top-0 z-30 -mx-0">
-        <div className="relative pt-6 pb-4 px-4 bg-[#4A6670]">
-          <div className="flex items-center justify-center relative h-9">
-            <h1 className="font-display text-[20px] text-white leading-none">Ma semaine</h1>
-            <span className="absolute right-0 text-[12px] text-white/70">17-23 mai</span>
-          </div>
+    <div className="flex flex-col">
+      {/* Header */}
+      <header className="sticky top-0 z-30 h-14 bg-white border-b border-[#E8E8E4] flex items-center justify-between px-4">
+        <h1 className="font-display text-[20px] text-[#2A2D35] leading-none">Ma semaine</h1>
+        <span className="text-[13px] text-[#2A2D35]/60">17-23 mai</span>
+      </header>
 
-          {/* Day pills */}
-          <div className="mt-5 flex items-center justify-between gap-1 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            {DAYS.map((d) => {
-              const active = d.key === activeKey;
-              const [weekday, num] = d.label.split(" ");
-              return (
-                <button
-                  key={d.key}
-                  onClick={() => setActiveKey(d.key)}
-                  className={cn(
-                    "shrink-0 flex flex-col items-center justify-center rounded-full transition-all",
-                    active
-                      ? "bg-white text-[#4A6670] w-12 h-14 shadow-md"
-                      : "bg-white/10 text-white/80 w-11 h-12",
-                  )}
-                >
-                  <span className={cn("font-display leading-none", active ? "text-[20px]" : "text-[15px]")}>
-                    {num}
-                  </span>
-                  <span className={cn("mt-1 leading-none", active ? "text-[10px] font-semibold" : "text-[10px] opacity-80")}>
-                    {weekday}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+      {/* Day pills */}
+      <div className="bg-white pb-3 px-4">
+        <div className="flex items-center justify-between gap-1 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          {DAYS.map((d) => {
+            const active = d.key === activeKey;
+            const [weekday, num] = d.label.split(" ");
+            return (
+              <button
+                key={d.key}
+                onClick={() => setActiveKey(d.key)}
+                className={cn(
+                  "shrink-0 flex flex-col items-center justify-center rounded-full transition-all",
+                  active
+                    ? "bg-white text-[#4A6670] w-12 h-14 shadow-md"
+                    : "bg-[#F0F4F3] text-[#2A2D35]/60 w-11 h-12",
+                )}
+              >
+                <span className={cn("font-display leading-none", active ? "text-[20px]" : "text-[15px]")}>
+                  {num}
+                </span>
+                <span className={cn("mt-1 leading-none", active ? "text-[10px] font-semibold" : "text-[10px]")}>
+                  {weekday}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
