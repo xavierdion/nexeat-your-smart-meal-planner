@@ -68,23 +68,30 @@ const Aujourdhui = () => {
   const navigate = useNavigate();
   const [recipeOpen, setRecipeOpen] = useState(false);
 
+  const greeting = (() => {
+    const h = new Date().getHours();
+    if (h >= 6 && h < 10) return "Bonjour — voici ta journee";
+    if (h >= 10 && h < 13) return "Bonne matinee — ton diner approche";
+    if (h >= 13 && h < 17) return "Bon apres-midi — pense a ton souper";
+    if (h >= 17 && h < 21) return "Ce soir, avant de commencer";
+    return "Bonne soiree — demain est planifie";
+  })();
+
   return (
-    <div className="px-4 pt-2 pb-6">
+    <div className="flex flex-col pb-6">
       {/* Header */}
-      <div>
-        <h1 className="font-display text-[22px] text-[#2A2D35] leading-tight">{(() => {
-          const h = new Date().getHours();
-          if (h >= 6 && h < 10) return "Bonjour — voici ta journee";
-          if (h >= 10 && h < 13) return "Bonne matinee — ton diner approche";
-          if (h >= 13 && h < 17) return "Bon apres-midi — pense a ton souper";
-          if (h >= 17 && h < 21) return "Ce soir, avant de commencer";
-          return "Bonne soiree — demain est planifie";
-        })()}</h1>
-        <p className="text-[14px] text-[#2A2D35]/60 mt-1">Lundi 17 mai — Aujourd'hui</p>
-      </div>
+      <header className="sticky top-0 z-30 h-14 bg-white border-b border-[#E8E8E4] flex items-center justify-between px-4">
+        <h1 className="font-display text-[20px] text-[#2A2D35] leading-none">Aujourd'hui</h1>
+        <span className="text-[13px] text-[#2A2D35]/60">Lundi 17 mai</span>
+      </header>
+
+      {/* Greeting */}
+      <h2 className="font-display text-[22px] text-[#2A2D35] leading-tight px-4 pt-4">
+        {greeting}
+      </h2>
 
       {/* Upcoming */}
-      <div className="mt-4 bg-white rounded-2xl shadow-card p-4">
+      <div className="mt-4 mx-4 bg-white rounded-2xl shadow-card p-4">
         <div className="flex items-center justify-between mb-3">
           <span className="text-[12px] uppercase font-semibold text-[#2A2D35]/50 tracking-wide">
             A venir
@@ -138,23 +145,23 @@ const Aujourdhui = () => {
       </div>
 
       {/* Context banner */}
-      <div className="mt-4 bg-[#4A6670] rounded-2xl p-4 flex items-start gap-3">
+      <div className="mt-4 mx-4 bg-[#A8C5BC] rounded-2xl p-4 flex items-start gap-3">
         <Calendar size={20} className="text-white shrink-0 mt-[2px]" strokeWidth={2} />
         <div className="flex-1 min-w-0">
           <p className="text-[13px] font-semibold text-white">
             Examen final IFT-2008 a 18h ce soir
           </p>
-          <p className="text-[12px] text-white/70 mt-1">
+          <p className="text-[12px] text-white/80 mt-1">
             Repas energie stable programmes pour toi aujourd'hui
           </p>
         </div>
       </div>
 
       {/* Meals */}
-      <p className="mt-0 mb-2 text-[12px] text-[#2A2D35]/60 font-normal text-left">
+      <p className="mt-4 mx-4 mb-2 text-[12px] text-[#2A2D35]/60 font-normal text-left">
         2 repas sur 3 completes aujourd'hui
       </p>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 mx-4">
         {MEALS.map((meal, i) => {
           const score = SCORE_STYLES[meal.score];
           return (
@@ -208,12 +215,8 @@ const Aujourdhui = () => {
         })}
       </div>
 
-      <p className="mt-2 text-[12px] text-[#2A2D35]/50 px-1">
-        Souper avance avant l'examen de 18h
-      </p>
-
       {/* Locked notice */}
-      <div className="mt-4 bg-[#F5F5F0] border-[1.5px] border-dashed border-[#E8E8E4] rounded-xl px-4 py-[14px] text-center">
+      <div className="mt-4 mx-4 bg-[#F5F5F0] border border-dashed border-[#E8E8E4] rounded-xl px-4 py-3 text-center">
         <p className="text-[13px] text-[#2A2D35]/60">
           Pour modifier un repas, va dans l'onglet Semaine
         </p>
@@ -222,7 +225,7 @@ const Aujourdhui = () => {
       {/* Quick action */}
       <button
         onClick={() => navigate("/epicerie")}
-        className="mt-4 w-full h-11 rounded-xl border-[1.5px] border-[#4A6670] text-[#4A6670] text-[14px] font-semibold bg-transparent"
+        className="mt-4 mx-4 h-11 rounded-xl border-[1.5px] border-[#4A6670] text-[#4A6670] text-[14px] font-semibold bg-transparent"
       >
         Voir l'epicerie
       </button>
