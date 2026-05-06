@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Calendar, Coffee, Salad, Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
+import RecipeSheet from "@/components/RecipeSheet";
 
 type Score = "A" | "B" | "C" | "D" | "E";
 type MealType = "DEJEUNER" | "DINER" | "SOUPER";
@@ -72,6 +74,7 @@ const BLOCKS: TimelineBlock[] = [
 
 const Aujourdhui = () => {
   const navigate = useNavigate();
+  const [recipeOpen, setRecipeOpen] = useState(false);
   const pct = (h: number) => ((h - TIMELINE_START) / TIMELINE_HOURS) * 100;
 
   return (
@@ -177,7 +180,11 @@ const Aujourdhui = () => {
         {MEALS.map((meal, i) => {
           const score = SCORE_STYLES[meal.score];
           return (
-            <div key={i} className="bg-white rounded-2xl shadow-card p-4">
+            <button
+              key={i}
+              onClick={() => setRecipeOpen(true)}
+              className="bg-white rounded-2xl shadow-card p-4 text-left w-full"
+            >
               <span className="inline-block text-[11px] bg-[#F0F4F3] text-[#4A6670] rounded-md px-2.5 py-[3px]">
                 {meal.category}
               </span>
@@ -211,7 +218,7 @@ const Aujourdhui = () => {
                   {meal.status.label}
                 </span>
               </div>
-            </div>
+            </button>
           );
         })}
       </div>
@@ -234,6 +241,8 @@ const Aujourdhui = () => {
       >
         Voir l'epicerie
       </button>
+
+      <RecipeSheet open={recipeOpen} onClose={() => setRecipeOpen(false)} />
     </div>
   );
 };
