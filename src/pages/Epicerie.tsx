@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Check, AlertCircle } from "lucide-react";
+import { Check, AlertCircle, Apple, Beef, Wheat, Milk, Package, Leaf } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Item {
@@ -67,6 +67,15 @@ const CATEGORIES: { name: string; items: Item[] }[] = [
 
 const totalItems = CATEGORIES.reduce((s, c) => s + c.items.length, 0);
 
+const CATEGORY_ICONS: Record<string, typeof Apple> = {
+  "Fruits et legumes": Apple,
+  "Proteines": Beef,
+  "Grains et fecules": Wheat,
+  "Produits laitiers et substituts": Milk,
+  "Epicerie seche": Package,
+  "Herbes et condiments": Leaf,
+};
+
 const Epicerie = () => {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [toastState, setToastState] = useState<"hidden" | "in" | "out">("hidden");
@@ -132,8 +141,14 @@ const Epicerie = () => {
       <div className="px-4 pb-4">
         {CATEGORIES.map((cat) => (
           <div key={cat.name}>
-            <div className="text-[12px] uppercase font-semibold text-[#2A2D35]/50 tracking-wide mt-4 mb-2">
-              {cat.name}
+            <div className="flex items-center gap-1.5 mt-4 mb-2">
+              {(() => {
+                const Icon = CATEGORY_ICONS[cat.name];
+                return Icon ? <Icon size={14} strokeWidth={2} color="#5B8579" /> : null;
+              })()}
+              <span className="text-[12px] uppercase font-semibold text-[#5B8579] tracking-wide">
+                {cat.name}
+              </span>
             </div>
             <div className="bg-white rounded-2xl shadow-card overflow-hidden">
               {cat.items.map((item, i) => {
