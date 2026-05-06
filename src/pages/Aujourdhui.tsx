@@ -163,7 +163,14 @@ const Aujourdhui = () => {
               onClick={() => setRecipeOpen(true)}
               className="bg-white rounded-2xl shadow-card p-4 text-left w-full"
             >
-              <span className="inline-block text-[11px] bg-[#F0F4F3] text-[#4A6670] rounded-md px-2.5 py-[3px]">
+              <span
+                className="inline-block rounded-md"
+                style={
+                  meal.category === "Nouveau pour toi"
+                    ? { background: "#FEF0ED", color: "#E07A5F", fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "6px" }
+                    : { background: "#F0F4F3", color: "#4A6670", fontSize: "11px", padding: "3px 10px", borderRadius: "6px" }
+                }
+              >
                 {meal.category}
               </span>
               <div className="mt-2 flex items-start justify-between gap-3">
