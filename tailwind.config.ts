@@ -70,6 +70,17 @@ export default {
         display: ['Fraunces', 'Georgia', 'serif'],
         sans: ['DM Sans', 'system-ui', 'sans-serif'],
       },
+      fontSize: {
+        "display-xl": ["40px", { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "600" }],
+        "display-lg": ["32px", { lineHeight: "1.1", letterSpacing: "-0.015em", fontWeight: "600" }],
+        "display-md": ["24px", { lineHeight: "1.15", letterSpacing: "-0.01em", fontWeight: "600" }],
+        "display-sm": ["18px", { lineHeight: "1.25", fontWeight: "500" }],
+      },
+      backgroundImage: {
+        "surface-warm": "var(--surface-warm)",
+        "surface-cool": "var(--surface-cool)",
+        "surface-paper": "var(--surface-paper)",
+      },
       boxShadow: {
         card: '0 2px 12px rgba(42, 45, 53, 0.08)',
       },
