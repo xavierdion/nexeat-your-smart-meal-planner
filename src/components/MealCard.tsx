@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, type PanInfo } from "framer-motion";
-import { Calendar, Clock, Coffee, Leaf, Salad, Utensils } from "lucide-react";
+import { Calendar, Clock, Coffee, Leaf, Salad, Utensils, type LucideIcon } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +26,7 @@ export interface MealCardProps {
   className?: string;
 }
 
-const MEAL_ICONS: Record<MealType, React.ComponentType<{ size?: number; className?: string; strokeWidth?: number }>> = {
+const MEAL_ICONS: Record<MealType, LucideIcon> = {
   DÉJEUNER: Coffee,
   DÎNER: Salad,
   SOUPER: Utensils,
