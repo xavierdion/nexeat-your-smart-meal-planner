@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Check, AlertCircle, Apple, Beef, Wheat, Milk, Package, Leaf } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Pill } from "@/components/ui/pill";
 
 interface Item {
   name: string;
@@ -95,45 +96,57 @@ const Epicerie = () => {
     setChecked((c) => ({ ...c, [key]: !c[key] }));
 
   return (
-    <div className="-mt-11 flex flex-col">
+    <div className="flex flex-col">
       {toastState !== "hidden" && (
         <div
           className="fixed left-4 right-4 z-50"
           style={{
             top: "12px",
-            background: "#4A6670",
+            background: "linear-gradient(135deg, #4A6670 0%, #5B7780 100%)",
             color: "#FFFFFF",
             fontSize: "14px",
             fontWeight: 500,
             textAlign: "center",
             borderRadius: "12px",
             padding: "12px 16px",
+            boxShadow: "0 2px 12px rgba(42, 45, 53, 0.08)",
             transition: toastState === "in" ? "transform 200ms ease-out, opacity 200ms ease-out" : "opacity 300ms ease-in",
             transform: toastState === "in" ? "translateY(0)" : "translateY(-8px)",
             opacity: toastState === "in" ? 1 : 0,
           }}
         >
-          Plan de la semaine sauvegarde. Rendez-vous dimanche prochain ?
+          Plan de la semaine sauvegardé. Rendez-vous dimanche prochain ?
         </div>
       )}
-      {/* Header */}
-      <header className="sticky top-0 z-30 h-14 bg-white border-b border-[#E8E8E4] flex items-center justify-between px-4">
-        <h1 className="font-display text-[20px] text-[#2A2D35] leading-none">Épicerie</h1>
-        <span className="text-[13px] text-[#2A2D35]/60">Semaine du 17 mai</span>
+      {/* Header éditorial */}
+      <header className="bg-white px-4 pt-6 pb-4 border-b border-[#E8E8E4]">
+        <p className="text-eyebrow uppercase text-[#4A6670]/70">SEMAINE DU 17 MAI</p>
+        <h1 className="font-display text-display-xl text-[#2A2D35] mt-1">Ton épicerie</h1>
+        <p className="text-[14px] text-[#2A2D35]/60 mt-1">
+          {totalItems} articles · {CATEGORIES.length} catégories
+        </p>
       </header>
 
-      {/* Budget summary */}
-      <div className="bg-white border-b border-[#E8E8E4] px-4 py-3 flex items-start justify-between">
-        <div className="text-[13px] text-[#2A2D35]">
-          {totalItems} articles · {CATEGORIES.length} categories
-        </div>
-        <div className="text-right">
-          <div className="text-[28px] font-bold text-[#4A6670] leading-none">94 $</div>
-          <div className="text-[11px] text-[#2A2D35]/50 mt-1">Budget : 85 $</div>
-          <div className="mt-1 inline-flex items-center gap-1 text-[11px] text-[#E07A5F]">
-            <AlertCircle size={11} strokeWidth={2.5} />
-            Au-dessus du budget
+      {/* Budget card */}
+      <div className="mx-4 mt-4 bg-white rounded-2xl shadow-card p-4 flex justify-between items-start gap-4">
+        <div className="flex-1 min-w-0">
+          <p className="text-eyebrow uppercase text-[#4A6670]/70">Budget hebdo</p>
+          <p className="font-display text-display-xl text-[#4A6670] mt-1 leading-none">94 $</p>
+          <div className="mt-2 flex items-center gap-1">
+            <AlertCircle size={12} className="text-[#E07A5F]" strokeWidth={2.5} />
+            <span className="text-[12px] text-[#E07A5F]">
+              Au-dessus de ton budget de 85 $ (+9 $)
+            </span>
           </div>
+        </div>
+        <div className="shrink-0 flex flex-col items-end">
+          <div className="w-20 h-2 rounded-full bg-[#F0F4F3] overflow-hidden">
+            <div
+              className="h-full bg-[#E07A5F] rounded-full"
+              style={{ width: `${Math.min((94 / 85) * 100, 100)}%` }}
+            />
+          </div>
+          <span className="text-[10px] text-[#2A2D35]/50 mt-1">94/85</span>
         </div>
       </div>
 
@@ -141,14 +154,12 @@ const Epicerie = () => {
       <div className="px-4 pb-4">
         {CATEGORIES.map((cat) => (
           <div key={cat.name}>
-            <div className="flex items-center gap-1.5 mt-4 mb-2">
+            <div className="flex items-center gap-1.5 mt-5 mb-3">
               {(() => {
                 const Icon = CATEGORY_ICONS[cat.name];
                 return Icon ? <Icon size={14} strokeWidth={2} color="#5B8579" /> : null;
               })()}
-              <span className="text-[12px] uppercase font-semibold text-[#5B8579] tracking-wide">
-                {cat.name}
-              </span>
+              <Pill variant="category">{cat.name}</Pill>
             </div>
             <div className="bg-white rounded-2xl shadow-card overflow-hidden">
               {cat.items.map((item, i) => {
@@ -185,7 +196,7 @@ const Epicerie = () => {
                       </span>
                       <span className="text-[13px] text-[#2A2D35]/60 shrink-0">{item.qty}</span>
                     </span>
-                    <span className="text-[13px] text-[#2A2D35]/50 shrink-0">{item.price}</span>
+                    <span className="text-[13px] text-[#4A6670] font-medium shrink-0">{item.price}</span>
                   </button>
                 );
               })}
