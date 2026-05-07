@@ -1,64 +1,55 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Calendar, Coffee, Salad, Utensils } from "lucide-react";
 import RecipeSheet from "@/components/RecipeSheet";
+import MealCard from "@/components/MealCard";
+import ProactiveContextBlock from "@/components/ProactiveContextBlock";
+import { EditorialSection } from "@/components/ui/editorial-section";
+import { Pill } from "@/components/ui/pill";
 
 type Score = "A" | "B" | "C" | "D" | "E";
 type MealType = "DÉJEUNER" | "DÎNER" | "SOUPER";
+type StatusTone = "done" | "active" | "queued";
 
-const SCORE_STYLES: Record<Score, { bg: string; text: string }> = {
-  A: { bg: "#3E8B3E", text: "#FFFFFF" },
-  B: { bg: "#85BB2F", text: "#FFFFFF" },
-  C: { bg: "#FFCC00", text: "#2A2D35" },
-  D: { bg: "#EE8100", text: "#FFFFFF" },
-  E: { bg: "#E63312", text: "#FFFFFF" },
-};
-
-interface MealCard {
+interface MealItem {
   type: MealType;
   time: string;
   name: string;
   category: string;
+  isNew?: boolean;
   score: Score;
   prep: string;
-  status: { label: string; bg: string; text: string };
+  status: { label: string; tone: StatusTone };
 }
 
-const MEALS: MealCard[] = [
+const MEALS: MealItem[] = [
   {
     type: "DÉJEUNER", time: "7H",
     name: "Smoothie bowl mangue-kefir-granola",
     category: "Végétarien", score: "A", prep: "10 min",
-    status: { label: "Terminé", bg: "#E8F0EE", text: "#4A7060" },
+    status: { label: "Terminé", tone: "done" },
   },
   {
     type: "DÎNER", time: "12H",
-    name: "Bol coreen bibimbap vegetarien",
+    name: "Bol coréen bibimbap végétarien",
     category: "Végétarien", score: "A", prep: "25 min",
-    status: { label: "Dans 2h30", bg: "#E07A5F", text: "#FFFFFF" },
+    status: { label: "Dans 2h30", tone: "active" },
   },
   {
     type: "SOUPER", time: "15H30",
     name: "Soupe miso riz edamames",
     category: "Végétarien", score: "A", prep: "12 min",
-    status: { label: "Ce soir — avant 15h30", bg: "#E8E8E4", text: "rgba(42,45,53,0.6)" },
+    status: { label: "Ce soir — avant 15h30", tone: "queued" },
   },
 ];
-
-const MealIcon = ({ type }: { type: MealType }) => {
-  const Icon = type === "DÉJEUNER" ? Coffee : type === "DÎNER" ? Salad : Utensils;
-  return <Icon size={24} className="text-[#4A6670] opacity-40" strokeWidth={2} />;
-};
 
 interface UpcomingItem {
   time: string;
   label: string;
   kind: "meal" | "class";
-  icon?: MealType;
 }
 
 const UPCOMING: UpcomingItem[] = [
-  { time: "12h", label: "Dîner", kind: "meal", icon: "DÎNER" },
+  { time: "12h", label: "Dîner", kind: "meal" },
   { time: "13h", label: "IFT-2008", kind: "class" },
 ];
 
@@ -68,54 +59,58 @@ const Aujourdhui = () => {
 
   const greeting = (() => {
     const h = new Date().getHours();
-    if (h >= 6 && h < 10) return "Bonjour — voici ta journee";
-    if (h >= 10 && h < 13) return "Bonne matinee — ton diner approche";
-    if (h >= 13 && h < 17) return "Bon apres-midi — pense a ton souper";
+    if (h >= 6 && h < 10) return "Bonjour — voici ta journée";
+    if (h >= 10 && h < 13) return "Bonne matinée — ton dîner approche";
+    if (h >= 13 && h < 17) return "Bon après-midi — pense à ton souper";
     if (h >= 17 && h < 21) return "Ce soir, avant de commencer";
-    return "Bonne soiree — demain est planifie";
+    return "Bonne soirée — demain est planifié";
   })();
 
+  const completed = MEALS.filter((m) => m.status.tone === "done").length;
+  const subtitle =
+    completed === MEALS.length
+      ? "Journée complétée — bravo"
+      : `${completed} repas sur ${MEALS.length} complétés — il te reste ${
+          MEALS.length - completed === 1 ? "le souper" : `${MEALS.length - completed} repas`
+        }`;
+
   return (
-    <div className="flex flex-col pb-6">
-      {/* Header */}
-      <header className="sticky top-0 z-30 h-14 bg-white border-b border-[#E8E8E4] flex items-center justify-between px-4">
-        <h1 className="font-display text-[20px] text-[#2A2D35] leading-none">Aujourd'hui</h1>
-        <span className="text-[13px] text-[#2A2D35]/60">Lundi 17 mai</span>
+    <div className="flex flex-col pb-6 bg-surface-warm min-h-full">
+      {/* Header éditorial */}
+      <header className="bg-white px-4 pt-6 pb-4 border-b border-[#E8E8E4]">
+        <p className="text-eyebrow uppercase text-[#4A6670]/70">LUNDI 17 MAI</p>
+        <h1 className="font-display text-display-xl text-[#2A2D35] mt-1">
+          {greeting}
+        </h1>
+        <p className="text-[14px] text-[#2A2D35]/60 mt-1">{subtitle}</p>
       </header>
 
-      {/* Greeting */}
-      <h2 className="font-display text-[22px] text-[#2A2D35] leading-tight px-4 pt-4">
-        {greeting}
-      </h2>
+      {/* Context banner */}
+      <div className="mx-4 mt-4 mb-2">
+        <ProactiveContextBlock
+          variant="banner"
+          eventTitle="Examen final IFT-2008"
+          eventTime="18h"
+          mealLabel="Souper"
+          mealTime="15h30"
+          rationale="Repas légers et digestes programmés. Énergie stable jusqu'à l'examen."
+        />
+      </div>
 
       {/* Upcoming */}
-      <div className="mt-4 mx-4 bg-white rounded-2xl shadow-card p-4">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-[12px] uppercase font-semibold text-[#2A2D35]/50 tracking-wide">
-            À venir
-          </span>
-          <span className="text-[11px] text-[#2A2D35]/50">Maintenant · Ensuite</span>
-        </div>
-
+      <EditorialSection eyebrow="Prochainement" className="py-4">
         <div className="grid grid-cols-2 gap-2">
           {UPCOMING.map((item, i) => {
-            const isMeal = item.kind === "meal";
             const isFirst = i === 0;
             return (
               <div
                 key={i}
-                className={
-                  "rounded-xl px-3 py-2 flex items-center justify-between gap-2 " +
-                  (isMeal
-                    ? "bg-[#A8C5BC]/40 "
-                    : "bg-[#FEF0ED] border border-[#E07A5F]/20 ") +
-                  (isFirst ? "ring-2 ring-[#E07A5F]" : "")
-                }
+                className="bg-white rounded-xl px-4 py-3 flex items-center justify-between gap-2 shadow-card"
               >
                 <div className="flex flex-col min-w-0">
-                  <span className="text-[10px] font-semibold uppercase tracking-wide text-[#E07A5F]">
+                  <Pill variant="proactive" className="self-start mb-1">
                     {isFirst ? "Maintenant" : "Ensuite"}
-                  </span>
+                  </Pill>
                   <span className="text-[13px] font-semibold text-[#2A2D35] truncate leading-tight">
                     {item.label}
                   </span>
@@ -127,82 +122,30 @@ const Aujourdhui = () => {
             );
           })}
         </div>
-      </div>
-
-      {/* Context banner */}
-      <div className="mt-4 mx-4 bg-[#A8C5BC] rounded-2xl p-4 flex items-start gap-3">
-        <Calendar size={20} className="text-white shrink-0 mt-[2px]" strokeWidth={2} />
-        <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-semibold text-white">
-            Examen final IFT-2008 a 18h ce soir
-          </p>
-          <p className="text-[12px] text-white/80 mt-1">
-            Repas energie stable programmes pour toi aujourd'hui
-          </p>
-        </div>
-      </div>
+      </EditorialSection>
 
       {/* Meals */}
-      <p className="mt-4 mx-4 mb-2 text-[12px] text-[#2A2D35]/60 font-normal text-left">
-        2 repas sur 3 completes aujourd'hui
-      </p>
       <div className="flex flex-col gap-3 mx-4">
-        {MEALS.map((meal, i) => {
-          const score = SCORE_STYLES[meal.score];
-          return (
-            <button
-              key={i}
-              onClick={() => setRecipeOpen(true)}
-              className="bg-white rounded-2xl shadow-card p-4 text-left w-full"
-            >
-              <span
-                className="inline-block rounded-md"
-                style={
-                  meal.category === "Nouveau pour toi"
-                    ? { background: "#FEF0ED", color: "#E07A5F", fontSize: "11px", fontWeight: 600, padding: "3px 10px", borderRadius: "6px" }
-                    : { background: "#F0F4F3", color: "#4A6670", fontSize: "11px", padding: "3px 10px", borderRadius: "6px" }
-                }
-              >
-                {meal.category}
-              </span>
-              <div className="mt-2 flex items-start justify-between gap-3">
-                <div className="flex-1 min-w-0">
-                  <div className="text-[11px] uppercase tracking-wide text-[#2A2D35]/50">
-                    {meal.type === "DÉJEUNER" ? "Déjeuner" : meal.type === "DÎNER" ? "Dîner" : "Souper"} · {meal.time}
-                  </div>
-                  <div className="font-display text-[17px] text-[#2A2D35] leading-snug mt-0.5">
-                    {meal.name}
-                  </div>
-                </div>
-                <div className="w-16 h-16 rounded-xl bg-[#F0F4F3] flex items-center justify-center shrink-0">
-                  <MealIcon type={meal.type} />
-                </div>
-              </div>
-              <div className="mt-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-[13px] text-[#2A2D35]/60">{meal.prep}</span>
-                  <span
-                    className="text-[11px] font-semibold rounded-md px-[7px] py-[3px]"
-                    style={{ background: score.bg, color: score.text }}
-                  >
-                    {meal.score}
-                  </span>
-                </div>
-                <span
-                  className="text-[11px] rounded-md px-2 py-[3px]"
-                  style={{ background: meal.status.bg, color: meal.status.text }}
-                >
-                  {meal.status.label}
-                </span>
-              </div>
-            </button>
-          );
-        })}
+        {MEALS.map((meal, i) => (
+          <MealCard
+            key={i}
+            variant="compact"
+            mealType={meal.type}
+            time={meal.time}
+            title={meal.name}
+            category={meal.category}
+            isNew={meal.isNew}
+            prep={meal.prep}
+            score={meal.score}
+            status={meal.status}
+            onClick={() => setRecipeOpen(true)}
+          />
+        ))}
       </div>
 
       {/* Locked notice */}
-      <div className="mt-4 mx-4 bg-[#F5F5F0] border border-dashed border-[#E8E8E4] rounded-xl px-4 py-3 text-center">
-        <p className="text-[13px] text-[#2A2D35]/60">
+      <div className="mt-4 mx-4 bg-surface-paper border border-dashed border-[#E8E8E4] rounded-xl px-4 py-3 text-center">
+        <p className="text-[13px] text-[#2A2D35]/60 italic">
           Pour modifier un repas, va dans l'onglet Semaine
         </p>
       </div>
@@ -210,9 +153,9 @@ const Aujourdhui = () => {
       {/* Quick action */}
       <button
         onClick={() => navigate("/epicerie")}
-        className="mt-4 mx-4 h-11 rounded-xl border-[1.5px] border-[#4A6670] text-[#4A6670] text-[14px] font-semibold bg-transparent"
+        className="mt-4 mx-4 h-12 rounded-xl border-[1.5px] border-[#4A6670] text-[#4A6670] text-[14px] font-semibold bg-white"
       >
-        Voir l'epicerie
+        Voir l'épicerie
       </button>
 
       <RecipeSheet open={recipeOpen} onClose={() => setRecipeOpen(false)} />
