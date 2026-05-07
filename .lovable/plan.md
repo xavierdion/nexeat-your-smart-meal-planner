@@ -1,99 +1,84 @@
-## Approche
+## Refonte "Prochainement" → Timeline horaire + retrait du banner Contexte
 
-Un seul mapping centralisé `src/data/recipeImages.ts` qui mappe **nom de recette → import ES6**. Les pages (Semaine, Aujourdhui) lookent l'URL via `RECIPE_IMAGES[meal.name]` et la passent à `<MealCard imageUrl=... />`. Idem pour `RecipeSheet` (qui reçoit déjà `imageUrl` en prop) et `SwapSheet` (à modifier pour remplacer le carré `bg-[#F0F4F3] + ImageIcon`).
+### Objectif
+Remplacer la grille 2-cards "Maintenant / Ensuite" par une **barre temporelle horizontale** qui visualise le flow de la journée (repas + cours/événements) avec un indicateur "tu es ici" qui avance selon l'heure courante. Le banner `ProactiveContextBlock` devient redondant et est retiré.
 
-Si une recette n'a pas de photo dans le mapping → fallback sur le `PhotoPlaceholder` actuel (gradient + icône). Aucun crash, dégradation propre.
+### Fichier modifié
+- `src/pages/Aujourdhui.tsx` uniquement
 
-## Spécifications fichiers
+### 1. Retrait du banner Contexte calendrier
+- Supprimer le bloc `<ProactiveContextBlock variant="banner" ...>` (mx-4 mt-4 mb-2)
+- Supprimer l'import `ProactiveContextBlock`
+- Le contexte "Examen IFT-2008 18h" sera désormais représenté comme un **point d'événement sur la timeline**, ce qui suffit visuellement
 
-- **Format** : JPG (pas PNG — photos, pas transparence)
-- **Dimensions** : 800 × 600 px (ratio 4:3) — couvre les 3 usages :
-  - MealCard full (358×224, ratio 16:10) → object-cover crop horizontal
-  - RecipeSheet hero (390×280) → object-cover crop léger
-  - MealCard compact (64×64) → object-cover crop carré
-- **Poids cible** : 80–150 kb par fichier (qualité 75–80%)
-- **Cadrage** : assiette/bol centré, vue plongeante 45–90°, lumière naturelle, fond neutre (bois clair, lin, marbre). Cohérent avec le ton chaleureux NexEat.
-- **Emplacement** : `src/assets/recipes/{slug}.jpg`
+### 2. Nouvelle data : timeline du jour
+Fusion des repas (`MEALS`) et événements calendrier dans un tableau unique trié par heure :
 
-## Liste des 31 photos à déposer
+```ts
+type TimelineKind = "meal" | "event";
+interface TimelineItem {
+  time: string;        // "7h", "12h", "13h", "15h30", "18h"
+  hour: number;        // 7, 12, 13, 15.5, 18 (pour positionnement)
+  label: string;       // "Déjeuner", "Dîner", "IFT-2008", "Souper", "Examen IFT-2008"
+  kind: TimelineKind;
+  done?: boolean;      // pour les repas terminés
+}
+```
 
-Une photo = une recette. Slug en kebab-case. Tu peux les sourcer sur Unsplash, Pexels, ou ta propre banque.
+Items hardcodés (cohérents avec MEALS et le banner actuel) :
+- 7h — Déjeuner (meal, done)
+- 12h — Dîner (meal)
+- 13h — IFT-2008 (event)
+- 15h30 — Souper (meal)
+- 18h — Examen IFT-2008 (event, accent coral)
 
-### Déjeuners (8)
-| Slug | Recette |
-|---|---|
-| `smoothie-bowl-mangue.jpg` | Smoothie bowl mangue-kefir-granola |
-| `pancakes-sarrasin-bleuets.jpg` | Pancakes sarrasin-bleuets-sirop d'érable |
-| `acai-bowl-amandes.jpg` | Açaï bowl amandes-banane-noix de coco |
-| `oeufs-benedictine-vege.jpg` | Œufs bénédictine végé sur muffin anglais |
-| `french-toast-cannelle.jpg` | French toast cannelle-compote de pommes |
-| `crepes-sarrasin-compote.jpg` | Crêpes sarrasin-compote-sirop d'érable |
-| `granola-yogourt-grec.jpg` | Granola maison-yogourt grec-fruits frais |
-| `tartines-avocat-oeuf.jpg` | Tartines avocat-œuf poché |
-| `yogourt-grec-fruits-miel.jpg` | Yogourt grec-fruits-miel |
+### 3. Composant timeline (inline dans Aujourdhui.tsx)
 
-### Dîners (10)
-| Slug | Recette |
-|---|---|
-| `bibimbap-vegetarien.jpg` | Bol coréen bibimbap végétarien *(★ hero RecipeSheet)* |
-| `salade-thai-vermicelles.jpg` | Salade thaï vermicelles-poulet-arachides |
-| `poke-bowl-thon-mangue.jpg` | Poke bowl thon-mangue-avocat |
-| `ramen-vegetarien-miso.jpg` | Ramen végétarien bouillon miso |
-| `wrap-falafel-tzatziki.jpg` | Wrap méditerranéen falafel-tzatziki |
-| `buddha-bowl-quinoa.jpg` | Buddha bowl quinoa-légumes rôtis-tahini |
-| `souvlaki-poulet-riz.jpg` | Souvlaki poulet-légumes grillés-riz |
-| `riz-saute-tofu-gingembre.jpg` | Riz sauté tofu-légumes-sauce gingembre |
-| `salade-quinoa-pois-chiches.jpg` | Salade quinoa-pois chiches-feta |
-| `wrap-poulet-legumes.jpg` | Wrap poulet-légumes grillés |
+Layout dans `EditorialSection eyebrow="Ta journée"` :
 
-### Soupers (12)
-| Slug | Recette |
-|---|---|
-| `soupe-miso-edamames.jpg` | Soupe miso riz edamames |
-| `burrito-bowl-poulet.jpg` | Burrito bowl poulet-salsa-crème sure |
-| `cari-pois-chiches.jpg` | Cari pois chiches-épinards-lait de coco |
-| `tacos-haricots-noirs.jpg` | Tacos haricots noirs-maïs-salsa verde |
-| `bol-soba-tofu-tahini.jpg` | Bol soba-tofu-sauce tahini-concombre |
-| `pizza-maison-legumes.jpg` | Pizza maison pâte mince-légumes-fromage |
-| `soupe-lentilles-legumes.jpg` | Soupe lentilles-légumes-pain de seigle |
-| `pates-pesto-tomates.jpg` | Pâtes pesto-tomates cerises-parmesan |
-| `curry-lentilles-epinards.jpg` | Curry lentilles-épinards-riz basmati |
-| `saumon-teriyaki-edamames.jpg` | Saumon teriyaki-edamames-riz |
-| `bol-lentilles-carottes.jpg` | Bol lentilles-carottes-vinaigrette moutarde *(SwapSheet)* |
+```text
+   7h        12h   13h    15h30        18h
+   ●─────────●─────●──────●═══════════►◆
+   Déjeuner  Dîner IFT    Souper       Examen
+   ✓                ↑ tu es ici
+```
 
-**Total : 31 photos.** Une fois déposées dans `src/assets/recipes/`, j'écris le mapping et branche les 4 surfaces.
+Structure visuelle :
+- Container : `bg-white rounded-xl px-4 py-5 shadow-card`
+- **Rail** : `relative h-[2px] bg-[#E8E8E4] my-8` couvrant 7h→20h (range fixe)
+- **Progress fill** : overlay coral de 7h jusqu'à `now`, `bg-[#E07A5F]/40`
+- **Indicateur "now"** : pastille coral pleine + label "Maintenant · 14h32" positionné au pourcentage de l'heure courante
+- **Points** : positionnés en `left: ${(hour-7)/(20-7)*100}%`
+  - meal done : cercle `bg-[#A8C5BC]` 10px + check
+  - meal upcoming : cercle `bg-white border-2 border-[#4A6670]` 10px
+  - event : losange (rotate-45) `bg-[#E07A5F]` 10px
+- **Labels** : au-dessus du point, time `text-eyebrow`, label `text-[12px] font-semibold` (truncate)
+- **État done** : opacity-60 sur les items passés autres que "now"
 
-## Implémentation côté code (étape 2, après dépôt des photos)
+### 4. Heure courante (mock-friendly)
+```ts
+const now = new Date();
+const nowHour = now.getHours() + now.getMinutes() / 60;
+const nowLabel = `${now.getHours()}h${String(now.getMinutes()).padStart(2,"0")}`;
+```
+Range timeline : 7h → 20h (13h fenêtre = 100% width).
+Si `nowHour < 7` → indicateur à 0%, label "Bientôt". Si `> 20` → 100%, label "Journée terminée".
 
-1. **Créer `src/data/recipeImages.ts`**
-   ```ts
-   import smoothieMangue from "@/assets/recipes/smoothie-bowl-mangue.jpg";
-   // ... 30 autres imports
-   
-   export const RECIPE_IMAGES: Record<string, string> = {
-     "Smoothie bowl mangue-kefir-granola": smoothieMangue,
-     "Bol coréen bibimbap végétarien": bibimbap,
-     // ...
-   };
-   
-   export const getRecipeImage = (name: string): string | undefined =>
-     RECIPE_IMAGES[name];
-   ```
+### 5. Eyebrow / titre de section
+- Eyebrow change : "Prochainement" → **"Ta journée"**
+- Garde `EditorialSection` avec même padding
 
-2. **`src/pages/Semaine.tsx`** — passer `imageUrl={getRecipeImage(meal.name)}` au `MealCard`. Le swap (cycleAlt) lit le nom de l'alternative courante → la photo suit automatiquement.
+### 6. Légende compacte (optionnelle, sous le rail)
+Petite ligne : `● Repas   ◆ Événement` en `text-[11px] text-[#2A2D35]/50` pour clarifier les symboles.
 
-3. **`src/pages/Aujourdhui.tsx`** — idem, `imageUrl={getRecipeImage(meal.name)}` sur les 3 `MealCard compact`.
+### Hors scope
+- Pas de modification de `MEALS`, `MealCard`, `RecipeSheet`
+- Pas de touche au header éditorial, au "Locked notice", ni au CTA "Voir l'épicerie"
+- `ProactiveContextBlock` n'est PAS supprimé du projet — Semaine.tsx pourrait l'utiliser plus tard ; on retire seulement l'import + l'usage dans Aujourdhui
 
-4. **`src/components/RecipeSheet.tsx`** — accepte déjà `imageUrl`, juste passer `imageUrl={getRecipeImage("Bol coréen bibimbap végétarien")}` depuis les pages qui l'ouvrent (actuellement hardcodé sur le bibimbap pour le proto).
-
-5. **`src/components/SwapSheet.tsx`** — remplacer le bloc `<div className="w-20 h-20 ... ImageIcon />` (lignes 161-163) par `<img src={getRecipeImage(current.name)} className="w-20 h-20 rounded-[14px] object-cover" />` avec fallback gradient si absent.
-
-## Étapes
-
-1. Tu déposes les 31 fichiers dans `src/assets/recipes/` avec exactement les slugs ci-dessus.
-2. Tu me dis "c'est fait" → je crée `recipeImages.ts` et branche les 4 fichiers.
-3. Si certains slugs te manquent, pas grave — le fallback placeholder reste actif pour ces recettes.
-
-## Note sur l'effort de sourcing
-
-Si trouver 31 photos est trop lourd, alternative pragmatique : tu déposes les **10–12 plus visibles** d'abord (les 7 repas de la semaine courante + bibimbap + 2-3 alternatives), je branche, et on complète par vagues. Le fallback placeholder couvre élégamment les manquants.
+### Critères de succès
+1. Build passe
+2. Le banner Contexte calendrier n'apparaît plus
+3. Une barre temporelle horizontale montre les 5 moments-clés du jour avec un curseur "Maintenant" positionné selon l'heure réelle
+4. Repas terminés visuellement distincts (sage + check), événements distincts des repas (losange coral)
+5. Aucune régression sur les 3 MealCard ni sur RecipeSheet
