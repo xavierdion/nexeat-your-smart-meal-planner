@@ -26,9 +26,7 @@ export const EditorialSection = React.forwardRef<HTMLElement, EditorialSectionPr
       {(eyebrow || title) && (
         <header className="mb-4">
           {eyebrow && (
-            <p className="text-[11px] uppercase tracking-wide font-semibold text-[hsl(var(--primary)_/_0.7)]">
-              {eyebrow}
-            </p>
+            <p className="text-eyebrow uppercase text-[#4A6670]/70">{eyebrow}</p>
           )}
           {title && (
             <h2 className="font-display text-display-lg text-foreground mt-1">{title}</h2>

@@ -74,7 +74,8 @@ export default {
         "display-xl": ["40px", { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "600" }],
         "display-lg": ["32px", { lineHeight: "1.1", letterSpacing: "-0.015em", fontWeight: "600" }],
         "display-md": ["24px", { lineHeight: "1.15", letterSpacing: "-0.01em", fontWeight: "600" }],
-        "display-sm": ["18px", { lineHeight: "1.25", fontWeight: "500" }],
+        "display-sm": ["18px", { lineHeight: "1.25", letterSpacing: "-0.005em", fontWeight: "500" }],
+        "eyebrow": ["11px", { lineHeight: "1.2", letterSpacing: "0.08em", fontWeight: "600" }],
       },
       backgroundImage: {
         "surface-warm": "var(--surface-warm)",
