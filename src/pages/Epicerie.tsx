@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Check, AlertCircle, Apple, Beef, Wheat, Milk, Package, Leaf } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Pill } from "@/components/ui/pill";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Item {
   name: string;
@@ -77,47 +80,46 @@ const CATEGORY_ICONS: Record<string, typeof Apple> = {
   "Herbes et condiments": Leaf,
 };
 
+const BUDGET_TARGET = 85;
+const BUDGET_CURRENT = 94;
+
+const ADJUSTMENTS = [
+  { id: "tofu", label: "Remplacer poulet 500g par tofu 400g", saving: "-3,50 $" },
+  { id: "saumon", label: "Réduire la portion de saumon", saving: "-2,00 $" },
+  { id: "pesto", label: "Pesto maison au lieu d'acheté", saving: "-1,50 $" },
+];
+
 const Epicerie = () => {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
-  const [toastState, setToastState] = useState<"hidden" | "in" | "out">("hidden");
-
-  useEffect(() => {
-    if (sessionStorage.getItem("planToastShown")) return;
-    const t1 = setTimeout(() => {
-      sessionStorage.setItem("planToastShown", "1");
-      setToastState("in");
-    }, 1000);
-    const t2 = setTimeout(() => setToastState("out"), 1000 + 4000);
-    const t3 = setTimeout(() => setToastState("hidden"), 1000 + 4000 + 300);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, []);
+  const [adjustOpen, setAdjustOpen] = useState(false);
+  const [adjustSelected, setAdjustSelected] = useState<Record<string, boolean>>({});
 
   const toggle = (key: string) =>
     setChecked((c) => ({ ...c, [key]: !c[key] }));
 
+  const toggleCategory = (cat: { name: string; items: Item[] }) => {
+    const allChecked = cat.items.every((it) => checked[`${cat.name}-${it.name}`]);
+    setChecked((prev) => {
+      const next = { ...prev };
+      cat.items.forEach((it) => {
+        next[`${cat.name}-${it.name}`] = !allChecked;
+      });
+      return next;
+    });
+  };
+
+  const applyAdjustments = () => {
+    setAdjustOpen(false);
+    toast(`Budget ajusté à ${BUDGET_TARGET} $`, {
+      style: { background: "#4A6670", color: "#fff", border: "none" },
+      duration: 3000,
+    });
+  };
+
+  const overBudget = BUDGET_CURRENT > BUDGET_TARGET;
+
   return (
     <div className="flex flex-col">
-      {toastState !== "hidden" && (
-        <div
-          className="fixed left-4 right-4 z-50"
-          style={{
-            top: "12px",
-            background: "linear-gradient(135deg, #4A6670 0%, #5B7780 100%)",
-            color: "#FFFFFF",
-            fontSize: "14px",
-            fontWeight: 500,
-            textAlign: "center",
-            borderRadius: "12px",
-            padding: "12px 16px",
-            boxShadow: "0 2px 12px rgba(42, 45, 53, 0.08)",
-            transition: toastState === "in" ? "transform 200ms ease-out, opacity 200ms ease-out" : "opacity 300ms ease-in",
-            transform: toastState === "in" ? "translateY(0)" : "translateY(-8px)",
-            opacity: toastState === "in" ? 1 : 0,
-          }}
-        >
-          Plan de la semaine sauvegardé. Rendez-vous dimanche prochain ?
-        </div>
-      )}
       {/* Header éditorial */}
       <header className="bg-white px-4 pt-6 pb-4 border-b border-[#E8E8E4]">
         <p className="text-eyebrow uppercase text-[#4A6670]/70">SEMAINE DU 17 MAI</p>
@@ -150,16 +152,44 @@ const Epicerie = () => {
         </div>
       </div>
 
+      {overBudget && (
+        <div className="mx-4 mt-3">
+          <button
+            type="button"
+            onClick={() => setAdjustOpen(true)}
+            className="w-full h-11 rounded-xl border-[1.5px] border-[#4A6670] bg-white text-[#4A6670] text-[14px] font-semibold"
+          >
+            Suggérer des ajustements
+          </button>
+        </div>
+      )}
+
       {/* List */}
       <div className="px-4 pb-4">
         {CATEGORIES.map((cat) => (
           <div key={cat.name}>
-            <div className="flex items-center gap-1.5 mt-5 mb-3">
+            <div className="flex items-center justify-between mt-5 mb-3">
+              <div className="flex items-center gap-1.5">
+                {(() => {
+                  const Icon = CATEGORY_ICONS[cat.name];
+                  return Icon ? <Icon size={14} strokeWidth={2} color="#5B8579" /> : null;
+                })()}
+                <Pill variant="category">{cat.name}</Pill>
+              </div>
               {(() => {
-                const Icon = CATEGORY_ICONS[cat.name];
-                return Icon ? <Icon size={14} strokeWidth={2} color="#5B8579" /> : null;
+                const allChecked = cat.items.every(
+                  (it) => checked[`${cat.name}-${it.name}`],
+                );
+                return (
+                  <button
+                    type="button"
+                    onClick={() => toggleCategory(cat)}
+                    className="ml-auto text-[12px] text-[#4A6670] underline"
+                  >
+                    {allChecked ? "Tout décocher" : "Tout cocher"}
+                  </button>
+                );
               })()}
-              <Pill variant="category">{cat.name}</Pill>
             </div>
             <div className="bg-white rounded-2xl shadow-card overflow-hidden">
               {cat.items.map((item, i) => {
@@ -212,6 +242,45 @@ const Epicerie = () => {
         </button>
       </div>
       <div className="h-24" aria-hidden />
+
+      <Sheet open={adjustOpen} onOpenChange={setAdjustOpen}>
+        <SheetContent side="bottom" className="rounded-t-[20px] max-h-[80vh] bg-white">
+          <SheetTitle className="font-display text-display-md text-[#2A2D35]">
+            3 ajustements possibles
+          </SheetTitle>
+          <p className="text-[13px] text-[#2A2D35]/60 mt-1">
+            Pour rentrer dans ton budget de {BUDGET_TARGET} $
+          </p>
+          <div className="mt-4 flex flex-col gap-2">
+            {ADJUSTMENTS.map((a) => (
+              <label
+                key={a.id}
+                className="flex items-center gap-3 bg-white rounded-xl border border-[#E8E8E4] px-3 py-3 cursor-pointer"
+              >
+                <Checkbox
+                  checked={!!adjustSelected[a.id]}
+                  onCheckedChange={(v) =>
+                    setAdjustSelected((prev) => ({ ...prev, [a.id]: !!v }))
+                  }
+                />
+                <span className="flex-1 text-[14px] text-[#2A2D35] leading-snug">
+                  {a.label}
+                </span>
+                <span className="text-[13px] text-[#E07A5F] font-semibold shrink-0">
+                  {a.saving}
+                </span>
+              </label>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={applyAdjustments}
+            className="mt-5 w-full h-12 rounded-xl bg-[#E07A5F] text-white font-semibold text-[15px] shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+          >
+            Appliquer la sélection
+          </button>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
