@@ -71,7 +71,7 @@ const OnboardingStep3 = () => {
             type="button"
             onClick={connect}
             disabled={loading}
-            className="w-full h-[52px] rounded-xl bg-primary text-primary-foreground font-semibold text-base inline-flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors disabled:opacity-90"
+            className="w-full h-[52px] rounded-xl bg-[hsl(var(--coral))] text-white font-semibold text-base inline-flex items-center justify-center gap-2 hover:bg-[hsl(var(--coral))]/90 transition-colors disabled:opacity-90"
           >
             {loading ? (
               <>

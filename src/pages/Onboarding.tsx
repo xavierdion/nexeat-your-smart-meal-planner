@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePreferences } from "@/contexts/PreferencesContext";
 
 const RESTRICTIONS = [
   "Sans gluten",
@@ -20,6 +21,7 @@ const NONE = "Aucune restriction";
 const Onboarding = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<string[]>([]);
+  const { setRestrictions } = usePreferences();
 
   const toggle = (chip: string) => {
     setSelected((prev) => {
@@ -75,7 +77,10 @@ const Onboarding = () => {
         <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 pb-6 pt-4 bg-background">
           <button
             type="button"
-            onClick={() => navigate("/onboarding/2")}
+            onClick={() => {
+              setRestrictions(selected);
+              navigate("/onboarding/2");
+            }}
             className="w-full h-[52px] rounded-xl bg-[hsl(var(--coral))] text-white font-semibold text-base inline-flex items-center justify-center gap-2 hover:bg-[hsl(var(--coral))]/90 transition-colors"
           >
             Continuer
