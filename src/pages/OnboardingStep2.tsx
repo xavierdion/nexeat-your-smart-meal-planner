@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, ChevronLeft } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
+import { usePreferences } from "@/contexts/PreferencesContext";
 
 const QUICK_VALUES = [50, 85, 120, 150];
 
 const OnboardingStep2 = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState<number>(85);
+  const { setBudget } = usePreferences();
 
   return (
     <div className="min-h-screen w-full bg-background flex justify-center">
@@ -81,7 +83,10 @@ const OnboardingStep2 = () => {
         <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 pb-6 pt-4 bg-background">
           <button
             type="button"
-            onClick={() => navigate("/onboarding/3")}
+            onClick={() => {
+              setBudget(value);
+              navigate("/onboarding/3");
+            }}
             className="w-full h-[52px] rounded-xl bg-[hsl(var(--coral))] text-white font-semibold text-base inline-flex items-center justify-center gap-2 hover:bg-[hsl(var(--coral))]/90 transition-colors"
           >
             Continuer
