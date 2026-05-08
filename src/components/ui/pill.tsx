@@ -16,6 +16,7 @@ const pillVariants = cva(
         "score-c": "bg-[#FFCC00] text-[#2A2D35] font-semibold px-[7px] py-[3px]",
         "score-d": "bg-[#EE8100] text-white font-semibold px-[7px] py-[3px]",
         "score-e": "bg-[#E63312] text-white font-semibold px-[7px] py-[3px]",
+        "category-overlay": "bg-white/95 backdrop-blur-sm text-[#4A6670] font-medium px-[10px] py-[3px]",
       },
     },
     defaultVariants: { variant: "category" },

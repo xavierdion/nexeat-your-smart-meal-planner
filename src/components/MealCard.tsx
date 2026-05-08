@@ -170,9 +170,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
             {isNew ? (
               <Pill variant="new">{category}</Pill>
             ) : (
-              <span className="inline-flex items-center rounded-[6px] text-[11px] leading-none font-medium px-[10px] py-[3px] whitespace-nowrap bg-white/95 backdrop-blur-sm text-[#4A6670]">
-                {category}
-              </span>
+              <Pill variant="category-overlay">{category}</Pill>
             )}
           </div>
           <div className="absolute top-3 right-3">
