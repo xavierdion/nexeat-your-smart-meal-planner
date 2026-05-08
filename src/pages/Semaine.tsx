@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
+import { usePreferences } from "@/contexts/PreferencesContext";
 
 type Score = "A" | "B" | "C" | "D" | "E";
 type MealType = "DÉJEUNER" | "DÎNER" | "SOUPER";
@@ -102,17 +104,25 @@ const ALTERNATIVES: Record<MealType, Meal[]> = {
 
 const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
-  const [accepted, setAccepted] = useState(false);
   const [recipeOpen, setRecipeOpen] = useState(false);
   const [mealAlternatives, setMealAlternatives] = useState<Record<string, number>>({});
   const [dismissedHint, setDismissedHint] = useState(false);
   const navigate = useNavigate();
+  const { planAccepted, setPlanAccepted } = usePreferences();
   const day = DAYS.find((d) => d.key === activeKey)!;
 
   const handleAccept = () => {
-    if (accepted) return;
-    setAccepted(true);
-    setTimeout(() => navigate("/epicerie"), 400);
+    if (planAccepted) return;
+    setPlanAccepted(true);
+    toast("Plan accepté pour la semaine", {
+      description: "Rendez-vous dimanche prochain",
+      duration: 5000,
+      style: { background: "#4A6670", color: "#fff", border: "none" },
+      action: {
+        label: "Annuler",
+        onClick: () => setPlanAccepted(false),
+      },
+    });
   };
 
   const cycleAlt = (dayKey: string, type: MealType, dir: 1 | -1) => {
@@ -258,15 +268,23 @@ const Semaine = () => {
           onClick={handleAccept}
           className={cn(
             "w-full h-[52px] rounded-xl text-white text-[16px] font-semibold transition-colors duration-300",
-            accepted
-              ? "bg-[#A8C5BC]"
+            planAccepted
+              ? "bg-[#A8C5BC] cursor-default"
               : "bg-[#E07A5F] shadow-[0_4px_16px_rgba(224,122,95,0.25)]",
           )}
         >
-          {accepted ? "Plan accepté" : "Tout accepter ce plan"}
+          {planAccepted ? "Plan accepté ✓" : "Tout accepter ce plan"}
         </button>
+        {planAccepted && (
+          <button
+            onClick={() => navigate("/epicerie")}
+            className="mt-2 w-full h-12 rounded-xl border-[1.5px] border-[#4A6670] bg-white text-[#4A6670] font-semibold text-[15px]"
+          >
+            Voir l'épicerie →
+          </button>
+        )}
       </div>
-      <div className="h-24" aria-hidden />
+      <div className={cn(planAccepted ? "h-40" : "h-24")} aria-hidden />
       <RecipeSheet open={recipeOpen} onClose={() => setRecipeOpen(false)} />
     </div>
   );
