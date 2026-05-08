@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
 const RESTRICTIONS = [
+  "Aucune restriction",
   "Sans gluten",
   "Végétarien",
   "Végétalien",
@@ -13,7 +14,6 @@ const RESTRICTIONS = [
   "Sans fruits de mer",
   "Halal",
   "Casher",
-  "Aucune restriction",
 ];
 
 const NONE = "Aucune restriction";

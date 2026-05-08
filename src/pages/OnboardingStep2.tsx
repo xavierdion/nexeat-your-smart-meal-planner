@@ -43,9 +43,19 @@ const OnboardingStep2 = () => {
           <div className="font-display text-[48px] leading-none text-primary">
             {value} $⁄sem
           </div>
-          <p className="mt-3 text-xs text-foreground/50">
-            Typique pour un étudiant : 75–150 $
-          </p>
+          {value < 60 ? (
+            <p className="mt-3 text-xs text-[#E07A5F]">
+              Très serré — repas simples privilégiés
+            </p>
+          ) : value > 160 ? (
+            <p className="mt-3 text-xs text-[#4A6670]">
+              Variété maximale possible
+            </p>
+          ) : (
+            <p className="mt-3 text-xs text-foreground/50">
+              Typique pour un étudiant : 75–150 $
+            </p>
+          )}
         </div>
 
         <div className="mt-8 px-4">
