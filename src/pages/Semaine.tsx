@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
+import SwapSheet from "@/components/SwapSheet";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -105,6 +106,7 @@ const ALTERNATIVES: Record<MealType, Meal[]> = {
 const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
   const [recipeOpen, setRecipeOpen] = useState(false);
+  const [swapOpen, setSwapOpen] = useState(false);
   const [mealAlternatives, setMealAlternatives] = useState<Record<string, number>>({});
   const [dismissedHint, setDismissedHint] = useState(false);
   const navigate = useNavigate();
@@ -285,7 +287,16 @@ const Semaine = () => {
         )}
       </div>
       <div className={cn(planAccepted ? "h-40" : "h-24")} aria-hidden />
-      <RecipeSheet open={recipeOpen} onClose={() => setRecipeOpen(false)} />
+      <RecipeSheet
+        open={recipeOpen}
+        onClose={() => setRecipeOpen(false)}
+        onSwap={() => setSwapOpen(true)}
+      />
+      <SwapSheet
+        open={swapOpen}
+        onClose={() => setSwapOpen(false)}
+        contextLabel={`${day.label.toUpperCase()}`}
+      />
     </div>
   );
 };
