@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, Check, ImageIcon } from "lucide-react";
 import { toast } from "sonner";
+import ScoreTooltip from "@/components/ScoreTooltip";
 import { cn } from "@/lib/utils";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -165,12 +166,7 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
                   {current.name}
                 </h3>
                 <p className="text-[13px] text-[#2A2D35]/60">{current.prep}</p>
-                <span
-                  className="text-[11px] font-semibold rounded-md px-[7px] py-[3px]"
-                  style={{ background: SCORE_STYLES[current.score].bg, color: SCORE_STYLES[current.score].text }}
-                >
-                  {current.score}
-                </span>
+                <ScoreTooltip score={current.score} />
               </div>
 
               <div className="mt-5 flex justify-center gap-2">
