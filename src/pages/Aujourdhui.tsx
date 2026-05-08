@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
+import SwapSheet from "@/components/SwapSheet";
 import { EditorialSection } from "@/components/ui/editorial-section";
 import { Check } from "lucide-react";
 
@@ -66,6 +67,7 @@ const pct = (h: number) =>
 const Aujourdhui = () => {
   const navigate = useNavigate();
   const [recipeOpen, setRecipeOpen] = useState(false);
+  const [swapOpen, setSwapOpen] = useState(false);
 
   const greeting = (() => {
     const h = new Date().getHours();
@@ -195,13 +197,6 @@ const Aujourdhui = () => {
         ))}
       </div>
 
-      {/* Locked notice */}
-      <div className="mt-4 mx-4 bg-surface-paper border border-dashed border-[#E8E8E4] rounded-xl px-4 py-3 text-center">
-        <p className="text-[13px] text-[#2A2D35]/60 italic">
-          Pour modifier un repas, va dans l'onglet Semaine
-        </p>
-      </div>
-
       {/* Quick action */}
       <button
         onClick={() => navigate("/epicerie")}
@@ -210,7 +205,16 @@ const Aujourdhui = () => {
         Voir l'épicerie
       </button>
 
-      <RecipeSheet open={recipeOpen} onClose={() => setRecipeOpen(false)} />
+      <RecipeSheet
+        open={recipeOpen}
+        onClose={() => setRecipeOpen(false)}
+        onSwap={() => setSwapOpen(true)}
+      />
+      <SwapSheet
+        open={swapOpen}
+        onClose={() => setSwapOpen(false)}
+        contextLabel="DÎNER AUJOURD'HUI"
+      />
     </div>
   );
 };
