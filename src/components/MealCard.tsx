@@ -2,6 +2,7 @@ import * as React from "react";
 import { motion, type PanInfo } from "framer-motion";
 import { Calendar, Clock, Coffee, Leaf, Salad, Utensils, type LucideIcon } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
+import ScoreTooltip from "@/components/ScoreTooltip";
 import { cn } from "@/lib/utils";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -105,9 +106,6 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
     },
     ref,
   ) => {
-    const scoreVariant = (`score-${score.toLowerCase()}`) as
-      | "score-a" | "score-b" | "score-c" | "score-d" | "score-e";
-
     if (variant === "compact") {
       return (
         <div
@@ -143,7 +141,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
                 <Clock size={13} className="text-[#4A6670]/60" />
                 <span>{prep}</span>
               </div>
-              <Pill variant={scoreVariant}>{score}</Pill>
+              <ScoreTooltip score={score} />
             </div>
           </div>
         </div>
@@ -178,7 +176,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
             )}
           </div>
           <div className="absolute top-3 right-3">
-            <Pill variant={scoreVariant}>{score}</Pill>
+            <ScoreTooltip score={score} />
           </div>
         </div>
 
