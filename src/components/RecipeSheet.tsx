@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { X, Salad, Clock, Users } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
+import ScoreTooltip from "@/components/ScoreTooltip";
 import ProactiveContextBlock from "@/components/ProactiveContextBlock";
 
 interface Props {
@@ -89,7 +90,7 @@ const RecipeSheet = ({ open, onClose, imageUrl }: Props) => {
               Végétarien
             </span>
             <div className="absolute bottom-3 right-4">
-              <Pill variant="score-a">A</Pill>
+              <ScoreTooltip score="A" />
             </div>
           </div>
 
