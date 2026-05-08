@@ -8,6 +8,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   imageUrl?: string;
+  onSwap?: () => void;
 }
 
 const INGREDIENTS = [
@@ -30,7 +31,7 @@ const Eyebrow = ({ children, className = "" }: { children: React.ReactNode; clas
   <p className={`text-eyebrow uppercase text-[#4A6670]/70 ${className}`}>{children}</p>
 );
 
-const RecipeSheet = ({ open, onClose, imageUrl }: Props) => {
+const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
@@ -186,12 +187,32 @@ const RecipeSheet = ({ open, onClose, imageUrl }: Props) => {
 
         {/* Sticky CTA */}
         <div className="sticky bottom-0 bg-white border-t border-[#E8E8E4] px-4 py-3">
-          <button
-            onClick={onClose}
-            className="w-full h-12 rounded-xl bg-[#E07A5F] text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
-          >
-            C'est parti !
-          </button>
+          {onSwap ? (
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  onSwap();
+                  onClose();
+                }}
+                className="flex-1 h-12 rounded-xl border-[1.5px] border-[#4A6670] bg-white text-[#4A6670] text-[16px] font-semibold"
+              >
+                Échanger
+              </button>
+              <button
+                onClick={onClose}
+                className="flex-1 h-12 rounded-xl bg-[#E07A5F] text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+              >
+                Fermer
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={onClose}
+              className="w-full h-12 rounded-xl bg-[#E07A5F] text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+            >
+              Fermer
+            </button>
+          )}
         </div>
       </div>
     </div>
