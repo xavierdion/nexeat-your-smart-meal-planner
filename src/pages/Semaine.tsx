@@ -103,6 +103,9 @@ const ALTERNATIVES: Record<MealType, Meal[]> = {
   ],
 };
 
+const TODAY_KEY = "lun";
+const COMPLETED_DAY_KEYS: string[] = [];
+
 const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
   const [recipeOpen, setRecipeOpen] = useState(false);
@@ -197,6 +200,26 @@ const Semaine = () => {
                 >
                   {weekday}
                 </span>
+                {(d.key === TODAY_KEY || COMPLETED_DAY_KEYS.includes(d.key)) && (
+                  <div className="flex justify-center gap-0.5 mt-1">
+                    {d.key === TODAY_KEY && (
+                      <span
+                        className={cn(
+                          "w-1 h-1 rounded-full",
+                          active ? "bg-white/80" : "bg-[#E07A5F]",
+                        )}
+                      />
+                    )}
+                    {COMPLETED_DAY_KEYS.includes(d.key) && (
+                      <span
+                        className={cn(
+                          "w-1 h-1 rounded-full",
+                          active ? "bg-white/80" : "bg-[#A8C5BC]",
+                        )}
+                      />
+                    )}
+                  </div>
+                )}
               </button>
             );
           })}
@@ -238,6 +261,14 @@ const Semaine = () => {
           const meal = getDisplayMeal(day.key, original);
           const isFirstDay = day.key === DAYS[0].key;
           const showHint = isFirstDay && i === 0 && !dismissedHint;
+          const altKey = `${day.key}-${original.type}`;
+          const altIdx = mealAlternatives[altKey];
+          const altLabel =
+            altIdx === undefined
+              ? null
+              : altIdx === 0
+              ? "Choix original"
+              : `Alternative ${altIdx}/3`;
           return (
             <div key={i}>
               <MealCard
@@ -254,6 +285,11 @@ const Semaine = () => {
                 onSwipeLeft={() => cycleAlt(day.key, original.type, 1)}
                 onSwipeRight={() => cycleAlt(day.key, original.type, -1)}
               />
+              {altLabel && (
+                <div className="text-center text-[11px] uppercase tracking-wide text-[#4A6670] -mt-3 mb-5">
+                  {altLabel}
+                </div>
+              )}
               {showHint && (
                 <div className="text-center text-[12px] text-[#A8C5BC] -mt-3 mb-5">
                   ← Glisse pour découvrir d'autres options →
