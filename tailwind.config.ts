@@ -84,6 +84,7 @@ export default {
       },
       boxShadow: {
         card: '0 2px 12px rgba(42, 45, 53, 0.08)',
+        cta: '0 4px 16px rgba(224, 122, 95, 0.25)',
       },
       keyframes: {
         "accordion-down": {
