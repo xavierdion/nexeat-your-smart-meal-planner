@@ -161,7 +161,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
                 <div
                   key={ing.name}
                   className={`flex items-center justify-between py-2.5 ${
-                    i !== INGREDIENTS.length - 1 ? "border-b border-[#F0F4F3]" : ""
+                    i !== INGREDIENTS.length - 1 ? "border-b border-secondary/15" : ""
                   }`}
                 >
                   <span className="text-[14px] text-foreground">{ing.name}</span>

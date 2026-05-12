@@ -154,12 +154,12 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
                 transition: animating ? "transform 180ms ease-out" : "none",
               }}
             >
-              <span className="inline-block text-[11px] bg-[#F0F4F3] text-primary rounded-md px-2.5 py-[3px]">
+              <span className="inline-block text-[11px] bg-secondary/15 text-primary rounded-md px-2.5 py-[3px]">
                 {current.category}
               </span>
 
               <div className="mt-4 flex flex-col items-center gap-3">
-                <div className="w-20 h-20 rounded-[14px] bg-[#F0F4F3] flex items-center justify-center">
+                <div className="w-20 h-20 rounded-[14px] bg-secondary/15 flex items-center justify-center">
                   <ImageIcon size={32} className="text-primary/40" />
                 </div>
                 <h3 className="font-display text-[20px] text-foreground text-center leading-snug px-2">
@@ -176,7 +176,7 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
                   { label: "Glucides", value: current.glucides },
                   { label: "Lipides", value: current.lipides },
                 ].map((p) => (
-                  <div key={p.label} className="bg-[#F0F4F3] rounded-lg px-3 py-1.5 text-center">
+                  <div key={p.label} className="bg-secondary/15 rounded-lg px-3 py-1.5 text-center">
                     <div className="text-[11px] text-foreground/50 leading-tight">{p.label}</div>
                     <div className="text-[13px] font-semibold text-foreground leading-tight mt-0.5">{p.value}</div>
                   </div>

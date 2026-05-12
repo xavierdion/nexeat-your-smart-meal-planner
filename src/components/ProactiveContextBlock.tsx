@@ -20,7 +20,7 @@ type Props = BannerProps | InlineProps;
 export const ProactiveContextBlock: React.FC<Props> = (props) => {
   if (props.variant === "inline") {
     return (
-      <div className="flex gap-2 items-start bg-[#FEF0ED] rounded-[10px] px-3 py-2.5">
+      <div className="flex gap-2 items-start bg-[hsl(var(--accent-soft))] rounded-[10px] px-3 py-2.5">
         <Calendar size={14} className="text-accent shrink-0 mt-0.5" />
         <span className="text-[12px] text-accent font-medium leading-[1.4]">
           {props.text}
@@ -62,7 +62,7 @@ export const ProactiveContextBlock: React.FC<Props> = (props) => {
         </div>
 
         <div
-          className="flex-1 bg-[#FEF0ED] rounded-xl px-3 py-2.5"
+          className="flex-1 bg-[hsl(var(--accent-soft))] rounded-xl px-3 py-2.5"
           style={{ borderLeft: "3px solid #E07A5F" }}
         >
           <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
