@@ -1,15 +1,47 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { Calendar, Sun, ShoppingBag, User } from "lucide-react";
+import { Calendar, Sun, ShoppingBag, User, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const navItems = [
+const sideItems = [
   { to: "/semaine", label: "Semaine", icon: Calendar },
-  { to: "/aujourd-hui", label: "Aujourd'hui", icon: Sun },
   { to: "/epicerie", label: "Épicerie", icon: ShoppingBag },
+] as const;
+
+const sideItemsRight = [
+  { to: "/recettes", label: "Recettes", icon: BookOpen },
   { to: "/profil", label: "Profil", icon: User },
-];
+] as const;
+
+const centerItem = { to: "/aujourd-hui", label: "Aujourd'hui", icon: Sun };
 
 const AppShell = () => {
+  const renderSide = (items: ReadonlyArray<{ to: string; label: string; icon: typeof Calendar }>) =>
+    items.map(({ to, label, icon: Icon }) => (
+      <NavLink
+        key={to}
+        to={to}
+        className={({ isActive }) =>
+          cn(
+            "flex-1 flex flex-col items-center justify-center gap-1 transition-colors",
+            isActive ? "text-[#4A6670]" : "text-[#2A2D35]/50"
+          )
+        }
+      >
+        {({ isActive }) => (
+          <>
+            <Icon
+              size={22}
+              strokeWidth={isActive ? 2.25 : 2}
+              fill={isActive ? "currentColor" : "none"}
+            />
+            <span className={cn("text-[10px]", isActive ? "font-semibold" : "font-medium")}>
+              {label}
+            </span>
+          </>
+        )}
+      </NavLink>
+    ));
+
   return (
     <div className="min-h-screen w-full bg-background flex justify-center">
       <div className="relative w-full max-w-[390px] min-h-screen bg-background flex flex-col">
@@ -26,25 +58,20 @@ const AppShell = () => {
           style={{ paddingBottom: "env(safe-area-inset-bottom)", height: "calc(64px + env(safe-area-inset-bottom))" }}
           aria-label="Navigation principale"
         >
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {renderSide(sideItems)}
+
+          {/* Central elevated dashboard tab */}
+          <div className="flex-1 flex justify-center items-start relative">
             <NavLink
-              key={to}
-              to={to}
-              className={({ isActive }) =>
-                cn(
-                  "flex-1 flex flex-col items-center justify-center gap-1 transition-colors",
-                  isActive ? "text-[#A8C5BC]" : "text-[#2A2D35]/40"
-                )
-              }
+              to={centerItem.to}
+              aria-label={centerItem.label}
+              className="absolute -top-5 flex items-center justify-center rounded-full bg-[#4A6670] text-white shadow-md p-[14px] transition-transform active:scale-95"
             >
-              {({ isActive }) => (
-                <>
-                  <Icon size={22} strokeWidth={2} />
-                  <span className={cn("text-[11px]", isActive ? "font-semibold" : "font-medium")}>{label}</span>
-                </>
-              )}
+              <centerItem.icon size={26} strokeWidth={2.25} />
             </NavLink>
-          ))}
+          </div>
+
+          {renderSide(sideItemsRight)}
         </nav>
       </div>
     </div>
