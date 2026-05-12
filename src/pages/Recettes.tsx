@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, Clock, Utensils, Bookmark, Plus, X, Loader2, Camera, Pencil, Link2, ArrowLeft } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Heart, Clock, Utensils, Bookmark } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
 
@@ -21,18 +20,8 @@ const SAVED_MOCK: Recipe[] = [
   { id: "s4", title: "Pâtes au pesto de basilic et noix", prep: "15 min", portions: "3 portions", score: "C" },
 ];
 
-const IMPORTED_MOCK: Recipe = {
-  id: `imp-${Date.now()}`,
-  title: "Soupe thaï aux lentilles",
-  prep: "35 min",
-  portions: "4 portions",
-  score: "B",
-};
-
 function ScorePill({ score }: { score: Score }) {
-  return (
-    <Pill variant={`score-${score.toLowerCase()}` as "score-a"}>{score}</Pill>
-  );
+  return <Pill variant={`score-${score.toLowerCase()}` as "score-a"}>{score}</Pill>;
 }
 
 function RecipeCard({ recipe, saved }: { recipe: Recipe; saved?: boolean }) {
@@ -62,13 +51,7 @@ function RecipeCard({ recipe, saved }: { recipe: Recipe; saved?: boolean }) {
   );
 }
 
-function EmptyState({
-  title,
-  cta,
-}: {
-  title: string;
-  cta?: React.ReactNode;
-}) {
+function EmptyState({ title, cta }: { title: string; cta?: React.ReactNode }) {
   return (
     <div className="flex flex-col items-center text-center px-6 pt-10">
       <div className="w-20 h-20 rounded-full bg-secondary/40 flex items-center justify-center mb-4">
@@ -85,68 +68,7 @@ const Recettes = () => {
   const navigate = useNavigate();
   const [tab, setTab] = useState<"saved" | "mine">("saved");
   const [saved] = useState<Recipe[]>(SAVED_MOCK);
-  const [mine, setMine] = useState<Recipe[]>([]);
-
-  const [addOpen, setAddOpen] = useState(false);
-  const [writeOpen, setWriteOpen] = useState(false);
-  const [urlOpen, setUrlOpen] = useState(false);
-  const [cameraOpen, setCameraOpen] = useState(false);
-
-  // Write form
-  const [name, setName] = useState("");
-  const [cookTime, setCookTime] = useState("");
-  const [servings, setServings] = useState("");
-  const [ingredients, setIngredients] = useState("");
-
-  // Import URL
-  const [url, setUrl] = useState("");
-  const [importing, setImporting] = useState(false);
-
-  // Camera capture
-  const [capturing, setCapturing] = useState(false);
-
-  const resetWrite = () => {
-    setName("");
-    setCookTime("");
-    setServings("");
-    setIngredients("");
-  };
-
-  const handleSaveWritten = () => {
-    if (!name.trim()) return;
-    setMine((prev) => [
-      {
-        id: `w-${Date.now()}`,
-        title: name.trim(),
-        prep: cookTime ? `${cookTime} min` : "—",
-        portions: servings ? `${servings} portions` : "—",
-        score: "B",
-      },
-      ...prev,
-    ]);
-    resetWrite();
-    setWriteOpen(false);
-  };
-
-  const handleImport = () => {
-    if (!url.trim()) return;
-    setImporting(true);
-    setTimeout(() => {
-      setMine((prev) => [{ ...IMPORTED_MOCK, id: `imp-${Date.now()}` }, ...prev]);
-      setImporting(false);
-      setUrl("");
-      setUrlOpen(false);
-    }, 2000);
-  };
-
-  const handleCapture = () => {
-    setCapturing(true);
-    setTimeout(() => {
-      setMine((prev) => [{ ...IMPORTED_MOCK, id: `cam-${Date.now()}` }, ...prev]);
-      setCapturing(false);
-      setCameraOpen(false);
-    }, 3000);
-  };
+  const mine: Recipe[] = [];
 
   return (
     <div className="flex flex-col min-h-full bg-surface-warm pb-6">
@@ -200,176 +122,10 @@ const Recettes = () => {
               ))}
             </div>
           )
-        ) : mine.length === 0 ? (
-          <div className="px-4">
-            <EmptyState title="Aucune recette pour l'instant" />
-            <button
-              onClick={() => setAddOpen(true)}
-              className="mt-6 w-full h-12 rounded-xl bg-accent text-white text-[15px] font-medium flex items-center justify-center gap-2"
-            >
-              <Plus size={18} strokeWidth={2.5} />
-              Ajouter une recette
-            </button>
-          </div>
         ) : (
-          <div className="px-4">
-            <div className="grid grid-cols-2 gap-3">
-              {mine.map((r) => (
-                <RecipeCard key={r.id} recipe={r} />
-              ))}
-            </div>
-            <button
-              onClick={() => setAddOpen(true)}
-              className="mt-5 w-full h-12 rounded-xl bg-accent text-white text-[15px] font-medium flex items-center justify-center gap-2"
-            >
-              <Plus size={18} strokeWidth={2.5} />
-              Ajouter une recette
-            </button>
-          </div>
+          <EmptyState title="Bientôt — pour l'instant, sauvegarde tes coups de cœur depuis les suggestions du jour." />
         )}
       </div>
-
-      {/* Add options sheet */}
-      <Sheet open={addOpen} onOpenChange={setAddOpen}>
-        <SheetContent side="bottom" className="rounded-t-2xl p-0 max-w-[390px] mx-auto">
-          <SheetHeader className="px-5 pt-5 pb-2 text-left">
-            <SheetTitle className="font-display text-[20px] text-foreground">
-              Ajouter une recette
-            </SheetTitle>
-          </SheetHeader>
-          <div className="px-3 pb-6">
-            {[
-              { icon: Pencil, label: "Écrire une recette", onClick: () => { setAddOpen(false); setTimeout(() => setWriteOpen(true), 200); } },
-              { icon: Link2, label: "Importer par lien", onClick: () => { setAddOpen(false); setTimeout(() => setUrlOpen(true), 200); } },
-              { icon: Camera, label: "Scanner une recette", onClick: () => { setAddOpen(false); setTimeout(() => setCameraOpen(true), 200); } },
-            ].map((opt) => (
-              <button
-                key={opt.label}
-                onClick={opt.onClick}
-                className="w-full flex items-center gap-3 px-3 py-4 rounded-xl hover:bg-background transition-colors text-left"
-              >
-                <div className="w-10 h-10 rounded-full bg-secondary/40 flex items-center justify-center">
-                  <opt.icon size={18} className="text-primary" strokeWidth={2} />
-                </div>
-                <span className="text-[15px] font-medium text-foreground">{opt.label}</span>
-              </button>
-            ))}
-          </div>
-        </SheetContent>
-      </Sheet>
-
-      {/* Write recipe sheet */}
-      <Sheet open={writeOpen} onOpenChange={setWriteOpen}>
-        <SheetContent side="bottom" className="rounded-t-2xl p-0 max-w-[390px] mx-auto max-h-[90vh] overflow-y-auto">
-          <SheetHeader className="px-5 pt-5 pb-2 text-left">
-            <SheetTitle className="font-display text-[20px] text-foreground">
-              Écrire une recette
-            </SheetTitle>
-          </SheetHeader>
-          <div className="px-5 pb-6 flex flex-col gap-3">
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Nom de la recette"
-              className="h-12 px-3 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary"
-            />
-            <input
-              value={cookTime}
-              onChange={(e) => setCookTime(e.target.value.replace(/\D/g, ""))}
-              inputMode="numeric"
-              placeholder="Temps de cuisson (min)"
-              className="h-12 px-3 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary"
-            />
-            <input
-              value={servings}
-              onChange={(e) => setServings(e.target.value.replace(/\D/g, ""))}
-              inputMode="numeric"
-              placeholder="Nombre de portions"
-              className="h-12 px-3 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary"
-            />
-            <textarea
-              value={ingredients}
-              onChange={(e) => setIngredients(e.target.value)}
-              rows={5}
-              placeholder={"1 tasse de lentilles\n2 tomates..."}
-              className="px-3 py-2.5 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary resize-none"
-            />
-            <button
-              onClick={handleSaveWritten}
-              disabled={!name.trim()}
-              className="mt-2 w-full h-12 rounded-xl bg-accent text-white text-[15px] font-medium disabled:opacity-50"
-            >
-              Sauvegarder
-            </button>
-          </div>
-        </SheetContent>
-      </Sheet>
-
-      {/* Import URL sheet */}
-      <Sheet open={urlOpen} onOpenChange={(o) => { if (!importing) setUrlOpen(o); }}>
-        <SheetContent side="bottom" className="rounded-t-2xl p-0 max-w-[390px] mx-auto">
-          <SheetHeader className="px-5 pt-5 pb-2 text-left">
-            <SheetTitle className="font-display text-[20px] text-foreground">
-              Importer par lien
-            </SheetTitle>
-          </SheetHeader>
-          <div className="px-5 pb-6 flex flex-col gap-3">
-            <input
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://www.ricardocuisine.com/..."
-              className="h-12 px-3 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary"
-            />
-            <button
-              onClick={handleImport}
-              disabled={!url.trim() || importing}
-              className="w-full h-12 rounded-xl bg-accent text-white text-[15px] font-medium flex items-center justify-center gap-2 disabled:opacity-60"
-            >
-              {importing ? (
-                <>
-                  <Loader2 size={14} className="animate-spin" /> Import en cours…
-                </>
-              ) : (
-                "Importer"
-              )}
-            </button>
-          </div>
-        </SheetContent>
-      </Sheet>
-
-      {/* Camera fullscreen */}
-      {cameraOpen && (
-        <div className="fixed inset-0 z-[100] bg-[#1a1a1a] flex flex-col items-center justify-between py-10 max-w-[390px] mx-auto left-1/2 -translate-x-1/2">
-          <button
-            onClick={() => { if (!capturing) setCameraOpen(false); }}
-            className="absolute top-5 left-5 w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white"
-            aria-label="Retour"
-          >
-            <ArrowLeft size={18} />
-          </button>
-          <div className="flex-1 flex flex-col items-center justify-center w-full px-8">
-            <div className="relative w-full aspect-[3/4] border-2 border-white/80 rounded-2xl">
-              <span className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-white rounded-tl-2xl" />
-              <span className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-white rounded-tr-2xl" />
-              <span className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-white rounded-bl-2xl" />
-              <span className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-white rounded-br-2xl" />
-              {capturing && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-white">
-                  <Loader2 size={28} className="animate-spin" />
-                  <span className="text-[13px] font-medium">Analyse en cours…</span>
-                </div>
-              )}
-            </div>
-            <p className="text-white/80 text-[13px] mt-6">Pointez vers la recette</p>
-          </div>
-          <button
-            onClick={handleCapture}
-            disabled={capturing}
-            className="w-16 h-16 rounded-full bg-white border-4 border-white/30 active:scale-95 transition-transform disabled:opacity-60"
-            aria-label="Capturer"
-          />
-        </div>
-      )}
     </div>
   );
 };
