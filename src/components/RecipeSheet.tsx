@@ -69,6 +69,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
                     "linear-gradient(135deg, hsl(var(--photo-placeholder-from)) 0%, #C9B895 50%, hsl(var(--secondary)) 100%)",
                 }}
               >
+                {/* DOC: hero placeholder — size={80} et strokeWidth={1.5} décoratifs, hors grille standard */}
                 <Salad size={80} className="text-foreground" style={{ opacity: 0.25 }} strokeWidth={1.5} />
               </div>
             )}
