@@ -217,7 +217,7 @@ const Semaine = () => {
                   "shrink-0 flex flex-col items-center justify-center rounded-full transition-all duration-200",
                   active
                     ? "bg-primary w-12 h-16"
-                    : "bg-secondary/15 w-10 h-14",
+                    : "bg-secondary/15 min-w-[44px] w-11 h-14",
                 )}
               >
                 <span

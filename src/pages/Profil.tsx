@@ -134,7 +134,7 @@ const Profil = () => {
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-[11px] text-foreground/50">
+        <p className="mt-4 text-[12px] text-[hsl(var(--text-subtle))]">
           Indice agrégé à partir des ingrédients via Open Food Facts.
         </p>
       </section>
