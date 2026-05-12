@@ -201,27 +201,6 @@ const Semaine = () => {
         <h1 className="font-display text-display-xl text-foreground mt-1">
           Cette semaine, mangé bien
         </h1>
-        <p className="text-[14px] text-foreground/60 mt-1">
-          21 repas alignés sur tes cours et examens
-        </p>
-        {busyWeek && (
-          <span
-            className="inline-flex items-center mt-3 rounded-full bg-accent text-white text-[11px] font-medium px-3 py-1"
-          >
-            📅 Semaine chargée · Plan optimisé
-          </span>
-        )}
-        <div className="flex items-center gap-2 mt-3">
-          <div className="flex-1 h-[3px] rounded-full bg-secondary/30 overflow-hidden">
-            <div
-              className="h-full bg-primary rounded-full transition-all"
-              style={{ width: `${progressPct}%` }}
-            />
-          </div>
-          <span className="text-[11px] text-foreground/50 whitespace-nowrap">
-            {confirmedMeals}/{TOTAL_MEALS} repas confirmés
-          </span>
-        </div>
       </header>
 
       {/* Day pills */}
@@ -285,34 +264,36 @@ const Semaine = () => {
         </div>
       </div>
 
-      {/* Day context strip */}
-      <div
-        className={cn(
-          "mx-4 rounded-xl px-4 py-3 mt-4",
-          dayHasContext ? "bg-surface-cool" : "bg-surface-warm",
-        )}
-      >
-        {dayHasContext ? (
-          <>
-            <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
-              Aujourd'hui en contexte
-            </p>
-            <p className="text-[13px] text-foreground mt-1 leading-relaxed">
-              {contextMeal?.badge}. Tes {day.meals.length} repas sont optimisés
-              pour une énergie stable.
-            </p>
-          </>
-        ) : (
-          <>
-            <p className="text-eyebrow uppercase text-primary/70">
-              Journée standard
-            </p>
-            <p className="text-[13px] text-foreground mt-1 leading-relaxed">
-              Aucun examen ou deadline détecté. Plan équilibré.
-            </p>
-          </>
-        )}
+      {/* Progress bar — sous les day pills */}
+      <div className="px-4 mt-3 flex items-center gap-2">
+        <div className="flex-1 h-[3px] rounded-full bg-secondary/30 overflow-hidden">
+          <div
+            className="h-full bg-primary rounded-full transition-all"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+        <span className="text-[11px] text-foreground/50 whitespace-nowrap">
+          {confirmedMeals}/{TOTAL_MEALS}
+        </span>
       </div>
+
+      {/* Day context strip */}
+      {dayHasContext && (
+        <div className="mx-4 rounded-xl px-4 py-3 mt-4 bg-surface-cool">
+          <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
+            Aujourd'hui en contexte
+          </p>
+          <p className="text-[13px] text-foreground mt-1 leading-relaxed">
+            {contextMeal?.badge}. Tes {day.meals.length} repas sont optimisés
+            pour une énergie stable.
+          </p>
+          {busyWeek && (
+            <span className="inline-flex items-center mt-3 rounded-full bg-accent text-white text-[11px] font-medium px-3 py-1">
+              📅 Semaine chargée · Plan optimisé
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Meals */}
       <div className="pt-5 pb-2 px-4 relative">
