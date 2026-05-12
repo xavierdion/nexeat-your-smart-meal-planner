@@ -47,7 +47,7 @@ const OnboardingStep3 = () => {
         </div>
 
         <div className="mt-8 px-6 text-center">
-          <h1 className="font-display text-[28px] leading-tight text-foreground">
+          <h1 className="font-display text-display-lg text-foreground">
             Connecte ton horaire
           </h1>
           <p className="mt-2 text-sm text-foreground/60 mx-auto max-w-[280px]">

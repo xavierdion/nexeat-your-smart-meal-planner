@@ -31,7 +31,7 @@ const OnboardingStep2 = () => {
         </div>
 
         <div className="mt-8 px-6 text-center">
-          <h1 className="font-display text-[28px] leading-tight text-foreground">
+          <h1 className="font-display text-display-lg text-foreground">
             Ton budget alimentaire ?
           </h1>
           <p className="mt-2 text-sm text-foreground/60">
@@ -40,8 +40,8 @@ const OnboardingStep2 = () => {
         </div>
 
         <div className="mt-10 px-4 text-center">
-          <div className="font-display text-[48px] leading-none text-primary">
-            {value} $⁄sem
+          <div className="font-display text-display-2xl text-primary">
+            {value} $/sem
           </div>
           {value < 60 ? (
             <p className="mt-3 text-xs text-accent">
