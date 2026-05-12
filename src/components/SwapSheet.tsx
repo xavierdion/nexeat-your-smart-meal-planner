@@ -59,7 +59,7 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
   const confirm = () => {
     if (!current) return;
     onConfirm?.(current);
-    toast("Repas mis a jour", {
+    toast("Repas mis à jour", {
       style: { background: "#4A6670", color: "#fff", border: "none" },
       duration: 2000,
     });
@@ -124,7 +124,7 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
         </div>
 
         <p className="mt-3 px-6 text-center text-[13px] text-foreground/60">
-          Swipe a droite pour garder, a gauche pour passer
+          Glisse à droite pour garder, à gauche pour passer
         </p>
 
         {/* Card area */}
