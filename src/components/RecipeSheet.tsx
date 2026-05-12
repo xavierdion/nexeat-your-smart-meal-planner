@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { X, Salad, Clock, Users, Utensils } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
-import ProactiveContextBlock from "@/components/ProactiveContextBlock";
 
 interface Props {
   open: boolean;
