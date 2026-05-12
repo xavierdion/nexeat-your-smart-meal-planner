@@ -2,7 +2,6 @@ import * as React from "react";
 import { motion, type PanInfo } from "framer-motion";
 import { Calendar, Clock, Coffee, Leaf, Salad, Utensils, type LucideIcon } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
-import ScoreTooltip from "@/components/ScoreTooltip";
 import { cn } from "@/lib/utils";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -17,6 +16,7 @@ export interface MealCardProps {
   isNew?: boolean;
   prep: string;
   score: Score;
+  portions?: string;
   imageUrl?: string;
   proactiveContext?: string;
   status?: { label: string; tone: "done" | "active" | "queued" };
@@ -25,6 +25,30 @@ export interface MealCardProps {
   onSwipeLeft?: () => void;
   onSwipeRight?: () => void;
   className?: string;
+}
+
+function InfoBanner({
+  prep,
+  portions,
+  score,
+}: {
+  prep: string;
+  portions: string;
+  score: Score;
+}) {
+  const scoreVariant = `score-${score.toLowerCase()}` as
+    | "score-a" | "score-b" | "score-c" | "score-d" | "score-e";
+  return (
+    <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-[#2A2D35]">
+      <Clock size={11} className="text-[#2A2D35]" strokeWidth={2} />
+      <span>{prep}</span>
+      <span className="text-[#2A2D35]/30">·</span>
+      <Utensils size={11} className="text-[#2A2D35]" strokeWidth={2} />
+      <span>{portions}</span>
+      <span className="text-[#2A2D35]/30">·</span>
+      <Pill variant={scoreVariant}>{score}</Pill>
+    </div>
+  );
 }
 
 const MEAL_ICONS: Record<MealType, LucideIcon> = {
@@ -95,6 +119,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
       isNew,
       prep,
       score,
+      portions = "1 portion",
       imageUrl,
       proactiveContext,
       status,
@@ -117,7 +142,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
             className,
           )}
         >
-          <div className="w-16 h-16 shrink-0 rounded-xl overflow-hidden">
+          <div className="relative w-16 h-16 shrink-0 rounded-xl overflow-hidden">
             {imageUrl ? (
               <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
             ) : (
@@ -125,23 +150,26 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <Pill variant={isNew ? "new" : "category"}>{category}</Pill>
-              {status && <StatusPill status={status} />}
-            </div>
-            <p className="text-eyebrow uppercase text-[#2A2D35]/50 mt-1.5">
+            {status && (
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <StatusPill status={status} />
+              </div>
+            )}
+            <p className={cn("text-eyebrow uppercase text-[#2A2D35]/50", status && "mt-1.5")}>
               {mealType}
               {time ? ` · ${time}` : ""}
             </p>
             <h3 className="font-display text-display-sm text-[#2A2D35] line-clamp-2 mt-0.5">
               {title}
             </h3>
-            <div className="flex items-center justify-between mt-2">
-              <div className="flex items-center gap-1 text-[13px] text-[#2A2D35]/60">
-                <Clock size={13} className="text-[#4A6670]/60" />
-                <span>{prep}</span>
-              </div>
-              <ScoreTooltip score={score} />
+            <div className="flex items-center gap-2 mt-2 text-[11px] text-[#2A2D35]">
+              <Clock size={11} strokeWidth={2} />
+              <span>{prep}</span>
+              <span className="text-[#2A2D35]/30">·</span>
+              <Utensils size={11} strokeWidth={2} />
+              <span>{portions}</span>
+              <span className="text-[#2A2D35]/30">·</span>
+              <Pill variant={`score-${score.toLowerCase()}` as "score-a"}>{score}</Pill>
             </div>
           </div>
         </div>
@@ -166,16 +194,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
           ) : (
             <PhotoPlaceholder mealType={mealType} iconSize={56} rounded="" />
           )}
-          <div className="absolute top-3 left-3">
-            {isNew ? (
-              <Pill variant="new">{category}</Pill>
-            ) : (
-              <Pill variant="category-overlay">{category}</Pill>
-            )}
-          </div>
-          <div className="absolute top-3 right-3">
-            <ScoreTooltip score={score} />
-          </div>
+          <InfoBanner prep={prep} portions={portions} score={score} />
         </div>
 
         {/* Body */}
@@ -190,13 +209,6 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
           <h3 className="font-display text-display-md text-[#2A2D35] line-clamp-2 mt-1">
             {title}
           </h3>
-          <div className="flex items-center justify-between mt-3">
-            <div className="flex items-center gap-1.5 text-[13px] text-[#2A2D35]/60">
-              <Clock size={13} className="text-[#4A6670]/60" />
-              <span>{prep}</span>
-            </div>
-            <Leaf size={13} className="text-[#4A6670]/60" />
-          </div>
         </div>
       </div>
     );
