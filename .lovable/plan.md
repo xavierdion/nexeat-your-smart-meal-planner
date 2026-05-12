@@ -1,84 +1,71 @@
-## Refonte "Prochainement" → Timeline horaire + retrait du banner Contexte
+## Problème
 
-### Objectif
-Remplacer la grille 2-cards "Maintenant / Ensuite" par une **barre temporelle horizontale** qui visualise le flow de la journée (repas + cours/événements) avec un indicateur "tu es ici" qui avance selon l'heure courante. Le banner `ProactiveContextBlock` devient redondant et est retiré.
+Sur la timeline horizontale actuelle (`src/pages/Aujourdhui.tsx`), les labels des items proches dans le temps (12h Dîner / 13h IFT-2008 / 15h30 Souper) se chevauchent, et le label "Maintenant · 15h15" passe par-dessus les marqueurs voisins. Le format horizontal sur 7h→20h compresse trop d'information sur une seule ligne.
 
-### Fichier modifié
-- `src/pages/Aujourdhui.tsx` uniquement
+## Solution retenue : timeline verticale segmentée
 
-### 1. Retrait du banner Contexte calendrier
-- Supprimer le bloc `<ProactiveContextBlock variant="banner" ...>` (mx-4 mt-4 mb-2)
-- Supprimer l'import `ProactiveContextBlock`
-- Le contexte "Examen IFT-2008 18h" sera désormais représenté comme un **point d'événement sur la timeline**, ce qui suffit visuellement
+Remplacer la barre horizontale par une **liste verticale chronologique** avec un rail à gauche, un marqueur par item, et le label/heure à droite. C'est le pattern naturel pour 5+ items horaires sur mobile (390px) — aucun chevauchement possible, lecture immédiate.
 
-### 2. Nouvelle data : timeline du jour
-Fusion des repas (`MEALS`) et événements calendrier dans un tableau unique trié par heure :
-
-```ts
-type TimelineKind = "meal" | "event";
-interface TimelineItem {
-  time: string;        // "7h", "12h", "13h", "15h30", "18h"
-  hour: number;        // 7, 12, 13, 15.5, 18 (pour positionnement)
-  label: string;       // "Déjeuner", "Dîner", "IFT-2008", "Souper", "Examen IFT-2008"
-  kind: TimelineKind;
-  done?: boolean;      // pour les repas terminés
-}
-```
-
-Items hardcodés (cohérents avec MEALS et le banner actuel) :
-- 7h — Déjeuner (meal, done)
-- 12h — Dîner (meal)
-- 13h — IFT-2008 (event)
-- 15h30 — Souper (meal)
-- 18h — Examen IFT-2008 (event, accent coral)
-
-### 3. Composant timeline (inline dans Aujourdhui.tsx)
-
-Layout dans `EditorialSection eyebrow="Ta journée"` :
+### Layout cible
 
 ```text
-   7h        12h   13h    15h30        18h
-   ●─────────●─────●──────●═══════════►◆
-   Déjeuner  Dîner IFT    Souper       Examen
-   ✓                ↑ tu es ici
+│
+●  7h00     Déjeuner                    ✓ terminé
+│
+●  12h00    Dîner                       dans 2h30
+│
+◆  13h00    IFT-2008                    cours
+│
+┃ ← MAINTENANT · 15h15  (barre coral pleine sur le segment courant)
+│
+●  15h30    Souper                      ce soir
+│
+◆  18h00    Examen IFT-2008             événement
+│
 ```
 
-Structure visuelle :
-- Container : `bg-white rounded-xl px-4 py-5 shadow-card`
-- **Rail** : `relative h-[2px] bg-[#E8E8E4] my-8` couvrant 7h→20h (range fixe)
-- **Progress fill** : overlay coral de 7h jusqu'à `now`, `bg-[#E07A5F]/40`
-- **Indicateur "now"** : pastille coral pleine + label "Maintenant · 14h32" positionné au pourcentage de l'heure courante
-- **Points** : positionnés en `left: ${(hour-7)/(20-7)*100}%`
-  - meal done : cercle `bg-[#A8C5BC]` 10px + check
-  - meal upcoming : cercle `bg-white border-2 border-[#4A6670]` 10px
-  - event : losange (rotate-45) `bg-[#E07A5F]` 10px
-- **Labels** : au-dessus du point, time `text-eyebrow`, label `text-[12px] font-semibold` (truncate)
-- **État done** : opacity-60 sur les items passés autres que "now"
+### Spécifications visuelles
 
-### 4. Heure courante (mock-friendly)
-```ts
-const now = new Date();
-const nowHour = now.getHours() + now.getMinutes() / 60;
-const nowLabel = `${now.getHours()}h${String(now.getMinutes()).padStart(2,"0")}`;
-```
-Range timeline : 7h → 20h (13h fenêtre = 100% width).
-Si `nowHour < 7` → indicateur à 0%, label "Bientôt". Si `> 20` → 100%, label "Journée terminée".
+- Container : `bg-white rounded-xl px-5 py-5 shadow-card`
+- Rail vertical : `absolute left-[22px] top-0 bottom-0 w-[2px] bg-[#E8E8E4]`
+- Segment "passé" (au-dessus du now indicator) : overlay `bg-[#E07A5F]/40` sur le rail
+- Items : `flex items-start gap-4 py-3` — marqueur 14px à gauche aligné sur le rail
+  - Repas terminé : cercle sage `#A8C5BC` + check blanc
+  - Repas à venir : cercle blanc bordure slate 2px
+  - Événement : losange coral `#E07A5F` 12px (rotate-45)
+- Colonne texte (droite du marqueur) :
+  - Heure `text-[11px] uppercase tracking-wide text-[#2A2D35]/50 font-semibold`
+  - Label `text-[14px] font-semibold text-[#2A2D35]` (ligne suivante)
+  - Statut secondaire `text-[12px] text-[#2A2D35]/60` (optionnel, à droite via `ml-auto`)
+- Items passés (sauf done explicite) : `opacity-60`
 
-### 5. Eyebrow / titre de section
-- Eyebrow change : "Prochainement" → **"Ta journée"**
-- Garde `EditorialSection` avec même padding
+### Indicateur "Maintenant"
 
-### 6. Légende compacte (optionnelle, sous le rail)
-Petite ligne : `● Repas   ◆ Événement` en `text-[11px] text-[#2A2D35]/50` pour clarifier les symboles.
+Inséré comme une **rangée à part entière** entre les deux items qui encadrent `nowHour` :
+- Petite barre horizontale coral pleine `h-[2px] bg-[#E07A5F]` qui traverse depuis le rail
+- Pastille coral `w-3 h-3 rounded-full bg-[#E07A5F] ring-4 ring-[#E07A5F]/20` sur le rail
+- Label `MAINTENANT · 15h15` en `text-[11px] font-bold text-[#E07A5F] uppercase tracking-wide`
+- Si `nowHour < TL_START` → indicateur tout en haut, label "Bientôt"
+- Si `nowHour > TL_END` → indicateur tout en bas, label "Journée terminée"
 
-### Hors scope
-- Pas de modification de `MEALS`, `MealCard`, `RecipeSheet`
-- Pas de touche au header éditorial, au "Locked notice", ni au CTA "Voir l'épicerie"
-- `ProactiveContextBlock` n'est PAS supprimé du projet — Semaine.tsx pourrait l'utiliser plus tard ; on retire seulement l'import + l'usage dans Aujourdhui
+### Légende
 
-### Critères de succès
-1. Build passe
-2. Le banner Contexte calendrier n'apparaît plus
-3. Une barre temporelle horizontale montre les 5 moments-clés du jour avec un curseur "Maintenant" positionné selon l'heure réelle
-4. Repas terminés visuellement distincts (sage + check), événements distincts des repas (losange coral)
-5. Aucune régression sur les 3 MealCard ni sur RecipeSheet
+Conservée telle quelle sous la timeline, avec border-top.
+
+## Fichier modifié
+
+- `src/pages/Aujourdhui.tsx` uniquement — remplace le bloc `<div className="relative h-[110px]">...</div>` par la nouvelle structure verticale. Aucun changement aux données `TIMELINE`, ni aux MealCards, ni au reste de la page.
+
+## Hors scope
+
+- Pas de changement à `MealCard`, `RecipeSheet`, `SwapSheet`
+- Pas de changement aux données mock
+- Pas de changement à la page Semaine ni ailleurs
+
+## Critères de succès
+
+1. Aucun chevauchement de texte, peu importe les heures des items
+2. Les 5 items restent visibles sans scroll interne
+3. L'indicateur "Maintenant" reste lisible et bien positionné chronologiquement
+4. Distinction visuelle repas (cercle) vs événement (losange) conservée
+5. Build passe

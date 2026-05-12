@@ -107,63 +107,87 @@ const Aujourdhui = () => {
         <p className="text-[14px] text-[#2A2D35]/60 mt-1">{subtitle}</p>
       </header>
 
-      {/* Timeline horaire */}
+      {/* Timeline verticale */}
       <EditorialSection eyebrow="Ta journée" className="py-4">
-        <div className="bg-white rounded-xl px-4 pt-6 pb-5 shadow-card">
-          <div className="relative h-[110px]">
-            {/* Rail */}
-            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[2px] bg-[#E8E8E4] rounded-full" />
-            {/* Progress fill */}
-            <div
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-[2px] bg-[#E07A5F]/40 rounded-full"
-              style={{ width: `${nowPct}%` }}
-            />
-            {/* Items */}
-            {TIMELINE.map((item, i) => {
-              const left = pct(item.hour);
-              const past = item.hour < nowHour;
-              const isEvent = item.kind === "event";
-              return (
-                <div
-                  key={i}
-                  className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center"
-                  style={{ left: `${left}%` }}
-                >
-                  {/* Label above */}
-                  <div className={`absolute bottom-[18px] flex flex-col items-center ${past && !item.done ? "opacity-50" : ""}`}>
-                    <span className="text-[10px] uppercase tracking-wide text-[#2A2D35]/50 font-semibold leading-none">
-                      {item.time}
-                    </span>
-                    <span className="text-[11px] font-semibold text-[#2A2D35] leading-tight whitespace-nowrap mt-0.5 max-w-[80px] truncate">
-                      {item.label}
-                    </span>
-                  </div>
-                  {/* Marker */}
-                  {isEvent ? (
-                    <div className="w-[12px] h-[12px] bg-[#E07A5F] rotate-45 rounded-[2px]" />
-                  ) : item.done ? (
-                    <div className="w-[14px] h-[14px] rounded-full bg-[#A8C5BC] flex items-center justify-center">
-                      <Check size={9} className="text-white" strokeWidth={3} />
-                    </div>
-                  ) : (
-                    <div className="w-[12px] h-[12px] rounded-full bg-white border-2 border-[#4A6670]" />
-                  )}
-                </div>
-              );
-            })}
-            {/* Now indicator */}
-            {nowHour >= TL_START && nowHour <= TL_END && (
-              <div
-                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center z-10"
-                style={{ left: `${nowPct}%` }}
-              >
-                <div className="w-[16px] h-[16px] rounded-full bg-[#E07A5F] ring-4 ring-[#E07A5F]/20" />
-                <span className="absolute top-[20px] text-[10px] font-bold text-[#E07A5F] uppercase tracking-wide whitespace-nowrap">
-                  {nowLabel}
-                </span>
-              </div>
-            )}
-          </div>
+        <div className="bg-white rounded-xl px-5 py-5 shadow-card">
+          {(() => {
+            // Index where the "Now" row should be inserted
+            const nowIndex = TIMELINE.findIndex((it) => it.hour > nowHour);
+            const insertAt =
+              nowHour < TL_START
+                ? 0
+                : nowHour > TL_END || nowIndex === -1
+                ? TIMELINE.length
+                : nowIndex;
+            const showNow = true;
+
+            const rows: Array<
+              | { kind: "item"; item: TimelineItem; past: boolean }
+              | { kind: "now" }
+            > = [];
+            TIMELINE.forEach((item, i) => {
+              if (showNow && i === insertAt) rows.push({ kind: "now" });
+              rows.push({ kind: "item", item, past: item.hour < nowHour });
+            });
+            if (showNow && insertAt === TIMELINE.length) rows.push({ kind: "now" });
+
+            return (
+              <ol className="relative">
+                {/* Rail */}
+                <div className="absolute left-[11px] top-2 bottom-2 w-[2px] bg-[#E8E8E4] rounded-full" />
+                {rows.map((row, idx) => {
+                  if (row.kind === "now") {
+                    return (
+                      <li key={`now-${idx}`} className="relative flex items-center gap-3 py-2">
+                        <div className="relative z-10 w-6 flex justify-center">
+                          <div className="w-3 h-3 rounded-full bg-[#E07A5F] ring-4 ring-[#E07A5F]/20" />
+                        </div>
+                        <div className="flex-1 h-[1.5px] bg-[#E07A5F]/30 rounded-full" />
+                        <span className="text-[10px] font-bold text-[#E07A5F] uppercase tracking-wide whitespace-nowrap">
+                          {nowLabel}
+                        </span>
+                      </li>
+                    );
+                  }
+                  const { item, past } = row;
+                  const isEvent = item.kind === "event";
+                  return (
+                    <li
+                      key={idx}
+                      className={`relative flex items-center gap-3 py-2.5 ${
+                        past && !item.done ? "opacity-55" : ""
+                      }`}
+                    >
+                      <div className="relative z-10 w-6 flex justify-center">
+                        {isEvent ? (
+                          <div className="w-[12px] h-[12px] bg-[#E07A5F] rotate-45 rounded-[2px]" />
+                        ) : item.done ? (
+                          <div className="w-[16px] h-[16px] rounded-full bg-[#A8C5BC] flex items-center justify-center">
+                            <Check size={10} className="text-white" strokeWidth={3} />
+                          </div>
+                        ) : (
+                          <div className="w-[14px] h-[14px] rounded-full bg-white border-2 border-[#4A6670]" />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0 flex items-baseline gap-2">
+                        <span className="text-[10px] uppercase tracking-wide text-[#2A2D35]/50 font-semibold w-12 shrink-0">
+                          {item.time}
+                        </span>
+                        <span className="text-[14px] font-semibold text-[#2A2D35] truncate">
+                          {item.label}
+                        </span>
+                      </div>
+                      {item.done && (
+                        <span className="text-[11px] text-[#A8C5BC] font-semibold uppercase tracking-wide">
+                          Terminé
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            );
+          })()}
           {/* Légende */}
           <div className="flex items-center justify-center gap-4 mt-2 pt-3 border-t border-[#E8E8E4]">
             <div className="flex items-center gap-1.5">
