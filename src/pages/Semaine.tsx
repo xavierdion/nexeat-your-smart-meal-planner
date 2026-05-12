@@ -199,7 +199,7 @@ const Semaine = () => {
           MA SEMAINE · 17–23 MAI
         </p>
         <h1 className="font-display text-display-xl text-foreground mt-1">
-          Cette semaine, mangé bien
+          Ta semaine, déjà pensée
         </h1>
       </header>
 
