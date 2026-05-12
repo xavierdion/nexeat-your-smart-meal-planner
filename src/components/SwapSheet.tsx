@@ -115,15 +115,15 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
 
         {/* Header */}
         <div className="px-4 pt-5 flex items-start justify-between">
-          <span className="text-[11px] uppercase tracking-wide text-[#2A2D35]/50 font-semibold">
+          <span className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold">
             ALTERNATIVES — {contextLabel}
           </span>
-          <button onClick={onClose} className="text-[#2A2D35] -mt-1">
+          <button onClick={onClose} className="text-foreground -mt-1">
             <X size={24} />
           </button>
         </div>
 
-        <p className="mt-3 px-6 text-center text-[13px] text-[#2A2D35]/60">
+        <p className="mt-3 px-6 text-center text-[13px] text-foreground/60">
           Swipe a droite pour garder, a gauche pour passer
         </p>
 
@@ -131,12 +131,12 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
         <div className="relative mt-6 flex justify-center" style={{ height: 360 }}>
           {exhausted ? (
             <div className="flex flex-col items-center justify-center px-8 text-center gap-4">
-              <p className="text-[14px] text-[#2A2D35]/60">
+              <p className="text-[14px] text-foreground/60">
                 Aucune autre alternative disponible
               </p>
               <button
                 onClick={onClose}
-                className="px-5 h-11 rounded-xl border-[1.5px] border-[#4A6670] text-[#4A6670] text-[14px] font-semibold"
+                className="px-5 h-11 rounded-xl border-[1.5px] border-primary text-primary text-[14px] font-semibold"
               >
                 Fermer
               </button>
@@ -154,18 +154,18 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
                 transition: animating ? "transform 180ms ease-out" : "none",
               }}
             >
-              <span className="inline-block text-[11px] bg-[#F0F4F3] text-[#4A6670] rounded-md px-2.5 py-[3px]">
+              <span className="inline-block text-[11px] bg-[#F0F4F3] text-primary rounded-md px-2.5 py-[3px]">
                 {current.category}
               </span>
 
               <div className="mt-4 flex flex-col items-center gap-3">
                 <div className="w-20 h-20 rounded-[14px] bg-[#F0F4F3] flex items-center justify-center">
-                  <ImageIcon size={32} className="text-[#4A6670]/40" />
+                  <ImageIcon size={32} className="text-primary/40" />
                 </div>
-                <h3 className="font-display text-[20px] text-[#2A2D35] text-center leading-snug px-2">
+                <h3 className="font-display text-[20px] text-foreground text-center leading-snug px-2">
                   {current.name}
                 </h3>
-                <p className="text-[13px] text-[#2A2D35]/60">{current.prep}</p>
+                <p className="text-[13px] text-foreground/60">{current.prep}</p>
                 <ScoreTooltip score={current.score} />
               </div>
 
@@ -177,15 +177,15 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
                   { label: "Lipides", value: current.lipides },
                 ].map((p) => (
                   <div key={p.label} className="bg-[#F0F4F3] rounded-lg px-3 py-1.5 text-center">
-                    <div className="text-[11px] text-[#2A2D35]/50 leading-tight">{p.label}</div>
-                    <div className="text-[13px] font-semibold text-[#2A2D35] leading-tight mt-0.5">{p.value}</div>
+                    <div className="text-[11px] text-foreground/50 leading-tight">{p.label}</div>
+                    <div className="text-[13px] font-semibold text-foreground leading-tight mt-0.5">{p.value}</div>
                   </div>
                 ))}
               </div>
 
               {/* Drag hint badges */}
               <div
-                className="absolute top-6 left-6 px-2 py-1 rounded-md border-2 border-[#E07A5F] text-[#E07A5F] text-[12px] font-bold rotate-[-12deg]"
+                className="absolute top-6 left-6 px-2 py-1 rounded-md border-2 border-accent text-accent text-[12px] font-bold rotate-[-12deg]"
                 style={{ opacity: Math.min(Math.max(-drag / 100, 0), 1) }}
               >
                 PASSER
@@ -205,14 +205,14 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
           <div className="mt-2 flex justify-center gap-4">
             <button
               onClick={skip}
-              className="w-[52px] h-[52px] rounded-full bg-white border-[1.5px] border-[#E8E8E4] flex items-center justify-center"
+              className="w-[52px] h-[52px] rounded-full bg-white border-[1.5px] border-border flex items-center justify-center"
               aria-label="Passer"
             >
-              <X size={22} className="text-[#2A2D35]/60" />
+              <X size={22} className="text-foreground/60" />
             </button>
             <button
               onClick={confirm}
-              className="w-[52px] h-[52px] rounded-full bg-[#E07A5F] flex items-center justify-center"
+              className="w-[52px] h-[52px] rounded-full bg-accent flex items-center justify-center"
               aria-label="Garder"
             >
               <Check size={22} className="text-white" />

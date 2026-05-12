@@ -99,12 +99,12 @@ const Aujourdhui = () => {
   return (
     <div className="flex flex-col pb-6 bg-surface-warm min-h-full">
       {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-[#E8E8E4]">
-        <p className="text-eyebrow uppercase text-[#4A6670]/70">LUNDI 17 MAI</p>
-        <h1 className="font-display text-display-xl text-[#2A2D35] mt-1">
+      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+        <p className="text-eyebrow uppercase text-primary/70">LUNDI 17 MAI</p>
+        <h1 className="font-display text-display-xl text-foreground mt-1">
           {greeting}
         </h1>
-        <p className="text-[14px] text-[#2A2D35]/60 mt-1">{subtitle}</p>
+        <p className="text-[14px] text-foreground/60 mt-1">{subtitle}</p>
       </header>
 
       {/* Timeline verticale */}
@@ -140,10 +140,10 @@ const Aujourdhui = () => {
                     return (
                       <li key={`now-${idx}`} className="relative flex items-center gap-3 py-2">
                         <div className="relative z-10 w-6 flex justify-center">
-                          <div className="w-3 h-3 rounded-full bg-[#E07A5F] ring-4 ring-[#E07A5F]/20" />
+                          <div className="w-3 h-3 rounded-full bg-accent ring-4 ring-accent/20" />
                         </div>
-                        <div className="flex-1 h-[1.5px] bg-[#E07A5F]/30 rounded-full" />
-                        <span className="text-[10px] font-bold text-[#E07A5F] uppercase tracking-wide whitespace-nowrap">
+                        <div className="flex-1 h-[1.5px] bg-accent/30 rounded-full" />
+                        <span className="text-[10px] font-bold text-accent uppercase tracking-wide whitespace-nowrap">
                           {nowLabel}
                         </span>
                       </li>
@@ -160,25 +160,25 @@ const Aujourdhui = () => {
                     >
                       <div className="relative z-10 w-6 flex justify-center">
                         {isEvent ? (
-                          <div className="w-[12px] h-[12px] bg-[#E07A5F] rotate-45 rounded-[2px]" />
+                          <div className="w-[12px] h-[12px] bg-accent rotate-45 rounded-[2px]" />
                         ) : item.done ? (
-                          <div className="w-[16px] h-[16px] rounded-full bg-[#A8C5BC] flex items-center justify-center">
+                          <div className="w-[16px] h-[16px] rounded-full bg-secondary flex items-center justify-center">
                             <Check size={10} className="text-white" strokeWidth={3} />
                           </div>
                         ) : (
-                          <div className="w-[14px] h-[14px] rounded-full bg-white border-2 border-[#4A6670]" />
+                          <div className="w-[14px] h-[14px] rounded-full bg-white border-2 border-primary" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0 flex items-baseline gap-2">
-                        <span className="text-[10px] uppercase tracking-wide text-[#2A2D35]/50 font-semibold w-12 shrink-0">
+                        <span className="text-[10px] uppercase tracking-wide text-foreground/50 font-semibold w-12 shrink-0">
                           {item.time}
                         </span>
-                        <span className="text-[14px] font-semibold text-[#2A2D35] truncate">
+                        <span className="text-[14px] font-semibold text-foreground truncate">
                           {item.label}
                         </span>
                       </div>
                       {item.done && (
-                        <span className="text-[11px] text-[#A8C5BC] font-semibold uppercase tracking-wide">
+                        <span className="text-[11px] text-secondary font-semibold uppercase tracking-wide">
                           Terminé
                         </span>
                       )}
@@ -189,14 +189,14 @@ const Aujourdhui = () => {
             );
           })()}
           {/* Légende */}
-          <div className="flex items-center justify-center gap-4 mt-2 pt-3 border-t border-[#E8E8E4]">
+          <div className="flex items-center justify-center gap-4 mt-2 pt-3 border-t border-border">
             <div className="flex items-center gap-1.5">
-              <div className="w-[10px] h-[10px] rounded-full bg-[#A8C5BC]" />
-              <span className="text-[11px] text-[#2A2D35]/60">Repas</span>
+              <div className="w-[10px] h-[10px] rounded-full bg-secondary" />
+              <span className="text-[11px] text-foreground/60">Repas</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-[10px] h-[10px] bg-[#E07A5F] rotate-45 rounded-[1px]" />
-              <span className="text-[11px] text-[#2A2D35]/60">Événement</span>
+              <div className="w-[10px] h-[10px] bg-accent rotate-45 rounded-[1px]" />
+              <span className="text-[11px] text-foreground/60">Événement</span>
             </div>
           </div>
         </div>
@@ -224,7 +224,7 @@ const Aujourdhui = () => {
       {/* Quick action */}
       <button
         onClick={() => navigate("/epicerie")}
-        className="mt-4 mx-4 h-12 rounded-xl border-[1.5px] border-[#4A6670] text-[#4A6670] text-[14px] font-semibold bg-white"
+        className="mt-4 mx-4 h-12 rounded-xl border-[1.5px] border-primary text-primary text-[14px] font-semibold bg-white"
       >
         Voir l'épicerie
       </button>

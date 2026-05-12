@@ -39,13 +39,13 @@ function InfoBanner({
   const scoreVariant = `score-${score.toLowerCase()}` as
     | "score-a" | "score-b" | "score-c" | "score-d" | "score-e";
   return (
-    <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-[#2A2D35]">
-      <Clock size={11} className="text-[#2A2D35]" strokeWidth={2} />
+    <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
+      <Clock size={11} className="text-foreground" strokeWidth={2} />
       <span>{prep}</span>
-      <span className="text-[#2A2D35]/30">·</span>
-      <Utensils size={11} className="text-[#2A2D35]" strokeWidth={2} />
+      <span className="text-foreground/30">·</span>
+      <Utensils size={11} className="text-foreground" strokeWidth={2} />
       <span>{portions}</span>
-      <span className="text-[#2A2D35]/30">·</span>
+      <span className="text-foreground/30">·</span>
       <Pill variant={scoreVariant}>{score}</Pill>
     </div>
   );
@@ -83,7 +83,7 @@ function PhotoPlaceholder({
         }}
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <Icon size={iconSize} className="text-[#2A2D35]" strokeWidth={1.5} />
+        <Icon size={iconSize} className="text-foreground" strokeWidth={1.5} />
       </div>
     </div>
   );
@@ -94,8 +94,8 @@ function StatusPill({ status }: { status: NonNullable<MealCardProps["status"]> }
     status.tone === "done"
       ? "bg-[#E8F0EE] text-[#4A7060]"
       : status.tone === "active"
-      ? "bg-[#E07A5F] text-white"
-      : "bg-[#E8E8E4] text-[#2A2D35]/60";
+      ? "bg-accent text-white"
+      : "bg-[#E8E8E4] text-foreground/60";
   return (
     <span
       className={cn(
@@ -155,20 +155,20 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
                 <StatusPill status={status} />
               </div>
             )}
-            <p className={cn("text-eyebrow uppercase text-[#2A2D35]/50", status && "mt-1.5")}>
+            <p className={cn("text-eyebrow uppercase text-foreground/50", status && "mt-1.5")}>
               {mealType}
               {time ? ` · ${time}` : ""}
             </p>
-            <h3 className="font-display text-display-sm text-[#2A2D35] line-clamp-2 mt-0.5">
+            <h3 className="font-display text-display-sm text-foreground line-clamp-2 mt-0.5">
               {title}
             </h3>
-            <div className="flex items-center gap-2 mt-2 text-[11px] text-[#2A2D35]">
+            <div className="flex items-center gap-2 mt-2 text-[11px] text-foreground">
               <Clock size={11} strokeWidth={2} />
               <span>{prep}</span>
-              <span className="text-[#2A2D35]/30">·</span>
+              <span className="text-foreground/30">·</span>
               <Utensils size={11} strokeWidth={2} />
               <span>{portions}</span>
-              <span className="text-[#2A2D35]/30">·</span>
+              <span className="text-foreground/30">·</span>
               <Pill variant={`score-${score.toLowerCase()}` as "score-a"}>{score}</Pill>
             </div>
           </div>
@@ -200,13 +200,13 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
         {/* Body */}
         <div className="bg-white px-4 py-4">
           {proactiveContext && (
-            <div className="flex items-center gap-2 bg-[#FEF0ED] text-[#E07A5F] rounded-[10px] px-3 py-2.5 mb-3">
+            <div className="flex items-center gap-2 bg-[#FEF0ED] text-accent rounded-[10px] px-3 py-2.5 mb-3">
               <Calendar size={14} className="shrink-0" />
               <span className="text-[12px] font-medium leading-tight">{proactiveContext}</span>
             </div>
           )}
-          <p className="text-eyebrow uppercase text-[#2A2D35]/50">{mealType}</p>
-          <h3 className="font-display text-display-md text-[#2A2D35] line-clamp-2 mt-1">
+          <p className="text-eyebrow uppercase text-foreground/50">{mealType}</p>
+          <h3 className="font-display text-display-md text-foreground line-clamp-2 mt-1">
             {title}
           </h3>
         </div>

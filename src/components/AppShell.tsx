@@ -23,7 +23,7 @@ const AppShell = () => {
         className={({ isActive }) =>
           cn(
             "flex-1 flex flex-col items-center justify-center gap-1 transition-colors",
-            isActive ? "text-[#4A6670]" : "text-[#2A2D35]/50"
+            isActive ? "text-primary" : "text-foreground/50"
           )
         }
       >
@@ -65,7 +65,7 @@ const AppShell = () => {
             <NavLink
               to={centerItem.to}
               aria-label={centerItem.label}
-              className="absolute -top-5 flex items-center justify-center rounded-full bg-[#4A6670] text-white shadow-md p-[14px] transition-transform active:scale-95"
+              className="absolute -top-5 flex items-center justify-center rounded-full bg-primary text-white shadow-md p-[14px] transition-transform active:scale-95"
             >
               <centerItem.icon size={26} strokeWidth={2.25} />
             </NavLink>
