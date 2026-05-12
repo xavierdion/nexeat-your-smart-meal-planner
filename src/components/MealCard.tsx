@@ -83,6 +83,7 @@ function PhotoPlaceholder({
         }}
       />
       <div className="absolute inset-0 flex items-center justify-center">
+        {/* DOC: strokeWidth={1.5} — placeholder décoratif (PhotoPlaceholder), trait fin volontaire */}
         <Icon size={iconSize} className="text-foreground" strokeWidth={1.5} />
       </div>
     </div>
