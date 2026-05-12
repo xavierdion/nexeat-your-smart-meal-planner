@@ -39,8 +39,7 @@ const OnboardingStep3 = () => {
 
         <div className="mt-10 flex justify-center">
           <div
-            className="w-[120px] h-[120px] rounded-3xl flex items-center justify-center"
-            style={{ backgroundColor: "#F0F4F3" }}
+            className="w-[120px] h-[120px] rounded-3xl flex items-center justify-center bg-secondary/15"
           >
             <Calendar size={48} className="text-primary" strokeWidth={1.75} />
           </div>
