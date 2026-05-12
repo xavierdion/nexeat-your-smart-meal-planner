@@ -194,31 +194,31 @@ const Semaine = () => {
   return (
     <div className="flex flex-col">
       {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-[#E8E8E4]">
-        <p className="text-eyebrow uppercase text-[#4A6670]/70">
+      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+        <p className="text-eyebrow uppercase text-primary/70">
           MA SEMAINE · 17–23 MAI
         </p>
-        <h1 className="font-display text-display-xl text-[#2A2D35] mt-1">
+        <h1 className="font-display text-display-xl text-foreground mt-1">
           Cette semaine, mangé bien
         </h1>
-        <p className="text-[14px] text-[#2A2D35]/60 mt-1">
+        <p className="text-[14px] text-foreground/60 mt-1">
           21 repas alignés sur tes cours et examens
         </p>
         {busyWeek && (
           <span
-            className="inline-flex items-center mt-3 rounded-full bg-[#E07A5F] text-white text-[11px] font-medium px-3 py-1"
+            className="inline-flex items-center mt-3 rounded-full bg-accent text-white text-[11px] font-medium px-3 py-1"
           >
             📅 Semaine chargée · Plan optimisé
           </span>
         )}
         <div className="flex items-center gap-2 mt-3">
-          <div className="flex-1 h-[3px] rounded-full bg-[#A8C5BC]/30 overflow-hidden">
+          <div className="flex-1 h-[3px] rounded-full bg-secondary/30 overflow-hidden">
             <div
-              className="h-full bg-[#4A6670] rounded-full transition-all"
+              className="h-full bg-primary rounded-full transition-all"
               style={{ width: `${progressPct}%` }}
             />
           </div>
-          <span className="text-[11px] text-[#2A2D35]/50 whitespace-nowrap">
+          <span className="text-[11px] text-foreground/50 whitespace-nowrap">
             {confirmedMeals}/{TOTAL_MEALS} repas confirmés
           </span>
         </div>
@@ -237,7 +237,7 @@ const Semaine = () => {
                 className={cn(
                   "shrink-0 flex flex-col items-center justify-center rounded-full transition-all duration-200",
                   active
-                    ? "bg-[#4A6670] w-12 h-16"
+                    ? "bg-primary w-12 h-16"
                     : "bg-[#F0F4F3] w-10 h-14",
                 )}
               >
@@ -246,7 +246,7 @@ const Semaine = () => {
                     "font-display leading-none",
                     active
                       ? "text-[20px] font-bold text-white"
-                      : "text-[15px] text-[#2A2D35]/60",
+                      : "text-[15px] text-foreground/60",
                   )}
                 >
                   {num}
@@ -254,7 +254,7 @@ const Semaine = () => {
                 <span
                   className={cn(
                     "uppercase mt-1 leading-none text-[10px]",
-                    active ? "text-white/80 font-semibold" : "text-[#2A2D35]/50",
+                    active ? "text-white/80 font-semibold" : "text-foreground/50",
                   )}
                 >
                   {weekday}
@@ -265,7 +265,7 @@ const Semaine = () => {
                       <span
                         className={cn(
                           "w-1 h-1 rounded-full",
-                          active ? "bg-white/80" : "bg-[#E07A5F]",
+                          active ? "bg-white/80" : "bg-accent",
                         )}
                       />
                     )}
@@ -273,7 +273,7 @@ const Semaine = () => {
                       <span
                         className={cn(
                           "w-1 h-1 rounded-full",
-                          active ? "bg-white/80" : "bg-[#A8C5BC]",
+                          active ? "bg-white/80" : "bg-secondary",
                         )}
                       />
                     )}
@@ -294,20 +294,20 @@ const Semaine = () => {
       >
         {dayHasContext ? (
           <>
-            <p className="text-[11px] uppercase tracking-wide font-semibold text-[#E07A5F]">
+            <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
               Aujourd'hui en contexte
             </p>
-            <p className="text-[13px] text-[#2A2D35] mt-1 leading-relaxed">
+            <p className="text-[13px] text-foreground mt-1 leading-relaxed">
               {contextMeal?.badge}. Tes {day.meals.length} repas sont optimisés
               pour une énergie stable.
             </p>
           </>
         ) : (
           <>
-            <p className="text-eyebrow uppercase text-[#4A6670]/70">
+            <p className="text-eyebrow uppercase text-primary/70">
               Journée standard
             </p>
-            <p className="text-[13px] text-[#2A2D35] mt-1 leading-relaxed">
+            <p className="text-[13px] text-foreground mt-1 leading-relaxed">
               Aucun examen ou deadline détecté. Plan équilibré.
             </p>
           </>
@@ -318,7 +318,7 @@ const Semaine = () => {
       <div className="pt-5 pb-2 px-4 relative">
         {batchInDay && (
           <div
-            className="absolute left-7 border-l border-dashed border-[#A8C5BC]/40 pointer-events-none"
+            className="absolute left-7 border-l border-dashed border-secondary/40 pointer-events-none"
             style={{
               top: `${batchInDay.sourcePos * 220 + 180}px`,
               height: `${(batchInDay.lastPos - batchInDay.sourcePos) * 220 - 80}px`,
@@ -361,28 +361,28 @@ const Semaine = () => {
                   }
                 />
                 {isBatchSource && (
-                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-[#4A6670] text-white text-[10px] font-bold px-3 py-1">
+                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-primary text-white text-[10px] font-bold px-3 py-1">
                     ×{original.batchPortions} portions
                   </span>
                 )}
                 {isReste && (
-                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-[#A8C5BC] text-[#2A2D35] text-[10px] font-medium px-3 py-1">
+                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-secondary text-foreground text-[10px] font-medium px-3 py-1">
                     🍱 Restes
                   </span>
                 )}
               </div>
               {isReste && original.restOf && (
-                <p className="text-[11px] italic text-[#2A2D35]/55 -mt-3 mb-4 px-1">
+                <p className="text-[11px] italic text-foreground/55 -mt-3 mb-4 px-1">
                   Restes de {original.restOf.name}
                 </p>
               )}
               {altLabel && (
-                <div className="text-center text-[11px] uppercase tracking-wide text-[#4A6670] -mt-3 mb-5">
+                <div className="text-center text-[11px] uppercase tracking-wide text-primary -mt-3 mb-5">
                   {altLabel}
                 </div>
               )}
               {showHint && (
-                <div className="text-center text-[12px] text-[#A8C5BC] -mt-3 mb-5">
+                <div className="text-center text-[12px] text-secondary -mt-3 mb-5">
                   ← Glisse pour découvrir d'autres options →
                 </div>
               )}
@@ -398,8 +398,8 @@ const Semaine = () => {
           className={cn(
             "w-full h-[52px] rounded-xl text-white text-[16px] font-semibold transition-colors duration-300",
             planAccepted
-              ? "bg-[#A8C5BC] cursor-default"
-              : "bg-[#E07A5F] shadow-[0_4px_16px_rgba(224,122,95,0.25)]",
+              ? "bg-secondary cursor-default"
+              : "bg-accent shadow-[0_4px_16px_rgba(224,122,95,0.25)]",
           )}
         >
           {planAccepted ? "Plan accepté ✓" : "Tout accepter ce plan"}
@@ -407,7 +407,7 @@ const Semaine = () => {
         {planAccepted && (
           <button
             onClick={() => navigate("/epicerie")}
-            className="mt-2 w-full h-12 rounded-xl border-[1.5px] border-[#4A6670] bg-white text-[#4A6670] font-semibold text-[15px]"
+            className="mt-2 w-full h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary font-semibold text-[15px]"
           >
             Voir l'épicerie →
           </button>

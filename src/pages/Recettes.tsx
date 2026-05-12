@@ -38,23 +38,23 @@ function ScorePill({ score }: { score: Score }) {
 function RecipeCard({ recipe, saved }: { recipe: Recipe; saved?: boolean }) {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-card flex flex-col">
-      <div className="relative h-[120px] bg-[#A8C5BC] rounded-t-xl">
+      <div className="relative h-[120px] bg-secondary rounded-t-xl">
         {saved && (
           <div className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
-            <Heart size={14} className="text-[#E07A5F]" fill="#E07A5F" strokeWidth={2} />
+            <Heart size={14} className="text-accent" fill="#E07A5F" strokeWidth={2} />
           </div>
         )}
-        <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-2 gap-1.5 text-[10px] text-[#2A2D35]">
+        <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-2 gap-1.5 text-[10px] text-foreground">
           <Clock size={10} strokeWidth={2} />
           <span>{recipe.prep}</span>
-          <span className="text-[#2A2D35]/30">·</span>
+          <span className="text-foreground/30">·</span>
           <Utensils size={10} strokeWidth={2} />
           <span>{recipe.portions}</span>
           <span className="ml-auto"><ScorePill score={recipe.score} /></span>
         </div>
       </div>
       <div className="p-2.5">
-        <p className="text-[13px] font-medium text-[#2A2D35] leading-snug line-clamp-2">
+        <p className="text-[13px] font-medium text-foreground leading-snug line-clamp-2">
           {recipe.title}
         </p>
       </div>
@@ -71,10 +71,10 @@ function EmptyState({
 }) {
   return (
     <div className="flex flex-col items-center text-center px-6 pt-10">
-      <div className="w-20 h-20 rounded-full bg-[#A8C5BC]/40 flex items-center justify-center mb-4">
-        <Bookmark size={32} className="text-[#4A6670]" strokeWidth={1.75} />
+      <div className="w-20 h-20 rounded-full bg-secondary/40 flex items-center justify-center mb-4">
+        <Bookmark size={32} className="text-primary" strokeWidth={1.75} />
       </div>
-      <p className="text-[14px] text-[#2A2D35]/60 max-w-[280px]">{title}</p>
+      <p className="text-[14px] text-foreground/60 max-w-[280px]">{title}</p>
       {cta && <div className="mt-4">{cta}</div>}
     </div>
   );
@@ -150,8 +150,8 @@ const Recettes = () => {
   return (
     <div className="flex flex-col min-h-full bg-surface-warm pb-6">
       {/* Header */}
-      <header className="bg-white px-4 pt-6 pb-0 border-b border-[#E8E8E4]">
-        <h1 className="font-display text-[24px] text-[#2A2D35]">Mes Recettes</h1>
+      <header className="bg-white px-4 pt-6 pb-0 border-b border-border">
+        <h1 className="font-display text-[24px] text-foreground">Mes Recettes</h1>
         <div className="flex gap-6 mt-3">
           {[
             { id: "saved", label: "Sauvegardées" },
@@ -164,12 +164,12 @@ const Recettes = () => {
                 onClick={() => setTab(t.id as "saved" | "mine")}
                 className={cn(
                   "pb-3 text-[14px] font-medium transition-colors relative",
-                  active ? "text-[#4A6670]" : "text-[#2A2D35]/50",
+                  active ? "text-primary" : "text-foreground/50",
                 )}
               >
                 {t.label}
                 {active && (
-                  <span className="absolute left-0 right-0 bottom-0 h-[2px] bg-[#4A6670] rounded-full" />
+                  <span className="absolute left-0 right-0 bottom-0 h-[2px] bg-primary rounded-full" />
                 )}
               </button>
             );
@@ -186,7 +186,7 @@ const Recettes = () => {
               cta={
                 <button
                   onClick={() => navigate("/aujourd-hui")}
-                  className="text-[14px] font-semibold text-[#4A6670]"
+                  className="text-[14px] font-semibold text-primary"
                 >
                   Voir les suggestions →
                 </button>
@@ -204,7 +204,7 @@ const Recettes = () => {
             <EmptyState title="Aucune recette pour l'instant" />
             <button
               onClick={() => setAddOpen(true)}
-              className="mt-6 w-full h-12 rounded-xl bg-[#E07A5F] text-white text-[15px] font-medium flex items-center justify-center gap-2"
+              className="mt-6 w-full h-12 rounded-xl bg-accent text-white text-[15px] font-medium flex items-center justify-center gap-2"
             >
               <Plus size={18} strokeWidth={2.5} />
               Ajouter une recette
@@ -219,7 +219,7 @@ const Recettes = () => {
             </div>
             <button
               onClick={() => setAddOpen(true)}
-              className="mt-5 w-full h-12 rounded-xl bg-[#E07A5F] text-white text-[15px] font-medium flex items-center justify-center gap-2"
+              className="mt-5 w-full h-12 rounded-xl bg-accent text-white text-[15px] font-medium flex items-center justify-center gap-2"
             >
               <Plus size={18} strokeWidth={2.5} />
               Ajouter une recette
@@ -232,7 +232,7 @@ const Recettes = () => {
       <Sheet open={addOpen} onOpenChange={setAddOpen}>
         <SheetContent side="bottom" className="rounded-t-2xl p-0 max-w-[390px] mx-auto">
           <SheetHeader className="px-5 pt-5 pb-2 text-left">
-            <SheetTitle className="font-display text-[20px] text-[#2A2D35]">
+            <SheetTitle className="font-display text-[20px] text-foreground">
               Ajouter une recette
             </SheetTitle>
           </SheetHeader>
@@ -245,12 +245,12 @@ const Recettes = () => {
               <button
                 key={opt.label}
                 onClick={opt.onClick}
-                className="w-full flex items-center gap-3 px-3 py-4 rounded-xl hover:bg-[#F5F5F0] transition-colors text-left"
+                className="w-full flex items-center gap-3 px-3 py-4 rounded-xl hover:bg-background transition-colors text-left"
               >
-                <div className="w-10 h-10 rounded-full bg-[#A8C5BC]/40 flex items-center justify-center">
-                  <opt.icon size={18} className="text-[#4A6670]" strokeWidth={2} />
+                <div className="w-10 h-10 rounded-full bg-secondary/40 flex items-center justify-center">
+                  <opt.icon size={18} className="text-primary" strokeWidth={2} />
                 </div>
-                <span className="text-[15px] font-medium text-[#2A2D35]">{opt.label}</span>
+                <span className="text-[15px] font-medium text-foreground">{opt.label}</span>
               </button>
             ))}
           </div>
@@ -261,7 +261,7 @@ const Recettes = () => {
       <Sheet open={writeOpen} onOpenChange={setWriteOpen}>
         <SheetContent side="bottom" className="rounded-t-2xl p-0 max-w-[390px] mx-auto max-h-[90vh] overflow-y-auto">
           <SheetHeader className="px-5 pt-5 pb-2 text-left">
-            <SheetTitle className="font-display text-[20px] text-[#2A2D35]">
+            <SheetTitle className="font-display text-[20px] text-foreground">
               Écrire une recette
             </SheetTitle>
           </SheetHeader>
@@ -270,33 +270,33 @@ const Recettes = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Nom de la recette"
-              className="h-12 px-3 rounded-xl border border-[#A8C5BC] bg-white text-[14px] text-[#2A2D35] placeholder:text-[#2A2D35]/40 focus:outline-none focus:border-[#4A6670]"
+              className="h-12 px-3 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary"
             />
             <input
               value={cookTime}
               onChange={(e) => setCookTime(e.target.value.replace(/\D/g, ""))}
               inputMode="numeric"
               placeholder="Temps de cuisson (min)"
-              className="h-12 px-3 rounded-xl border border-[#A8C5BC] bg-white text-[14px] text-[#2A2D35] placeholder:text-[#2A2D35]/40 focus:outline-none focus:border-[#4A6670]"
+              className="h-12 px-3 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary"
             />
             <input
               value={servings}
               onChange={(e) => setServings(e.target.value.replace(/\D/g, ""))}
               inputMode="numeric"
               placeholder="Nombre de portions"
-              className="h-12 px-3 rounded-xl border border-[#A8C5BC] bg-white text-[14px] text-[#2A2D35] placeholder:text-[#2A2D35]/40 focus:outline-none focus:border-[#4A6670]"
+              className="h-12 px-3 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary"
             />
             <textarea
               value={ingredients}
               onChange={(e) => setIngredients(e.target.value)}
               rows={5}
               placeholder={"1 tasse de lentilles\n2 tomates..."}
-              className="px-3 py-2.5 rounded-xl border border-[#A8C5BC] bg-white text-[14px] text-[#2A2D35] placeholder:text-[#2A2D35]/40 focus:outline-none focus:border-[#4A6670] resize-none"
+              className="px-3 py-2.5 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary resize-none"
             />
             <button
               onClick={handleSaveWritten}
               disabled={!name.trim()}
-              className="mt-2 w-full h-12 rounded-xl bg-[#E07A5F] text-white text-[15px] font-medium disabled:opacity-50"
+              className="mt-2 w-full h-12 rounded-xl bg-accent text-white text-[15px] font-medium disabled:opacity-50"
             >
               Sauvegarder
             </button>
@@ -308,7 +308,7 @@ const Recettes = () => {
       <Sheet open={urlOpen} onOpenChange={(o) => { if (!importing) setUrlOpen(o); }}>
         <SheetContent side="bottom" className="rounded-t-2xl p-0 max-w-[390px] mx-auto">
           <SheetHeader className="px-5 pt-5 pb-2 text-left">
-            <SheetTitle className="font-display text-[20px] text-[#2A2D35]">
+            <SheetTitle className="font-display text-[20px] text-foreground">
               Importer par lien
             </SheetTitle>
           </SheetHeader>
@@ -317,12 +317,12 @@ const Recettes = () => {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://www.ricardocuisine.com/..."
-              className="h-12 px-3 rounded-xl border border-[#A8C5BC] bg-white text-[14px] text-[#2A2D35] placeholder:text-[#2A2D35]/40 focus:outline-none focus:border-[#4A6670]"
+              className="h-12 px-3 rounded-xl border border-secondary bg-white text-[14px] text-foreground placeholder:text-foreground/40 focus:outline-none focus:border-primary"
             />
             <button
               onClick={handleImport}
               disabled={!url.trim() || importing}
-              className="w-full h-12 rounded-xl bg-[#E07A5F] text-white text-[15px] font-medium flex items-center justify-center gap-2 disabled:opacity-60"
+              className="w-full h-12 rounded-xl bg-accent text-white text-[15px] font-medium flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {importing ? (
                 <>

@@ -43,18 +43,18 @@ const Profil = () => {
   return (
     <div className="flex flex-col pb-24 bg-surface-warm min-h-full">
       {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-[#E8E8E4]">
-        <p className="text-eyebrow uppercase text-[#4A6670]/70">MON COMPTE</p>
-        <h1 className="font-display text-display-xl text-[#2A2D35] mt-1">
+      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+        <p className="text-eyebrow uppercase text-primary/70">MON COMPTE</p>
+        <h1 className="font-display text-display-xl text-foreground mt-1">
           Tes préférences
         </h1>
-        <p className="text-[14px] text-[#2A2D35]/60 mt-1">Ajuste tout en tout temps</p>
+        <p className="text-[14px] text-foreground/60 mt-1">Ajuste tout en tout temps</p>
       </header>
 
       {/* Restrictions */}
       <section className="mx-4 mt-4 bg-surface-warm rounded-2xl p-4 shadow-card">
-        <p className="text-eyebrow uppercase text-[#4A6670]/70">ALIMENTATION</p>
-        <h2 className="font-display text-display-md text-[#2A2D35] mt-1">
+        <p className="text-eyebrow uppercase text-primary/70">ALIMENTATION</p>
+        <h2 className="font-display text-display-md text-foreground mt-1">
           Ce que tu évites
         </h2>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -81,10 +81,10 @@ const Profil = () => {
 
       {/* Budget */}
       <section className="mx-4 mt-3 bg-surface-cool rounded-2xl p-4 shadow-card">
-        <p className="text-eyebrow uppercase text-[#4A6670]/70">BUDGET</p>
-        <h2 className="font-display text-display-md text-[#2A2D35] mt-1">Par semaine</h2>
+        <p className="text-eyebrow uppercase text-primary/70">BUDGET</p>
+        <h2 className="font-display text-display-md text-foreground mt-1">Par semaine</h2>
         <div className="mt-4 text-center">
-          <div className="font-display text-[40px] leading-none text-[#4A6670]">
+          <div className="font-display text-[40px] leading-none text-primary">
             {budget} $/sem
           </div>
         </div>
@@ -98,25 +98,25 @@ const Profil = () => {
             className="[&_[data-orientation=horizontal]]:h-1.5 [&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:bg-white [&_[role=slider]]:border-2 [&_[role=slider]]:border-primary [&_.bg-secondary]:bg-[#E8E8E4] [&_.bg-primary]:bg-primary"
           />
         </div>
-        <p className="mt-3 text-[12px] text-[#2A2D35]/60">
+        <p className="mt-3 text-[12px] text-foreground/60">
           Modifié → impact appliqué dès cette semaine
         </p>
       </section>
 
       {/* Google Calendar */}
       <section className="mx-4 mt-3 bg-white rounded-2xl shadow-card p-4">
-        <p className="text-eyebrow uppercase text-[#4A6670]/70">CALENDRIER</p>
+        <p className="text-eyebrow uppercase text-primary/70">CALENDRIER</p>
         <div className="mt-3 flex items-center gap-3">
           <span className="w-9 h-9 rounded-full bg-[hsl(var(--sage))]/30 inline-flex items-center justify-center shrink-0">
             <Calendar size={18} className="text-[hsl(var(--sage))]" strokeWidth={2} />
           </span>
           <div className="flex-1 min-w-0">
-            <p className="text-[14px] text-[#2A2D35]">Connecté</p>
-            <p className="text-[12px] text-[#2A2D35]/60 truncate">xavier@ulaval.ca</p>
+            <p className="text-[14px] text-foreground">Connecté</p>
+            <p className="text-[12px] text-foreground/60 truncate">xavier@ulaval.ca</p>
           </div>
           <button
             type="button"
-            className="px-3 h-9 rounded-lg border-[1.5px] border-[#4A6670] text-[13px] text-[#4A6670] font-medium"
+            className="px-3 h-9 rounded-lg border-[1.5px] border-primary text-[13px] text-primary font-medium"
           >
             Déconnecter
           </button>
@@ -125,16 +125,16 @@ const Profil = () => {
 
       {/* Comprendre le score */}
       <section className="mx-4 mt-3 bg-white rounded-2xl shadow-card p-4">
-        <p className="text-eyebrow uppercase text-[#4A6670]/70">SCORE NUTRI-SCORE</p>
+        <p className="text-eyebrow uppercase text-primary/70">SCORE NUTRI-SCORE</p>
         <ul className="mt-3 flex flex-col gap-2.5">
           {SCORE_LINES.map(({ score, label, text }) => (
             <li key={score} className="flex items-center gap-3">
               <Pill variant={`score-${score}` as any}>{label}</Pill>
-              <span className="text-[14px] text-[#2A2D35]">{text}</span>
+              <span className="text-[14px] text-foreground">{text}</span>
             </li>
           ))}
         </ul>
-        <p className="mt-4 text-[11px] text-[#2A2D35]/50">
+        <p className="mt-4 text-[11px] text-foreground/50">
           Source : OpenFoodFacts Canada, agrégé pour chaque recette.
         </p>
       </section>
@@ -143,17 +143,17 @@ const Profil = () => {
       <section className="mx-4 mt-3 bg-white rounded-2xl shadow-card overflow-hidden">
         <button
           type="button"
-          className="w-full flex items-center justify-between px-4 py-[14px] border-b border-[#E8E8E4] text-left"
+          className="w-full flex items-center justify-between px-4 py-[14px] border-b border-border text-left"
         >
-          <span className="text-[14px] text-[#2A2D35]">Envoyer du feedback</span>
-          <ChevronRight size={18} className="text-[#2A2D35]/40" />
+          <span className="text-[14px] text-foreground">Envoyer du feedback</span>
+          <ChevronRight size={18} className="text-foreground/40" />
         </button>
         <button
           type="button"
           className="w-full flex items-center justify-between px-4 py-[14px] text-left"
         >
-          <span className="text-[14px] text-[#2A2D35]">Conditions d'utilisation</span>
-          <ChevronRight size={18} className="text-[#2A2D35]/40" />
+          <span className="text-[14px] text-foreground">Conditions d'utilisation</span>
+          <ChevronRight size={18} className="text-foreground/40" />
         </button>
       </section>
 
@@ -161,7 +161,7 @@ const Profil = () => {
       <div className="mx-4 mt-6 mb-6">
         <button
           type="button"
-          className="w-full h-[52px] rounded-xl border-[1.5px] border-[#2A2D35]/40 text-[#2A2D35] font-medium text-base"
+          className="w-full h-[52px] rounded-xl border-[1.5px] border-foreground/40 text-foreground font-medium text-base"
         >
           Se déconnecter
         </button>

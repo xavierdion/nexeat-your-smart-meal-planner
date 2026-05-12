@@ -121,10 +121,10 @@ const Epicerie = () => {
   return (
     <div className="flex flex-col">
       {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-[#E8E8E4]">
-        <p className="text-eyebrow uppercase text-[#4A6670]/70">SEMAINE DU 17 MAI</p>
-        <h1 className="font-display text-display-xl text-[#2A2D35] mt-1">Ton épicerie</h1>
-        <p className="text-[14px] text-[#2A2D35]/60 mt-1">
+      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+        <p className="text-eyebrow uppercase text-primary/70">SEMAINE DU 17 MAI</p>
+        <h1 className="font-display text-display-xl text-foreground mt-1">Ton épicerie</h1>
+        <p className="text-[14px] text-foreground/60 mt-1">
           {totalItems} articles · {CATEGORIES.length} catégories
         </p>
       </header>
@@ -132,11 +132,11 @@ const Epicerie = () => {
       {/* Budget card */}
       <div className="mx-4 mt-4 bg-white rounded-2xl shadow-card p-4 flex justify-between items-start gap-4">
         <div className="flex-1 min-w-0">
-          <p className="text-eyebrow uppercase text-[#4A6670]/70">Budget hebdo</p>
-          <p className="font-display text-display-xl text-[#4A6670] mt-1 leading-none">94 $</p>
+          <p className="text-eyebrow uppercase text-primary/70">Budget hebdo</p>
+          <p className="font-display text-display-xl text-primary mt-1 leading-none">94 $</p>
           <div className="mt-2 flex items-center gap-1">
-            <AlertCircle size={12} className="text-[#E07A5F]" strokeWidth={2.5} />
-            <span className="text-[12px] text-[#E07A5F]">
+            <AlertCircle size={12} className="text-accent" strokeWidth={2.5} />
+            <span className="text-[12px] text-accent">
               Au-dessus de ton budget de 85 $ (+9 $)
             </span>
           </div>
@@ -144,11 +144,11 @@ const Epicerie = () => {
         <div className="shrink-0 flex flex-col items-end">
           <div className="w-20 h-2 rounded-full bg-[#F0F4F3] overflow-hidden">
             <div
-              className="h-full bg-[#E07A5F] rounded-full"
+              className="h-full bg-accent rounded-full"
               style={{ width: `${Math.min((94 / 85) * 100, 100)}%` }}
             />
           </div>
-          <span className="text-[10px] text-[#2A2D35]/50 mt-1">94/85</span>
+          <span className="text-[10px] text-foreground/50 mt-1">94/85</span>
         </div>
       </div>
 
@@ -157,7 +157,7 @@ const Epicerie = () => {
           <button
             type="button"
             onClick={() => setAdjustOpen(true)}
-            className="w-full h-11 rounded-xl border-[1.5px] border-[#4A6670] bg-white text-[#4A6670] text-[14px] font-semibold"
+            className="w-full h-11 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[14px] font-semibold"
           >
             Suggérer des ajustements
           </button>
@@ -184,7 +184,7 @@ const Epicerie = () => {
                   <button
                     type="button"
                     onClick={() => toggleCategory(cat)}
-                    className="ml-auto text-[12px] text-[#4A6670] underline"
+                    className="ml-auto text-[12px] text-primary underline"
                   >
                     {allChecked ? "Tout décocher" : "Tout cocher"}
                   </button>
@@ -209,8 +209,8 @@ const Epicerie = () => {
                       className={cn(
                         "shrink-0 w-[22px] h-[22px] rounded-full flex items-center justify-center transition-colors",
                         isChecked
-                          ? "bg-[#4A6670]"
-                          : "border-[1.5px] border-[#E8E8E4] bg-white",
+                          ? "bg-primary"
+                          : "border-[1.5px] border-border bg-white",
                       )}
                     >
                       {isChecked && <Check size={14} className="text-white" strokeWidth={3} />}
@@ -218,15 +218,15 @@ const Epicerie = () => {
                     <span className="flex-1 flex items-baseline gap-2 min-w-0">
                       <span
                         className={cn(
-                          "text-[15px] text-[#2A2D35] truncate",
+                          "text-[15px] text-foreground truncate",
                           isChecked && "line-through opacity-40",
                         )}
                       >
                         {item.name}
                       </span>
-                      <span className="text-[13px] text-[#2A2D35]/60 shrink-0">{item.qty}</span>
+                      <span className="text-[13px] text-foreground/60 shrink-0">{item.qty}</span>
                     </span>
-                    <span className="text-[13px] text-[#4A6670] font-medium shrink-0">{item.price}</span>
+                    <span className="text-[13px] text-primary font-medium shrink-0">{item.price}</span>
                   </button>
                 );
               })}
@@ -237,7 +237,7 @@ const Epicerie = () => {
 
       {/* Sticky bottom CTA */}
       <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40">
-        <button className="w-full h-12 rounded-xl border-[1.5px] border-[#4A6670] bg-white text-[#4A6670] text-[15px] font-semibold">
+        <button className="w-full h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[15px] font-semibold">
           Partager la liste
         </button>
       </div>
@@ -245,17 +245,17 @@ const Epicerie = () => {
 
       <Sheet open={adjustOpen} onOpenChange={setAdjustOpen}>
         <SheetContent side="bottom" className="rounded-t-[20px] max-h-[80vh] bg-white">
-          <SheetTitle className="font-display text-display-md text-[#2A2D35]">
+          <SheetTitle className="font-display text-display-md text-foreground">
             3 ajustements possibles
           </SheetTitle>
-          <p className="text-[13px] text-[#2A2D35]/60 mt-1">
+          <p className="text-[13px] text-foreground/60 mt-1">
             Pour rentrer dans ton budget de {BUDGET_TARGET} $
           </p>
           <div className="mt-4 flex flex-col gap-2">
             {ADJUSTMENTS.map((a) => (
               <label
                 key={a.id}
-                className="flex items-center gap-3 bg-white rounded-xl border border-[#E8E8E4] px-3 py-3 cursor-pointer"
+                className="flex items-center gap-3 bg-white rounded-xl border border-border px-3 py-3 cursor-pointer"
               >
                 <Checkbox
                   checked={!!adjustSelected[a.id]}
@@ -263,10 +263,10 @@ const Epicerie = () => {
                     setAdjustSelected((prev) => ({ ...prev, [a.id]: !!v }))
                   }
                 />
-                <span className="flex-1 text-[14px] text-[#2A2D35] leading-snug">
+                <span className="flex-1 text-[14px] text-foreground leading-snug">
                   {a.label}
                 </span>
-                <span className="text-[13px] text-[#E07A5F] font-semibold shrink-0">
+                <span className="text-[13px] text-accent font-semibold shrink-0">
                   {a.saving}
                 </span>
               </label>
@@ -275,7 +275,7 @@ const Epicerie = () => {
           <button
             type="button"
             onClick={applyAdjustments}
-            className="mt-5 w-full h-12 rounded-xl bg-[#E07A5F] text-white font-semibold text-[15px] shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+            className="mt-5 w-full h-12 rounded-xl bg-accent text-white font-semibold text-[15px] shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
           >
             Appliquer la sélection
           </button>

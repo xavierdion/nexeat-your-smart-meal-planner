@@ -27,7 +27,7 @@ const STEPS = [
 ];
 
 const Eyebrow = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
-  <p className={`text-eyebrow uppercase text-[#4A6670]/70 ${className}`}>{children}</p>
+  <p className={`text-eyebrow uppercase text-primary/70 ${className}`}>{children}</p>
 );
 
 const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
@@ -68,7 +68,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
                     "linear-gradient(135deg, #E8E2D8 0%, #C9B895 50%, #A8C5BC 100%)",
                 }}
               >
-                <Salad size={80} className="text-[#2A2D35]" style={{ opacity: 0.25 }} strokeWidth={1.5} />
+                <Salad size={80} className="text-foreground" style={{ opacity: 0.25 }} strokeWidth={1.5} />
               </div>
             )}
             {/* Bottom gradient overlay */}
@@ -84,33 +84,33 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
               className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center z-10"
               aria-label="Fermer"
             >
-              <X size={18} className="text-[#2A2D35]" />
+              <X size={18} className="text-foreground" />
             </button>
-            <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-[#2A2D35]">
+            <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
               <Clock size={11} strokeWidth={2} />
               <span>25 min</span>
-              <span className="text-[#2A2D35]/30">·</span>
+              <span className="text-foreground/30">·</span>
               <Utensils size={11} strokeWidth={2} />
               <span>1 portion</span>
-              <span className="text-[#2A2D35]/30">·</span>
+              <span className="text-foreground/30">·</span>
               <Pill variant="score-a">A</Pill>
             </div>
           </div>
 
           {/* Header block */}
           <div className="px-4 pt-5">
-            <p className="text-eyebrow uppercase text-[#2A2D35]/50">DÎNER · 12H30</p>
-            <h2 className="font-display text-display-lg text-[#2A2D35] mt-1 leading-snug">
+            <p className="text-eyebrow uppercase text-foreground/50">DÎNER · 12H30</p>
+            <h2 className="font-display text-display-lg text-foreground mt-1 leading-snug">
               Bol coréen bibimbap végétarien
             </h2>
-            <div className="flex gap-3 items-center text-[13px] text-[#2A2D35]/60 mt-2">
+            <div className="flex gap-3 items-center text-[13px] text-foreground/60 mt-2">
               <span className="flex items-center gap-1">
-                <Clock size={14} className="text-[#4A6670]/60" />
+                <Clock size={14} className="text-primary/60" />
                 25 min
               </span>
               <span>·</span>
               <span className="flex items-center gap-1">
-                <Users size={14} className="text-[#4A6670]/60" />
+                <Users size={14} className="text-primary/60" />
                 1 portion
               </span>
               <span>·</span>
@@ -142,10 +142,10 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
                 { label: "Lipides", value: "16 g" },
               ].map((p) => (
                 <div key={p.label} className="bg-surface-paper rounded-xl px-4 py-3">
-                  <div className="text-[11px] text-[#2A2D35]/50 uppercase tracking-wide">
+                  <div className="text-[11px] text-foreground/50 uppercase tracking-wide">
                     {p.label}
                   </div>
-                  <div className="font-display text-display-sm text-[#2A2D35] mt-0.5">
+                  <div className="font-display text-display-sm text-foreground mt-0.5">
                     {p.value}
                   </div>
                 </div>
@@ -164,8 +164,8 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
                     i !== INGREDIENTS.length - 1 ? "border-b border-[#F0F4F3]" : ""
                   }`}
                 >
-                  <span className="text-[14px] text-[#2A2D35]">{ing.name}</span>
-                  <span className="text-[14px] text-[#2A2D35]/60">{ing.qty}</span>
+                  <span className="text-[14px] text-foreground">{ing.name}</span>
+                  <span className="text-[14px] text-foreground/60">{ing.qty}</span>
                 </div>
               ))}
             </div>
@@ -177,10 +177,10 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
             <div className="px-4 flex flex-col gap-4">
               {STEPS.map((step, i) => (
                 <div key={i} className="flex gap-3">
-                  <div className="w-6 h-6 rounded-full bg-[#4A6670] text-white font-display text-[13px] font-bold flex items-center justify-center shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-primary text-white font-display text-[13px] font-bold flex items-center justify-center shrink-0">
                     {i + 1}
                   </div>
-                  <p className="text-[14px] text-[#2A2D35] leading-[1.6] flex-1">{step}</p>
+                  <p className="text-[14px] text-foreground leading-[1.6] flex-1">{step}</p>
                 </div>
               ))}
             </div>
@@ -188,7 +188,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
         </div>
 
         {/* Sticky CTA */}
-        <div className="sticky bottom-0 bg-white border-t border-[#E8E8E4] px-4 py-3">
+        <div className="sticky bottom-0 bg-white border-t border-border px-4 py-3">
           {onSwap ? (
             <div className="flex gap-2">
               <button
@@ -196,13 +196,13 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
                   onSwap();
                   onClose();
                 }}
-                className="flex-1 h-12 rounded-xl border-[1.5px] border-[#4A6670] bg-white text-[#4A6670] text-[16px] font-semibold"
+                className="flex-1 h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[16px] font-semibold"
               >
                 Échanger
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 h-12 rounded-xl bg-[#E07A5F] text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+                className="flex-1 h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
               >
                 Fermer
               </button>
@@ -210,7 +210,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
           ) : (
             <button
               onClick={onClose}
-              className="w-full h-12 rounded-xl bg-[#E07A5F] text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+              className="w-full h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
             >
               Fermer
             </button>

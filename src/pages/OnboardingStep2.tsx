@@ -44,11 +44,11 @@ const OnboardingStep2 = () => {
             {value} $⁄sem
           </div>
           {value < 60 ? (
-            <p className="mt-3 text-xs text-[#E07A5F]">
+            <p className="mt-3 text-xs text-accent">
               Très serré — repas simples privilégiés
             </p>
           ) : value > 160 ? (
-            <p className="mt-3 text-xs text-[#4A6670]">
+            <p className="mt-3 text-xs text-primary">
               Variété maximale possible
             </p>
           ) : (

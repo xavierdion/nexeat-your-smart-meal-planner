@@ -1,71 +1,90 @@
-## Problème
+# Migration des couleurs hardcodées vers tokens sémantiques
 
-Sur la timeline horizontale actuelle (`src/pages/Aujourdhui.tsx`), les labels des items proches dans le temps (12h Dîner / 13h IFT-2008 / 15h30 Souper) se chevauchent, et le label "Maintenant · 15h15" passe par-dessus les marqueurs voisins. Le format horizontal sur 7h→20h compresse trop d'information sur une seule ligne.
+## Phase 0 — Vérification (déjà faite)
 
-## Solution retenue : timeline verticale segmentée
+`src/index.css` confirme que les tokens HSL correspondent **exactement** aux hex de la palette canonique :
 
-Remplacer la barre horizontale par une **liste verticale chronologique** avec un rail à gauche, un marqueur par item, et le label/heure à droite. C'est le pattern naturel pour 5+ items horaires sur mobile (390px) — aucun chevauchement possible, lecture immédiate.
+| Token | HSL | Hex équivalent |
+|---|---|---|
+| `--background` | 60 14% 95% | #F5F5F0 ✓ |
+| `--foreground` | 222 11% 18% | #2A2D35 ✓ |
+| `--primary` | 199 17% 37% | #4A6670 ✓ |
+| `--secondary` | 165 24% 72% | #A8C5BC ✓ |
+| `--accent` | 14 67% 63% | #E07A5F ✓ |
+| `--border` | 56 11% 90% | #E8E8E4 ✓ |
 
-### Layout cible
+Les variables sont au format HSL brut (sans `hsl()`), donc les opacités Tailwind (`/50`, `/70`…) fonctionneront nativement. Migration sûre visuellement.
 
-```text
-│
-●  7h00     Déjeuner                    ✓ terminé
-│
-●  12h00    Dîner                       dans 2h30
-│
-◆  13h00    IFT-2008                    cours
-│
-┃ ← MAINTENANT · 15h15  (barre coral pleine sur le segment courant)
-│
-●  15h30    Souper                      ce soir
-│
-◆  18h00    Examen IFT-2008             événement
-│
+## Phase 1 — Audit complet (avant édition)
+
+Lancer un grep exhaustif pour inventorier tous les usages, y compris les variantes oubliées dans le prompt original :
+
+```
+rg -n "(text|bg|border|ring|from|to|via|fill|stroke|placeholder:text|divide|outline|shadow)-\[#(2A2D35|4A6670|E07A5F|A8C5BC|E8E8E4|F5F5F0)" src/
 ```
 
-### Spécifications visuelles
+Et aussi les hex inline en `style={{...}}` :
 
-- Container : `bg-white rounded-xl px-5 py-5 shadow-card`
-- Rail vertical : `absolute left-[22px] top-0 bottom-0 w-[2px] bg-[#E8E8E4]`
-- Segment "passé" (au-dessus du now indicator) : overlay `bg-[#E07A5F]/40` sur le rail
-- Items : `flex items-start gap-4 py-3` — marqueur 14px à gauche aligné sur le rail
-  - Repas terminé : cercle sage `#A8C5BC` + check blanc
-  - Repas à venir : cercle blanc bordure slate 2px
-  - Événement : losange coral `#E07A5F` 12px (rotate-45)
-- Colonne texte (droite du marqueur) :
-  - Heure `text-[11px] uppercase tracking-wide text-[#2A2D35]/50 font-semibold`
-  - Label `text-[14px] font-semibold text-[#2A2D35]` (ligne suivante)
-  - Statut secondaire `text-[12px] text-[#2A2D35]/60` (optionnel, à droite via `ml-auto`)
-- Items passés (sauf done explicite) : `opacity-60`
+```
+rg -n "#(2A2D35|4A6670|E07A5F|A8C5BC|E8E8E4|F5F5F0)" src/ -g '!index.css'
+```
 
-### Indicateur "Maintenant"
+## Phase 2 — Mapping appliqué
 
-Inséré comme une **rangée à part entière** entre les deux items qui encadrent `nowHour` :
-- Petite barre horizontale coral pleine `h-[2px] bg-[#E07A5F]` qui traverse depuis le rail
-- Pastille coral `w-3 h-3 rounded-full bg-[#E07A5F] ring-4 ring-[#E07A5F]/20` sur le rail
-- Label `MAINTENANT · 15h15` en `text-[11px] font-bold text-[#E07A5F] uppercase tracking-wide`
-- Si `nowHour < TL_START` → indicateur tout en haut, label "Bientôt"
-- Si `nowHour > TL_END` → indicateur tout en bas, label "Journée terminée"
+Mapping étendu (couvre les cas oubliés du prompt initial) :
 
-### Légende
+```
+text-[#2A2D35]       → text-foreground
+text-[#2A2D35]/NN    → text-foreground/NN
+bg-[#2A2D35]         → bg-foreground
+text-[#4A6670]       → text-primary
+text-[#4A6670]/NN    → text-primary/NN
+bg-[#4A6670]         → bg-primary
+border-[#4A6670]     → border-primary
+ring-[#4A6670]       → ring-primary
+text-[#E07A5F]       → text-accent
+bg-[#E07A5F]         → bg-accent
+border-[#E07A5F]     → border-accent
+ring-[#E07A5F]       → ring-accent
+text-[#A8C5BC]       → text-secondary
+bg-[#A8C5BC]         → bg-secondary
+border-[#A8C5BC]     → border-secondary
+border-[#E8E8E4]     → border-border
+bg-[#E8E8E4]         → bg-muted (équivalent visuel à confirmer cas par cas — fallback : laisser le hex)
+bg-[#F5F5F0]         → bg-background
+```
 
-Conservée telle quelle sous la timeline, avec border-top.
+**Inline `style={{ color: "#..." }}`** : laissés tels quels (hors scope CSS classes), sauf si trivialement remplaçables par une className.
 
-## Fichier modifié
+**Cas spécial `bg-[#E8E8E4]`** : `--muted` vaut `60 10% 90%` (proche mais pas identique à `#E8E8E4` qui est `56 11% 90%`). Conservera `border-border` pour bordures (exact), mais pour `bg-[#E8E8E4]` (ex. timeline rail), garder le hex pour préserver le diff visuel zéro. À retraiter dans un futur prompt si on aligne `--muted`.
 
-- `src/pages/Aujourdhui.tsx` uniquement — remplace le bloc `<div className="relative h-[110px]">...</div>` par la nouvelle structure verticale. Aucun changement aux données `TIMELINE`, ni aux MealCards, ni au reste de la page.
+## Phase 3 — Pilote sur 1 fichier
 
-## Hors scope
+Migrer **`src/pages/Profil.tsx`** en premier (plus simple, déjà partiellement tokenisé).
+Vérifier visuellement via screenshot avant/après. Valider, puis dérouler.
 
-- Pas de changement à `MealCard`, `RecipeSheet`, `SwapSheet`
-- Pas de changement aux données mock
-- Pas de changement à la page Semaine ni ailleurs
+## Phase 4 — Migration en lot
 
-## Critères de succès
+Ordre :
+1. `src/pages/Aujourdhui.tsx`
+2. `src/pages/Semaine.tsx`
+3. `src/pages/Epicerie.tsx`
+4. `src/pages/Onboarding.tsx`, `OnboardingStep2.tsx`, `OnboardingStep3.tsx`
+5. `src/components/MealCard.tsx`, `AppShell.tsx`, `RecipeSheet.tsx`, `SwapSheet.tsx`
+6. Balayer `src/components/ui/pill.tsx`, `editorial-section.tsx`, `ProactiveContextBlock.tsx`, `ScoreTooltip.tsx` au passage si touchés.
 
-1. Aucun chevauchement de texte, peu importe les heures des items
-2. Les 5 items restent visibles sans scroll interne
-3. L'indicateur "Maintenant" reste lisible et bien positionné chronologiquement
-4. Distinction visuelle repas (cercle) vs événement (losange) conservée
-5. Build passe
+## Phase 5 — Vérification finale
+
+```
+rg "(text|bg|border|ring|from|to|via|fill|stroke)-\[#(2A2D35|4A6670|E07A5F|A8C5BC|F5F5F0)\b" src/
+```
+→ doit retourner **0 ligne** (sauf `#E8E8E4` en `bg-` exception documentée).
+
+Build auto Lovable doit passer. QA visuelle rapide sur les 4 onglets principaux.
+
+## Hors scope (non touché)
+
+- Hex hors palette : `#FEF0ED`, `#F0F4F3`, `#FAFAF7`, `#1a1a1a`, `#E8F0EE`, `#E8E2D8`, `#D4C9B8`, etc.
+- `text-[hsl(var(--sage))]` déjà sémantique → laissé tel quel.
+- Styles inline `style={{ background: ... }}` du `PhotoPlaceholder`.
+- Aucune modification de spacing, hiérarchie, logique, ou structure JSX.

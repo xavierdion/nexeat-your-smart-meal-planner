@@ -7,16 +7,16 @@ const pillVariants = cva(
   {
     variants: {
       variant: {
-        category: "bg-[#F0F4F3] text-[#4A6670] font-medium px-[10px] py-[3px]",
-        new: "bg-[#FEF0ED] text-[#E07A5F] font-semibold px-[10px] py-[3px]",
-        proactive: "bg-[#E07A5F] text-white font-semibold px-[10px] py-[3px]",
-        veggie: "bg-[hsl(165_24%_72%_/_0.4)] text-[#2A2D35] font-medium px-[10px] py-[3px]",
+        category: "bg-[#F0F4F3] text-primary font-medium px-[10px] py-[3px]",
+        new: "bg-[#FEF0ED] text-accent font-semibold px-[10px] py-[3px]",
+        proactive: "bg-accent text-white font-semibold px-[10px] py-[3px]",
+        veggie: "bg-[hsl(165_24%_72%_/_0.4)] text-foreground font-medium px-[10px] py-[3px]",
         "score-a": "bg-[#3D9970] text-white font-bold px-[7px] py-[3px]",
         "score-b": "bg-[#7DC46A] text-white font-bold px-[7px] py-[3px]",
-        "score-c": "bg-[#F4C430] text-[#2A2D35] font-bold px-[7px] py-[3px]",
-        "score-d": "bg-[#E07A5F] text-white font-bold px-[7px] py-[3px]",
+        "score-c": "bg-[#F4C430] text-foreground font-bold px-[7px] py-[3px]",
+        "score-d": "bg-accent text-white font-bold px-[7px] py-[3px]",
         "score-e": "bg-[#C0392B] text-white font-bold px-[7px] py-[3px]",
-        "category-overlay": "bg-white/95 backdrop-blur-sm text-[#4A6670] font-medium px-[10px] py-[3px]",
+        "category-overlay": "bg-white/95 backdrop-blur-sm text-primary font-medium px-[10px] py-[3px]",
       },
     },
     defaultVariants: { variant: "category" },
