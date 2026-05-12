@@ -135,8 +135,8 @@ const Epicerie = () => {
           <p className="text-eyebrow uppercase text-primary/70">Budget hebdo</p>
           <p className="font-display text-display-xl text-primary mt-1 leading-none">94 $</p>
           <div className="mt-2 flex items-center gap-1">
-            <AlertCircle size={12} className="text-accent" strokeWidth={2.5} />
-            <span className="text-[12px] text-accent">
+            <AlertCircle size={12} className="text-warning" strokeWidth={2.5} />
+            <span className="text-[12px] text-warning">
               Au-dessus de ton budget de 85 $ (+9 $)
             </span>
           </div>
@@ -144,11 +144,11 @@ const Epicerie = () => {
         <div className="shrink-0 flex flex-col items-end">
           <div className="w-20 h-2 rounded-full bg-secondary/15 overflow-hidden">
             <div
-              className="h-full bg-accent rounded-full"
+              className="h-full bg-warning rounded-full"
               style={{ width: `${Math.min((94 / 85) * 100, 100)}%` }}
             />
           </div>
-          <span className="text-[10px] text-foreground/50 mt-1">94/85</span>
+          <span className="text-[10px] text-warning mt-1">94/85</span>
         </div>
       </div>
 
@@ -267,7 +267,7 @@ const Epicerie = () => {
                 <span className="flex-1 text-[14px] text-foreground leading-snug">
                   {a.label}
                 </span>
-                <span className="text-[13px] text-accent font-semibold shrink-0">
+                <span className="text-[13px] text-warning font-semibold shrink-0">
                   {a.saving}
                 </span>
               </label>

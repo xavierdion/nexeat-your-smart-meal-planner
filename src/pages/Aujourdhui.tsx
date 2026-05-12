@@ -160,7 +160,7 @@ const Aujourdhui = () => {
                     >
                       <div className="relative z-10 w-6 flex justify-center">
                         {isEvent ? (
-                          <div className="w-[12px] h-[12px] bg-accent rotate-45 rounded-[2px]" />
+                          <div className="w-[12px] h-[12px] bg-primary rotate-45 rounded-[2px]" />
                         ) : item.done ? (
                           <div className="w-[16px] h-[16px] rounded-full bg-secondary flex items-center justify-center">
                             {/* DOC: strokeWidth={3} — Check sur pastille sage 16px, lisibilité petit format */}
@@ -196,7 +196,7 @@ const Aujourdhui = () => {
               <span className="text-[11px] text-foreground/60">Repas</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-[10px] h-[10px] bg-accent rotate-45 rounded-[1px]" />
+              <div className="w-[10px] h-[10px] bg-primary rotate-45 rounded-[1px]" />
               <span className="text-[11px] text-foreground/60">Événement</span>
             </div>
           </div>
