@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { Calendar, Sun, ShoppingBag, User, BookOpen } from "lucide-react";
+import { Calendar, Sun, ShoppingBag, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const sideItems = [
@@ -8,7 +8,6 @@ const sideItems = [
 ] as const;
 
 const sideItemsRight = [
-  { to: "/recettes", label: "Recettes", icon: BookOpen },
   { to: "/profil", label: "Profil", icon: User },
 ] as const;
 
@@ -73,6 +72,7 @@ const AppShell = () => {
           </div>
 
           {renderSide(sideItemsRight)}
+          <div className="flex-1" aria-hidden />
         </nav>
       </div>
     </div>
