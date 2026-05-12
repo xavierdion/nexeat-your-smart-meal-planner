@@ -26,6 +26,8 @@ All colors MUST be HSL.
 
     --muted: 60 10% 90%;
     --muted-foreground: 222 8% 45%;
+    --text-muted: 222 11% 32%;          /* ~4.5:1 sur background */
+    --text-subtle: 222 11% 42%;         /* pour metadata, jamais < 12px */
 
     --accent: 14 67% 63%;              /* #E07A5F Coral */
     --accent-foreground: 0 0% 100%;
