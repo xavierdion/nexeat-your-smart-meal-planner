@@ -1,6 +1,6 @@
 import * as React from "react";
 import { motion, type PanInfo } from "framer-motion";
-import { Calendar, Clock, Coffee, Leaf, Salad, Utensils, type LucideIcon } from "lucide-react";
+import { Calendar, Clock, Coffee, Salad, Utensils, type LucideIcon } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
 
