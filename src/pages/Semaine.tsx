@@ -18,6 +18,9 @@ interface Meal {
   prep: string;
   badge?: string;
   isNew?: boolean;
+  batchId?: string;
+  batchPortions?: number;
+  restOf?: { batchId: string; name: string };
 }
 
 interface Day {
@@ -32,14 +35,14 @@ const DAYS: Day[] = [
     meals: [
       { type: "DÉJEUNER", name: "Smoothie bowl mangue-kefir-granola", category: "Végétarien", score: "A", prep: "10 min" },
       { type: "DÎNER", name: "Bol coréen bibimbap végétarien", category: "Nouveau pour toi", score: "A", prep: "25 min", badge: "Examen IFT-2008 ce soir — repas soutenu et digeste", isNew: true },
-      { type: "SOUPER", name: "Soupe miso riz edamames", category: "Végétarien", score: "A", prep: "12 min", badge: "Examen dans 2h — repas léger et digeste" },
+      { type: "SOUPER", name: "Soupe thaï aux lentilles", category: "Végétarien", score: "A", prep: "35 min", badge: "Examen dans 2h — repas léger et digeste", batchId: "thai", batchPortions: 4 },
     ],
   },
   {
     key: "mar", label: "Mar 18",
     meals: [
       { type: "DÉJEUNER", name: "Pancakes sarrasin-bleuets-sirop d'érable", category: "Sans viande", score: "B", prep: "20 min" },
-      { type: "DÎNER", name: "Salade thaï vermicelles-poulet-arachides", category: "Protéines", score: "B", prep: "20 min" },
+      { type: "DÎNER", name: "Soupe thaï aux lentilles", category: "Restes", score: "A", prep: "5 min", restOf: { batchId: "thai", name: "Soupe thaï aux lentilles" } },
       { type: "SOUPER", name: "Burrito bowl poulet-salsa-crème sure", category: "Protéines", score: "B", prep: "25 min", badge: "Session d'étude 6h ce soir — repas copieux avant de commencer" },
     ],
   },
@@ -47,7 +50,7 @@ const DAYS: Day[] = [
     key: "mer", label: "Mer 19",
     meals: [
       { type: "DÉJEUNER", name: "Açaï bowl amandes-banane-noix de coco", category: "Nouveau pour toi", score: "A", prep: "8 min", isNew: true },
-      { type: "DÎNER", name: "Poke bowl thon-mangue-avocat", category: "Oméga-3", score: "A", prep: "20 min" },
+      { type: "DÎNER", name: "Soupe thaï aux lentilles", category: "Restes", score: "A", prep: "5 min", restOf: { batchId: "thai", name: "Soupe thaï aux lentilles" } },
       { type: "SOUPER", name: "Cari pois chiches-épinards-lait de coco", category: "Végétarien", score: "A", prep: "30 min", badge: "Travail d'équipe IFT-2007 à 17h — souper avant 16h30" },
     ],
   },
@@ -56,14 +59,14 @@ const DAYS: Day[] = [
     meals: [
       { type: "DÉJEUNER", name: "Œufs bénédictine végé sur muffin anglais", category: "Protéines", score: "B", prep: "20 min" },
       { type: "DÎNER", name: "Ramen végétarien bouillon miso", category: "Végétarien", score: "B", prep: "25 min" },
-      { type: "SOUPER", name: "Tacos haricots noirs-maïs-salsa verde", category: "Végétarien", score: "B", prep: "20 min" },
+      { type: "SOUPER", name: "Dal de lentilles corail", category: "Végétarien", score: "A", prep: "30 min", batchId: "dal", batchPortions: 2 },
     ],
   },
   {
     key: "ven", label: "Ven 21",
     meals: [
       { type: "DÉJEUNER", name: "French toast cannelle-compote de pommes", category: "Sans viande", score: "B", prep: "15 min", badge: "Examen STT-1000 ce soir — bien démarrer la journée" },
-      { type: "DÎNER", name: "Wrap méditerranéen falafel-tzatziki", category: "Végétarien", score: "B", prep: "15 min", badge: "Fenêtre dîner 30 min — repas express prévu" },
+      { type: "DÎNER", name: "Dal de lentilles corail", category: "Restes", score: "A", prep: "5 min", restOf: { batchId: "dal", name: "Dal de lentilles corail" } },
       { type: "SOUPER", name: "Bol soba-tofu-sauce tahini-concombre", category: "Végétarien", score: "A", prep: "20 min", badge: "Examen dans 2h30 — énergie stable" },
     ],
   },
@@ -106,15 +109,36 @@ const ALTERNATIVES: Record<MealType, Meal[]> = {
 const TODAY_KEY = "lun";
 const COMPLETED_DAY_KEYS: string[] = [];
 
+// Mocked weekly calendar event count (≥3 → busy week)
+const WEEK_EVENT_COUNT = 4;
+
 const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
   const [recipeOpen, setRecipeOpen] = useState(false);
   const [swapOpen, setSwapOpen] = useState(false);
   const [mealAlternatives, setMealAlternatives] = useState<Record<string, number>>({});
   const [dismissedHint, setDismissedHint] = useState(false);
+  const [removedRestes, setRemovedRestes] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
   const { planAccepted, setPlanAccepted } = usePreferences();
   const day = DAYS.find((d) => d.key === activeKey)!;
+
+  const TOTAL_MEALS = 21;
+  const confirmedMeals = planAccepted ? TOTAL_MEALS : 14;
+  const progressPct = (confirmedMeals / TOTAL_MEALS) * 100;
+  const busyWeek = WEEK_EVENT_COUNT >= 3;
+
+  const removeReste = (dayKey: string, idx: number) => {
+    setRemovedRestes((prev) => {
+      const next = new Set(prev);
+      next.add(`${dayKey}-${idx}`);
+      return next;
+    });
+    toast("Reste retiré du plan", {
+      duration: 2000,
+      style: { background: "#2A2D35", color: "#fff", border: "none" },
+    });
+  };
 
   const handleAccept = () => {
     if (planAccepted) return;
@@ -150,6 +174,23 @@ const Semaine = () => {
   const dayHasContext = day.meals.some((m) => m.badge);
   const contextMeal = day.meals.find((m) => m.badge);
 
+  const visibleMeals = day.meals
+    .map((m, i) => ({ meal: m, idx: i }))
+    .filter(({ idx }) => !removedRestes.has(`${day.key}-${idx}`));
+
+  // Identify connection line range within the active day (source → last reste of same batch)
+  const batchInDay = (() => {
+    const source = visibleMeals.find((v) => v.meal.batchId);
+    if (!source) return null;
+    const lastReste = [...visibleMeals]
+      .reverse()
+      .find((v) => v.meal.restOf?.batchId === source.meal.batchId);
+    if (!lastReste) return null;
+    const sourcePos = visibleMeals.indexOf(source);
+    const lastPos = visibleMeals.indexOf(lastReste);
+    return sourcePos < lastPos ? { sourcePos, lastPos } : null;
+  })();
+
   return (
     <div className="flex flex-col">
       {/* Header éditorial */}
@@ -163,6 +204,24 @@ const Semaine = () => {
         <p className="text-[14px] text-[#2A2D35]/60 mt-1">
           21 repas alignés sur tes cours et examens
         </p>
+        {busyWeek && (
+          <span
+            className="inline-flex items-center mt-3 rounded-full bg-[#E07A5F] text-white text-[11px] font-medium px-3 py-1"
+          >
+            📅 Semaine chargée · Plan optimisé
+          </span>
+        )}
+        <div className="flex items-center gap-2 mt-3">
+          <div className="flex-1 h-[3px] rounded-full bg-[#A8C5BC]/30 overflow-hidden">
+            <div
+              className="h-full bg-[#4A6670] rounded-full transition-all"
+              style={{ width: `${progressPct}%` }}
+            />
+          </div>
+          <span className="text-[11px] text-[#2A2D35]/50 whitespace-nowrap">
+            {confirmedMeals}/{TOTAL_MEALS} repas confirmés
+          </span>
+        </div>
       </header>
 
       {/* Day pills */}
@@ -256,8 +315,17 @@ const Semaine = () => {
       </div>
 
       {/* Meals */}
-      <div className="pt-5 pb-2 px-4">
-        {day.meals.map((original, i) => {
+      <div className="pt-5 pb-2 px-4 relative">
+        {batchInDay && (
+          <div
+            className="absolute left-7 border-l border-dashed border-[#A8C5BC]/40 pointer-events-none"
+            style={{
+              top: `${batchInDay.sourcePos * 220 + 180}px`,
+              height: `${(batchInDay.lastPos - batchInDay.sourcePos) * 220 - 80}px`,
+            }}
+          />
+        )}
+        {visibleMeals.map(({ meal: original, idx: i }) => {
           const meal = getDisplayMeal(day.key, original);
           const isFirstDay = day.key === DAYS[0].key;
           const showHint = isFirstDay && i === 0 && !dismissedHint;
@@ -269,22 +337,45 @@ const Semaine = () => {
               : altIdx === 0
               ? "Choix original"
               : `Alternative ${altIdx}/3`;
+          const isReste = !!original.restOf;
+          const isBatchSource = !!original.batchId;
           return (
             <div key={i}>
-              <MealCard
-                variant="full"
-                draggable
-                mealType={meal.type}
-                title={meal.name}
-                category={meal.category}
-                isNew={meal.isNew}
-                prep={meal.prep}
-                score={meal.score}
-                proactiveContext={meal.badge}
-                onClick={() => setRecipeOpen(true)}
-                onSwipeLeft={() => cycleAlt(day.key, original.type, 1)}
-                onSwipeRight={() => cycleAlt(day.key, original.type, -1)}
-              />
+              <div className="relative">
+                <MealCard
+                  variant="full"
+                  draggable
+                  mealType={meal.type}
+                  title={meal.name}
+                  category={meal.category}
+                  isNew={meal.isNew && !isReste && !isBatchSource}
+                  prep={meal.prep}
+                  score={meal.score}
+                  proactiveContext={isReste ? undefined : meal.badge}
+                  onClick={() => setRecipeOpen(true)}
+                  onSwipeLeft={() =>
+                    isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, 1)
+                  }
+                  onSwipeRight={() =>
+                    isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, -1)
+                  }
+                />
+                {isBatchSource && (
+                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-[#4A6670] text-white text-[10px] font-bold px-3 py-1">
+                    ×{original.batchPortions} portions
+                  </span>
+                )}
+                {isReste && (
+                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-[#A8C5BC] text-[#2A2D35] text-[10px] font-medium px-3 py-1">
+                    🍱 Restes
+                  </span>
+                )}
+              </div>
+              {isReste && original.restOf && (
+                <p className="text-[11px] italic text-[#2A2D35]/55 -mt-3 mb-4 px-1">
+                  Restes de {original.restOf.name}
+                </p>
+              )}
               {altLabel && (
                 <div className="text-center text-[11px] uppercase tracking-wide text-[#4A6670] -mt-3 mb-5">
                   {altLabel}
