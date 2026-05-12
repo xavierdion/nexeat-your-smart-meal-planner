@@ -43,6 +43,9 @@ const Onboarding = () => {
           <span className="w-2 h-2 rounded-full bg-secondary" />
           <span className="w-2 h-2 rounded-full bg-secondary" />
         </div>
+        <p className="text-center text-[11px] uppercase tracking-wide text-foreground/50 mt-2 font-semibold">
+          Étape 1 sur 3
+        </p>
 
         <div className="mt-8 px-6 text-center">
           <h1 className="font-display text-display-lg text-foreground">

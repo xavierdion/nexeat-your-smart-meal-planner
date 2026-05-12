@@ -36,6 +36,9 @@ const OnboardingStep3 = () => {
           <span className="w-2 h-2 rounded-full bg-primary" />
           <span className="w-2 h-2 rounded-full bg-primary" />
         </div>
+        <p className="text-center text-[11px] uppercase tracking-wide text-foreground/50 mt-2 font-semibold">
+          Étape 3 sur 3
+        </p>
 
         <div className="mt-10 flex justify-center">
           <div
@@ -86,9 +89,9 @@ const OnboardingStep3 = () => {
           <button
             type="button"
             onClick={goNext}
-            className="text-sm text-foreground/60 underline"
+            className="text-xs text-foreground/40"
           >
-            Passer cette étape →
+            Continuer sans calendrier (suggestions génériques)
           </button>
         </div>
       </div>
