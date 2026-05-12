@@ -67,6 +67,7 @@ const AppShell = () => {
               aria-label={centerItem.label}
               className="absolute -top-5 flex items-center justify-center rounded-full bg-primary text-white shadow-md p-[14px] transition-transform active:scale-95"
             >
+              {/* DOC: size={26} hors grille — onglet central nav, 20% plus grand que les onglets flanquants (spec design) */}
               <centerItem.icon size={26} strokeWidth={2.25} />
             </NavLink>
           </div>
