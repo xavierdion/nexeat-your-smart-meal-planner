@@ -142,7 +142,7 @@ const Epicerie = () => {
           </div>
         </div>
         <div className="shrink-0 flex flex-col items-end">
-          <div className="w-20 h-2 rounded-full bg-[#F0F4F3] overflow-hidden">
+          <div className="w-20 h-2 rounded-full bg-secondary/15 overflow-hidden">
             <div
               className="h-full bg-accent rounded-full"
               style={{ width: `${Math.min((94 / 85) * 100, 100)}%` }}
@@ -202,7 +202,7 @@ const Epicerie = () => {
                     onClick={() => toggle(key)}
                     className={cn(
                       "w-full flex items-center gap-3 px-4 py-3 text-left",
-                      i !== cat.items.length - 1 && "border-b border-[#F0F4F3]",
+                      i !== cat.items.length - 1 && "border-b border-secondary/15",
                     )}
                   >
                     <span

@@ -58,7 +58,7 @@ const MEAL_ICONS: Record<MealType, LucideIcon> = {
 };
 
 const PLACEHOLDER_BG =
-  "linear-gradient(135deg, #E8E2D8 0%, #D4C9B8 100%)";
+  "linear-gradient(135deg, hsl(var(--photo-placeholder-from)) 0%, hsl(var(--photo-placeholder-to)) 100%)";
 
 function PhotoPlaceholder({
   mealType,
@@ -92,7 +92,7 @@ function PhotoPlaceholder({
 function StatusPill({ status }: { status: NonNullable<MealCardProps["status"]> }) {
   const styles =
     status.tone === "done"
-      ? "bg-[#E8F0EE] text-[#4A7060]"
+      ? "bg-secondary/20 text-primary"
       : status.tone === "active"
       ? "bg-accent text-white"
       : "bg-[#E8E8E4] text-foreground/60";
@@ -200,7 +200,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
         {/* Body */}
         <div className="bg-white px-4 py-4">
           {proactiveContext && (
-            <div className="flex items-center gap-2 bg-[#FEF0ED] text-accent rounded-[10px] px-3 py-2.5 mb-3">
+            <div className="flex items-center gap-2 bg-[hsl(var(--accent-soft))] text-accent rounded-[10px] px-3 py-2.5 mb-3">
               <Calendar size={14} className="shrink-0" />
               <span className="text-[12px] font-medium leading-tight">{proactiveContext}</span>
             </div>

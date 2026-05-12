@@ -7,8 +7,8 @@ const pillVariants = cva(
   {
     variants: {
       variant: {
-        category: "bg-[#F0F4F3] text-primary font-medium px-[10px] py-[3px]",
-        new: "bg-[#FEF0ED] text-accent font-semibold px-[10px] py-[3px]",
+        category: "bg-secondary/15 text-primary font-medium px-[10px] py-[3px]",
+        new: "bg-[hsl(var(--accent-soft))] text-accent font-semibold px-[10px] py-[3px]",
         proactive: "bg-accent text-white font-semibold px-[10px] py-[3px]",
         veggie: "bg-[hsl(165_24%_72%_/_0.4)] text-foreground font-medium px-[10px] py-[3px]",
         "score-a": "bg-[#3D9970] text-white font-bold px-[7px] py-[3px]",

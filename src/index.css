@@ -34,6 +34,13 @@ All colors MUST be HSL.
     --slate: 199 17% 37%;
     --sage: 165 24% 72%;
 
+    /* Soft variant of accent (coral) — used for proactive badge backgrounds (#FCEEE8 ≈ #FEF0ED) */
+    --accent-soft: 14 67% 95%;
+
+    /* Photo placeholder beige gradient stops (MealCard / RecipeSheet) */
+    --photo-placeholder-from: 36 27% 88%;  /* #E8E2D8 */
+    --photo-placeholder-to:   34 28% 78%;  /* #D4C9B8 */
+
     --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
 
@@ -84,6 +91,7 @@ All colors MUST be HSL.
     --muted-foreground: 222 8% 45%;
     --accent: 14 67% 63%;
     --accent-foreground: 0 0% 100%;
+    --accent-soft: 14 67% 95%;
     --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
     --border: 56 11% 90%;
