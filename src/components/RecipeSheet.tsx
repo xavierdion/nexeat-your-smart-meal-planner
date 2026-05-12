@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { X, Salad, Clock, Users, Utensils } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
-import ProactiveContextBlock from "@/components/ProactiveContextBlock";
 
 interface Props {
   open: boolean;
@@ -118,19 +117,6 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
               <span>·</span>
               <span>540 kcal</span>
             </div>
-          </div>
-
-          {/* Pourquoi ce repas */}
-          <div className="mx-4 mt-5">
-            <Eyebrow className="mb-2">Pourquoi ce repas ?</Eyebrow>
-            <ProactiveContextBlock
-              variant="banner"
-              eventTitle="Examen IFT-2008"
-              eventTime="18h"
-              mealLabel="Dîner"
-              mealTime="12h30"
-              rationale="Bibimbap végétarien — protéines complexes (œuf + tofu) pour soutenir ta concentration sans pic glycémique. Léger sur l'estomac avant l'examen."
-            />
           </div>
 
           {/* Macros */}
