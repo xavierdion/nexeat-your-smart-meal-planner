@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { X, Salad, Clock, Users } from "lucide-react";
+import { X, Salad, Clock, Users, Utensils } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
-import ScoreTooltip from "@/components/ScoreTooltip";
 import ProactiveContextBlock from "@/components/ProactiveContextBlock";
 
 interface Props {
@@ -87,11 +86,14 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
             >
               <X size={18} className="text-[#2A2D35]" />
             </button>
-            <span className="absolute bottom-3 left-4 inline-flex items-center rounded-[6px] text-[11px] leading-none font-medium px-[10px] py-[3px] bg-white/95 backdrop-blur-sm text-[#4A6670]">
-              Végétarien
-            </span>
-            <div className="absolute bottom-3 right-4">
-              <ScoreTooltip score="A" />
+            <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-[#2A2D35]">
+              <Clock size={11} strokeWidth={2} />
+              <span>25 min</span>
+              <span className="text-[#2A2D35]/30">·</span>
+              <Utensils size={11} strokeWidth={2} />
+              <span>1 portion</span>
+              <span className="text-[#2A2D35]/30">·</span>
+              <Pill variant="score-a">A</Pill>
             </div>
           </div>
 
