@@ -65,7 +65,8 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
                 className="w-full h-full flex items-center justify-center relative"
                 style={{
                   background:
-                    "linear-gradient(135deg, #E8E2D8 0%, #C9B895 50%, #A8C5BC 100%)",
+                    // DOC: dégradé décoratif placeholder hero recipe — stops tokenisés (beige clair → beige doré → sage). #C9B895 = mid-stop décoratif sans équivalent dans la palette canonique.
+                    "linear-gradient(135deg, hsl(var(--photo-placeholder-from)) 0%, #C9B895 50%, hsl(var(--secondary)) 100%)",
                 }}
               >
                 <Salad size={80} className="text-foreground" style={{ opacity: 0.25 }} strokeWidth={1.5} />
