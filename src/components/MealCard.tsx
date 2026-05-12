@@ -58,7 +58,7 @@ const MEAL_ICONS: Record<MealType, LucideIcon> = {
 };
 
 const PLACEHOLDER_BG =
-  "linear-gradient(135deg, #E8E2D8 0%, #D4C9B8 100%)";
+  "linear-gradient(135deg, hsl(var(--photo-placeholder-from)) 0%, hsl(var(--photo-placeholder-to)) 100%)";
 
 function PhotoPlaceholder({
   mealType,
