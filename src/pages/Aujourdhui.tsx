@@ -163,6 +163,7 @@ const Aujourdhui = () => {
                           <div className="w-[12px] h-[12px] bg-accent rotate-45 rounded-[2px]" />
                         ) : item.done ? (
                           <div className="w-[16px] h-[16px] rounded-full bg-secondary flex items-center justify-center">
+                            {/* DOC: strokeWidth={3} — Check sur pastille sage 16px, lisibilité petit format */}
                             <Check size={12} className="text-white" strokeWidth={3} />
                           </div>
                         ) : (
