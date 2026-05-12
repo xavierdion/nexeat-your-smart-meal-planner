@@ -37,6 +37,14 @@ All colors MUST be HSL.
     /* Soft variant of accent (coral) — used for proactive badge backgrounds (#FCEEE8 ≈ #FEF0ED) */
     --accent-soft: 14 67% 95%;
 
+    /* Warning — alertes budget / dépassements (orange brûlé, distinct du coral CTA) */
+    --warning: 28 75% 52%;             /* #D9822B */
+    --warning-foreground: 0 0% 100%;
+    --warning-soft: 28 75% 92%;        /* #FCEAD8 */
+
+    /* Score E — rouge-brun, distinct du coral */
+    --score-e: 8 65% 47%;              /* #C44B3F */
+
     /* Photo placeholder beige gradient stops (MealCard / RecipeSheet) */
     --photo-placeholder-from: 36 27% 88%;  /* #E8E2D8 */
     --photo-placeholder-to:   34 28% 78%;  /* #D4C9B8 */
@@ -92,6 +100,10 @@ All colors MUST be HSL.
     --accent: 14 67% 63%;
     --accent-foreground: 0 0% 100%;
     --accent-soft: 14 67% 95%;
+    --warning: 28 75% 52%;
+    --warning-foreground: 0 0% 100%;
+    --warning-soft: 28 75% 92%;
+    --score-e: 8 65% 47%;
     --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
     --border: 56 11% 90%;
