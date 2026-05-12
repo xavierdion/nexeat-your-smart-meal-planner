@@ -19,11 +19,11 @@ const RESTRICTIONS = [
 const NONE = "Aucune restriction";
 
 const SCORE_LINES: { score: "a" | "b" | "c" | "d" | "e"; label: string; text: string }[] = [
-  { score: "a", label: "A", text: "Profil nutritionnel optimal" },
-  { score: "b", label: "B", text: "Bon profil nutritionnel" },
-  { score: "c", label: "C", text: "Profil moyen" },
-  { score: "d", label: "D", text: "À limiter" },
-  { score: "e", label: "E", text: "À éviter régulièrement" },
+  { score: "a", label: "A", text: "Recette très équilibrée" },
+  { score: "b", label: "B", text: "Recette bien équilibrée" },
+  { score: "c", label: "C", text: "Équilibre moyen" },
+  { score: "d", label: "D", text: "À garder pour les occasions" },
+  { score: "e", label: "E", text: "À garder rare" },
 ];
 
 const Profil = () => {
@@ -125,7 +125,7 @@ const Profil = () => {
 
       {/* Comprendre le score */}
       <section className="mx-4 mt-3 bg-white rounded-2xl shadow-card p-4">
-        <p className="text-eyebrow uppercase text-primary/70">SCORE NUTRI-SCORE</p>
+        <p className="text-eyebrow uppercase text-primary/70">ÉQUILIBRE CULINAIRE</p>
         <ul className="mt-3 flex flex-col gap-2.5">
           {SCORE_LINES.map(({ score, label, text }) => (
             <li key={score} className="flex items-center gap-3">
@@ -135,7 +135,7 @@ const Profil = () => {
           ))}
         </ul>
         <p className="mt-4 text-[11px] text-foreground/50">
-          Source : OpenFoodFacts Canada, agrégé pour chaque recette.
+          Indice agrégé à partir des ingrédients via Open Food Facts.
         </p>
       </section>
 

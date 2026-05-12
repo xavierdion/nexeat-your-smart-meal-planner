@@ -21,7 +21,7 @@ const ScoreTooltip = ({ score, className }: ScoreTooltipProps) => {
           type="button"
           onClick={(e) => e.stopPropagation()}
           className={cn("inline-flex outline-none", className)}
-          aria-label={`Score Nutri-Score ${score}`}
+          aria-label={`Indice d'équilibre ${score}`}
         >
           <Pill variant={variant}>{score}</Pill>
         </button>
@@ -32,12 +32,12 @@ const ScoreTooltip = ({ score, className }: ScoreTooltipProps) => {
         className="z-50 w-auto max-w-[240px] rounded-xl border-0 bg-white p-3 shadow-card"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="text-[13px] font-semibold text-foreground">Score Nutri-Score</p>
+        <p className="text-[13px] font-semibold text-foreground">Équilibre culinaire</p>
         <p className="mt-1 text-[12px] text-foreground/70 leading-relaxed">
-          Adapté à la recette complète
+          Calculé sur l'ensemble des ingrédients
         </p>
         <div className="my-2 h-px bg-[#E8E8E4]" />
-        <p className="text-[11px] text-foreground/50">Source : OpenFoodFacts Canada</p>
+        <p className="text-[11px] text-foreground/50">Données : Open Food Facts</p>
         <Link
           to="/profil"
           className="mt-2 inline-block text-[12px] text-[hsl(var(--coral))] underline"
