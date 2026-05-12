@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Pill } from "@/components/ui/pill";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Checkbox } from "@/components/ui/checkbox";
+import { usePreferences } from "@/contexts/PreferencesContext";
 
 interface Item {
   name: string;
@@ -80,8 +81,6 @@ const CATEGORY_ICONS: Record<string, typeof Apple> = {
   "Herbes et condiments": Leaf,
 };
 
-const BUDGET_TARGET = 85;
-const BUDGET_CURRENT = 94;
 
 const ADJUSTMENTS = [
   { id: "tofu", label: "Remplacer poulet 500g par tofu 400g", saving: "-3,50 $" },
@@ -90,6 +89,9 @@ const ADJUSTMENTS = [
 ];
 
 const Epicerie = () => {
+  const { budget } = usePreferences();
+  const BUDGET_TARGET = budget;
+  const BUDGET_CURRENT = budget + 9;
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [adjustOpen, setAdjustOpen] = useState(false);
   const [adjustSelected, setAdjustSelected] = useState<Record<string, boolean>>({});
