@@ -13,6 +13,7 @@ import Semaine from "./pages/Semaine";
 import Aujourdhui from "./pages/Aujourdhui";
 import Epicerie from "./pages/Epicerie";
 import Profil from "./pages/Profil";
+import Recettes from "./pages/Recettes";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/semaine" element={<Semaine />} />
             <Route path="/aujourd-hui" element={<Aujourdhui />} />
             <Route path="/epicerie" element={<Epicerie />} />
+            <Route path="/recettes" element={<Recettes />} />
             <Route path="/profil" element={<Profil />} />
           </Route>
           <Route path="*" element={<NotFound />} />
