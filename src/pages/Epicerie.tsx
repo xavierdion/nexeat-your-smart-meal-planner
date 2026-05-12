@@ -213,6 +213,7 @@ const Epicerie = () => {
                           : "border-[1.5px] border-border bg-white",
                       )}
                     >
+                      {/* DOC: strokeWidth={3} — Check checkbox petit format, lisibilité */}
                       {isChecked && <Check size={14} className="text-white" strokeWidth={3} />}
                     </span>
                     <span className="flex-1 flex items-baseline gap-2 min-w-0">
