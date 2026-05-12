@@ -40,10 +40,10 @@ function InfoBanner({
     | "score-a" | "score-b" | "score-c" | "score-d" | "score-e";
   return (
     <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
-      <Clock size={11} className="text-foreground" strokeWidth={2} />
+      <Clock size={12} className="text-foreground" strokeWidth={2} />
       <span>{prep}</span>
       <span className="text-foreground/30">·</span>
-      <Utensils size={11} className="text-foreground" strokeWidth={2} />
+      <Utensils size={12} className="text-foreground" strokeWidth={2} />
       <span>{portions}</span>
       <span className="text-foreground/30">·</span>
       <Pill variant={scoreVariant}>{score}</Pill>
@@ -163,10 +163,10 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
               {title}
             </h3>
             <div className="flex items-center gap-2 mt-2 text-[11px] text-foreground">
-              <Clock size={11} strokeWidth={2} />
+              <Clock size={12} strokeWidth={2} />
               <span>{prep}</span>
               <span className="text-foreground/30">·</span>
-              <Utensils size={11} strokeWidth={2} />
+              <Utensils size={12} strokeWidth={2} />
               <span>{portions}</span>
               <span className="text-foreground/30">·</span>
               <Pill variant={`score-${score.toLowerCase()}` as "score-a"}>{score}</Pill>

@@ -21,7 +21,7 @@ const OnboardingStep2 = () => {
           onClick={() => navigate("/onboarding")}
           className="absolute top-4 left-2 w-11 h-11 inline-flex items-center justify-center text-foreground"
         >
-          <ChevronLeft size={24} />
+          <ChevronLeft size={22} />
         </button>
 
         <div className="flex items-center justify-center gap-2 mt-[60px]">

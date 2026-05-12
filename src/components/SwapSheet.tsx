@@ -119,7 +119,7 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
             ALTERNATIVES — {contextLabel}
           </span>
           <button onClick={onClose} className="text-foreground -mt-1">
-            <X size={24} />
+            <X size={22} />
           </button>
         </div>
 
@@ -160,7 +160,7 @@ const SwapSheet = ({ open, onClose, contextLabel, onConfirm }: Props) => {
 
               <div className="mt-4 flex flex-col items-center gap-3">
                 <div className="w-20 h-20 rounded-[14px] bg-secondary/15 flex items-center justify-center">
-                  <ImageIcon size={32} className="text-primary/40" />
+                  <ImageIcon size={28} className="text-primary/40" />
                 </div>
                 <h3 className="font-display text-[20px] text-foreground text-center leading-snug px-2">
                   {current.name}

@@ -34,7 +34,7 @@ const Generation = () => {
           className="w-20 h-20 rounded-full bg-primary flex items-center justify-center"
           style={{ animation: "nexeat-pulse 1.2s ease-in-out infinite" }}
         >
-          <Utensils size={32} className="text-white" />
+          <Utensils size={28} className="text-white" />
         </div>
 
         <h1 className="mt-6 font-display text-[28px] text-foreground text-center">

@@ -45,10 +45,10 @@ function RecipeCard({ recipe, saved }: { recipe: Recipe; saved?: boolean }) {
           </div>
         )}
         <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-2 gap-1.5 text-[10px] text-foreground">
-          <Clock size={10} strokeWidth={2} />
+          <Clock size={12} strokeWidth={2} />
           <span>{recipe.prep}</span>
           <span className="text-foreground/30">·</span>
-          <Utensils size={10} strokeWidth={2} />
+          <Utensils size={12} strokeWidth={2} />
           <span>{recipe.portions}</span>
           <span className="ml-auto"><ScorePill score={recipe.score} /></span>
         </div>
@@ -72,7 +72,7 @@ function EmptyState({
   return (
     <div className="flex flex-col items-center text-center px-6 pt-10">
       <div className="w-20 h-20 rounded-full bg-secondary/40 flex items-center justify-center mb-4">
-        <Bookmark size={32} className="text-primary" strokeWidth={1.75} />
+        <Bookmark size={28} className="text-primary" strokeWidth={1.75} />
       </div>
       <p className="text-[14px] text-foreground/60 max-w-[280px]">{title}</p>
       {cta && <div className="mt-4">{cta}</div>}
@@ -326,7 +326,7 @@ const Recettes = () => {
             >
               {importing ? (
                 <>
-                  <Loader2 size={16} className="animate-spin" /> Import en cours…
+                  <Loader2 size={14} className="animate-spin" /> Import en cours…
                 </>
               ) : (
                 "Importer"
@@ -354,7 +354,7 @@ const Recettes = () => {
               <span className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-white rounded-br-2xl" />
               {capturing && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-white">
-                  <Loader2 size={32} className="animate-spin" />
+                  <Loader2 size={28} className="animate-spin" />
                   <span className="text-[13px] font-medium">Analyse en cours…</span>
                 </div>
               )}

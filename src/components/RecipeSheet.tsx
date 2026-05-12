@@ -88,10 +88,10 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
               <X size={18} className="text-foreground" />
             </button>
             <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
-              <Clock size={11} strokeWidth={2} />
+              <Clock size={12} strokeWidth={2} />
               <span>25 min</span>
               <span className="text-foreground/30">·</span>
-              <Utensils size={11} strokeWidth={2} />
+              <Utensils size={12} strokeWidth={2} />
               <span>1 portion</span>
               <span className="text-foreground/30">·</span>
               <Pill variant="score-a">A</Pill>
