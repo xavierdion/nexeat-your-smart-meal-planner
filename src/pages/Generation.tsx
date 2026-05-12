@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Utensils } from "lucide-react";
 
 const MESSAGES = [
-  "Examen IFT-2008 detecte lundi soir — repas digeste planifie",
-  "Session d'etude mardi 16h — souper haute energie ajuste",
-  "Budget 85$ — plan optimise a 94$ avec zero gaspillage",
-  "Presque pret...",
+  "Examen IFT-2008 détecté lundi soir — repas digeste planifié",
+  "Session d'étude mardi 16h — souper haute énergie ajusté",
+  "Budget 85 $ — plan optimisé à 94 $ avec zéro gaspillage",
+  "Presque prêt…",
 ];
 
 const Generation = () => {

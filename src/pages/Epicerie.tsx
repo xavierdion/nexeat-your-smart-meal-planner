@@ -63,7 +63,7 @@ const CATEGORIES: { name: string; items: Item[] }[] = [
   {
     name: "Herbes et condiments",
     items: [
-      { name: "Ail", qty: "1 tete", price: "0,99 $" },
+      { name: "Ail", qty: "1 tête", price: "0,99 $" },
       { name: "Gingembre frais", qty: "1x", price: "1,49 $" },
     ],
   },
