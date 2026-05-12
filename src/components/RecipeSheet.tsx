@@ -203,7 +203,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+                className="flex-1 h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-cta"
               >
                 Fermer
               </button>
@@ -211,7 +211,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
           ) : (
             <button
               onClick={onClose}
-              className="w-full h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+              className="w-full h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-cta"
             >
               Fermer
             </button>
