@@ -72,6 +72,7 @@ function EmptyState({
   return (
     <div className="flex flex-col items-center text-center px-6 pt-10">
       <div className="w-20 h-20 rounded-full bg-secondary/40 flex items-center justify-center mb-4">
+        {/* DOC: strokeWidth={1.75} — Bookmark hero empty state, trait fin volontaire */}
         <Bookmark size={28} className="text-primary" strokeWidth={1.75} />
       </div>
       <p className="text-[14px] text-foreground/60 max-w-[280px]">{title}</p>
