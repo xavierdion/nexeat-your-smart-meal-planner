@@ -69,6 +69,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
                     "linear-gradient(135deg, hsl(var(--photo-placeholder-from)) 0%, #C9B895 50%, hsl(var(--secondary)) 100%)",
                 }}
               >
+                {/* DOC: hero placeholder — size={80} et strokeWidth={1.5} décoratifs, hors grille standard */}
                 <Salad size={80} className="text-foreground" style={{ opacity: 0.25 }} strokeWidth={1.5} />
               </div>
             )}
@@ -88,10 +89,10 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
               <X size={18} className="text-foreground" />
             </button>
             <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
-              <Clock size={11} strokeWidth={2} />
+              <Clock size={12} strokeWidth={2} />
               <span>25 min</span>
               <span className="text-foreground/30">·</span>
-              <Utensils size={11} strokeWidth={2} />
+              <Utensils size={12} strokeWidth={2} />
               <span>1 portion</span>
               <span className="text-foreground/30">·</span>
               <Pill variant="score-a">A</Pill>
@@ -203,7 +204,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+                className="flex-1 h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-cta"
               >
                 Fermer
               </button>
@@ -211,7 +212,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
           ) : (
             <button
               onClick={onClose}
-              className="w-full h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+              className="w-full h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-cta"
             >
               Fermer
             </button>

@@ -399,7 +399,7 @@ const Semaine = () => {
             "w-full h-[52px] rounded-xl text-white text-[16px] font-semibold transition-colors duration-300",
             planAccepted
               ? "bg-secondary cursor-default"
-              : "bg-accent shadow-[0_4px_16px_rgba(224,122,95,0.25)]",
+              : "bg-accent shadow-cta",
           )}
         >
           {planAccepted ? "Plan accepté ✓" : "Tout accepter ce plan"}

@@ -213,6 +213,7 @@ const Epicerie = () => {
                           : "border-[1.5px] border-border bg-white",
                       )}
                     >
+                      {/* DOC: strokeWidth={3} — Check checkbox petit format, lisibilité */}
                       {isChecked && <Check size={14} className="text-white" strokeWidth={3} />}
                     </span>
                     <span className="flex-1 flex items-baseline gap-2 min-w-0">
@@ -275,7 +276,7 @@ const Epicerie = () => {
           <button
             type="button"
             onClick={applyAdjustments}
-            className="mt-5 w-full h-12 rounded-xl bg-accent text-white font-semibold text-[15px] shadow-[0_4px_16px_rgba(224,122,95,0.25)]"
+            className="mt-5 w-full h-12 rounded-xl bg-accent text-white font-semibold text-[15px] shadow-cta"
           >
             Appliquer la sélection
           </button>

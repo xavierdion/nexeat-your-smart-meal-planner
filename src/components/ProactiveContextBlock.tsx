@@ -35,7 +35,7 @@ export const ProactiveContextBlock: React.FC<Props> = (props) => {
     <div className="bg-surface-cool rounded-2xl p-4 flex flex-col gap-3">
       {/* Header */}
       <div className="flex items-center gap-1.5">
-        <Calendar size={16} className="text-accent" />
+        <Calendar size={14} className="text-accent" />
         <span className="text-eyebrow uppercase text-accent">
           Contexte calendrier
         </span>

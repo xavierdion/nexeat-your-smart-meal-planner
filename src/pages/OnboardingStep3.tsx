@@ -28,7 +28,7 @@ const OnboardingStep3 = () => {
           onClick={() => navigate("/onboarding/2")}
           className="absolute top-4 left-2 w-11 h-11 inline-flex items-center justify-center text-foreground"
         >
-          <ChevronLeft size={24} />
+          <ChevronLeft size={22} />
         </button>
 
         <div className="flex items-center justify-center gap-2 mt-[60px]">
@@ -41,6 +41,7 @@ const OnboardingStep3 = () => {
           <div
             className="w-[120px] h-[120px] rounded-3xl flex items-center justify-center bg-secondary/15"
           >
+            {/* DOC: hero icon — size={48} et strokeWidth={1.75} hors grille, illustration onboarding */}
             <Calendar size={48} className="text-primary" strokeWidth={1.75} />
           </div>
         </div>
@@ -58,6 +59,7 @@ const OnboardingStep3 = () => {
           {PERMISSIONS.map((p) => (
             <li key={p} className="flex items-center gap-3">
               <span className="w-5 h-5 rounded-full bg-secondary inline-flex items-center justify-center shrink-0">
+                {/* DOC: strokeWidth={3} — Check sur badge sage 14px, lisibilité petit format */}
                 <Check size={12} strokeWidth={3} className="text-white" />
               </span>
               <span className="text-sm text-foreground">{p}</span>
