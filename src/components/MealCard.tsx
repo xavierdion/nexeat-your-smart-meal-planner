@@ -7,6 +7,53 @@ import { cn } from "@/lib/utils";
 type Score = "A" | "B" | "C" | "D" | "E";
 type MealType = "DÉJEUNER" | "DÎNER" | "SOUPER";
 
+const SCORE_TEXT: Record<Score, string> = {
+  A: "Recette très équilibrée",
+  B: "Recette bien équilibrée",
+  C: "Équilibre moyen",
+  D: "À consommer à l'occasion",
+  E: "À limiter dans le plan",
+};
+
+function ScorePillWithTooltip({ score }: { score: Score }) {
+  const [open, setOpen] = React.useState(false);
+  const variant = `score-${score.toLowerCase()}` as
+    | "score-a" | "score-b" | "score-c" | "score-d" | "score-e";
+  React.useEffect(() => {
+    if (!open) return;
+    const handler = () => setOpen(false);
+    const t = setTimeout(() => document.addEventListener("click", handler), 0);
+    return () => {
+      clearTimeout(t);
+      document.removeEventListener("click", handler);
+    };
+  }, [open]);
+  return (
+    <span
+      className="relative inline-flex"
+      onClick={(e) => {
+        e.stopPropagation();
+        setOpen((v) => !v);
+      }}
+    >
+      <Pill variant={variant}>{score}</Pill>
+      {open && (
+        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 z-50 whitespace-nowrap bg-foreground text-background text-[11px] rounded-lg px-3 py-2">
+          {SCORE_TEXT[score]}
+          <span
+            className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0"
+            style={{
+              borderLeft: "5px solid transparent",
+              borderRight: "5px solid transparent",
+              borderTop: "5px solid hsl(var(--foreground))",
+            }}
+          />
+        </span>
+      )}
+    </span>
+  );
+}
+
 export interface MealCardProps {
   variant?: "full" | "compact";
   mealType: MealType;
@@ -36,8 +83,6 @@ function InfoBanner({
   portions: string;
   score: Score;
 }) {
-  const scoreVariant = `score-${score.toLowerCase()}` as
-    | "score-a" | "score-b" | "score-c" | "score-d" | "score-e";
   return (
     <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
       <Clock size={12} className="text-foreground" strokeWidth={2} />
@@ -46,7 +91,7 @@ function InfoBanner({
       <Utensils size={12} className="text-foreground" strokeWidth={2} />
       <span>{portions}</span>
       <span className="text-foreground/30">·</span>
-      <Pill variant={scoreVariant}>{score}</Pill>
+      <ScorePillWithTooltip score={score} />
     </div>
   );
 }
@@ -170,7 +215,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
               <Utensils size={12} strokeWidth={2} />
               <span>{portions}</span>
               <span className="text-foreground/30">·</span>
-              <Pill variant={`score-${score.toLowerCase()}` as "score-a"}>{score}</Pill>
+              <ScorePillWithTooltip score={score} />
             </div>
           </div>
         </div>
