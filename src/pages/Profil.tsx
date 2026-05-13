@@ -22,8 +22,8 @@ const SCORE_LINES: { score: "a" | "b" | "c" | "d" | "e"; label: string; text: st
   { score: "a", label: "A", text: "Recette très équilibrée" },
   { score: "b", label: "B", text: "Recette bien équilibrée" },
   { score: "c", label: "C", text: "Équilibre moyen" },
-  { score: "d", label: "D", text: "À garder pour les occasions" },
-  { score: "e", label: "E", text: "À garder rare" },
+  { score: "d", label: "D", text: "Choix occasionnel" },
+  { score: "e", label: "E", text: "Recette plaisir" },
 ];
 
 const Profil = () => {
@@ -135,6 +135,9 @@ const Profil = () => {
         </ul>
         <p className="mt-4 text-[12px] text-[hsl(var(--text-subtle))]">
           Indice agrégé à partir des ingrédients via Open Food Facts.
+        </p>
+        <p className="mt-2 text-[11px] leading-relaxed text-[hsl(var(--text-subtle))]">
+          Indice descriptif basé sur Open Food Facts. NexEat n'est pas un service de nutrition et ne remplace pas un avis professionnel.
         </p>
       </section>
 
