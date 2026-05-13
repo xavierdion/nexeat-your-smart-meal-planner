@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Zap, Calendar, ShoppingBag } from "lucide-react";
+import { Zap, Calendar, ShoppingBag, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
 import SwapSheet from "@/components/SwapSheet";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -128,9 +129,42 @@ const Semaine = () => {
   const [mealAlternatives, setMealAlternatives] = useState<Record<string, number>>({});
   const [dismissedHint, setDismissedHint] = useState(false);
   const [removedRestes, setRemovedRestes] = useState<Set<string>>(new Set());
+  const [longPressSlot, setLongPressSlot] = useState<{ dayKey: string; mealIdx: number } | null>(null);
+  const [deletedSlots, setDeletedSlots] = useState<Set<string>>(new Set());
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
   const { planAccepted, setPlanAccepted } = usePreferences();
   const day = DAYS.find((d) => d.key === activeKey)!;
+
+  const startLongPress = (dayKey: string, mealIdx: number) => {
+    if (longPressTimer.current) clearTimeout(longPressTimer.current);
+    longPressTimer.current = setTimeout(() => {
+      setLongPressSlot({ dayKey, mealIdx });
+    }, 500);
+  };
+  const cancelLongPress = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+  const markDeleted = () => {
+    if (!longPressSlot) return;
+    const k = `${longPressSlot.dayKey}-${longPressSlot.mealIdx}`;
+    setDeletedSlots((prev) => {
+      const next = new Set(prev);
+      next.add(k);
+      return next;
+    });
+    setLongPressSlot(null);
+  };
+  const reactivateSlot = (dayKey: string, mealIdx: number) => {
+    setDeletedSlots((prev) => {
+      const next = new Set(prev);
+      next.delete(`${dayKey}-${mealIdx}`);
+      return next;
+    });
+  };
 
   const TOTAL_MEALS = 21;
   const confirmedMeals = planAccepted ? TOTAL_MEALS : 14;
@@ -342,9 +376,39 @@ const Semaine = () => {
               : `Alternative ${altIdx}/3`;
           const isReste = !!original.restOf;
           const isBatchSource = !!original.batchId;
+          const slotKey = `${day.key}-${i}`;
+          if (deletedSlots.has(slotKey)) {
+            return (
+              <div key={i} className="mb-5">
+                <div className="rounded-2xl border-2 border-dashed border-border bg-background h-[100px] flex items-center justify-center gap-2 px-4">
+                  <span className="text-[13px] text-foreground/40 italic">
+                    {day.label} · {original.type} · Géré par toi
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => reactivateSlot(day.key, i)}
+                    aria-label="Réactiver ce repas"
+                    className="ml-1"
+                  >
+                    <Plus size={16} className="text-foreground/30" />
+                  </button>
+                </div>
+              </div>
+            );
+          }
           return (
             <div key={i}>
-              <div className="relative">
+              <div
+                className="relative"
+                onMouseDown={() => startLongPress(day.key, i)}
+                onMouseUp={cancelLongPress}
+                onMouseLeave={cancelLongPress}
+                onMouseMove={cancelLongPress}
+                onTouchStart={() => startLongPress(day.key, i)}
+                onTouchEnd={cancelLongPress}
+                onTouchMove={cancelLongPress}
+                onTouchCancel={cancelLongPress}
+              >
                 <MealCard
                   variant="full"
                   draggable
@@ -419,6 +483,36 @@ const Semaine = () => {
         onClose={() => setSwapOpen(false)}
         contextLabel={`${day.label.toUpperCase()}`}
       />
+      <Sheet open={!!longPressSlot} onOpenChange={(v) => !v && setLongPressSlot(null)}>
+        <SheetContent side="bottom" className="rounded-t-[20px] bg-white">
+          <SheetTitle className="font-display text-display-md text-foreground">
+            Ce repas
+          </SheetTitle>
+          <div className="mt-4 flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setLongPressSlot(null);
+                setSwapOpen(true);
+              }}
+              className="w-full h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[15px] font-semibold"
+            >
+              Changer ce repas
+            </button>
+            <button
+              type="button"
+              onClick={markDeleted}
+              className="w-full h-12 rounded-xl text-[15px] font-semibold"
+              style={{
+                background: "hsl(var(--warning-soft))",
+                color: "hsl(var(--warning))",
+              }}
+            >
+              Je mange ailleurs
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
