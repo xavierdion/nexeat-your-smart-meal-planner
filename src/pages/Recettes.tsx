@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Heart, Clock, Utensils, Bookmark } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
+import { usePreferences } from "@/contexts/PreferencesContext";
 
 type Score = "A" | "B" | "C" | "D" | "E";
 interface Recipe {
@@ -67,7 +68,8 @@ function EmptyState({ title, cta }: { title: string; cta?: React.ReactNode }) {
 const Recettes = () => {
   const navigate = useNavigate();
   const [tab, setTab] = useState<"saved" | "mine">("saved");
-  const [saved] = useState<Recipe[]>(SAVED_MOCK);
+  const { savedRecipes } = usePreferences();
+  const saved: Recipe[] = savedRecipes.length > 0 ? savedRecipes : SAVED_MOCK;
   const mine: Recipe[] = [];
 
   return (
