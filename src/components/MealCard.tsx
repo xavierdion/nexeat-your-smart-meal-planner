@@ -2,52 +2,10 @@ import * as React from "react";
 import { motion, type PanInfo } from "framer-motion";
 import { Calendar, Clock, Coffee, Salad, Utensils, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { NutriScoreBadge, NUTRI_SCORE_TEXT } from "@/components/ui/nutri-score-badge";
 
 type Score = "A" | "B" | "C" | "D" | "E";
 type MealType = "DÉJEUNER" | "DÎNER" | "SOUPER";
-
-const SCORE_TEXT: Record<Score, string> = {
-  A: "Recette très équilibrée",
-  B: "Recette bien équilibrée",
-  C: "Équilibre moyen",
-  D: "À consommer à l'occasion",
-  E: "À limiter dans le plan",
-};
-
-const SCORE_BG: Record<Score, string> = {
-  A: "#3D9970",
-  B: "#7DC46A",
-  C: "#F4C430",
-  D: "hsl(var(--accent))",
-  E: "hsl(var(--score-e))",
-};
-
-const SCORE_TEXT_COLOR: Record<Score, string> = {
-  A: "#FFFFFF",
-  B: "#FFFFFF",
-  C: "hsl(var(--foreground))",
-  D: "#FFFFFF",
-  E: "#FFFFFF",
-};
-
-function NutriScoreBadge({ score }: { score: Score }) {
-  return (
-    <span
-      className="inline-flex items-stretch rounded-[6px] overflow-hidden border border-foreground/10"
-      aria-label={`Nutri-Score ${score}`}
-    >
-      <span className="bg-white text-foreground/70 text-[10px] font-semibold px-[6px] py-[3px] leading-none flex items-center">
-        Nutri-Score
-      </span>
-      <span
-        className="text-[11px] font-bold px-[7px] py-[3px] leading-none flex items-center"
-        style={{ background: SCORE_BG[score], color: SCORE_TEXT_COLOR[score] }}
-      >
-        {score}
-      </span>
-    </span>
-  );
-}
 
 function ScorePillWithTooltip({ score }: { score: Score }) {
   const [open, setOpen] = React.useState(false);
@@ -71,7 +29,7 @@ function ScorePillWithTooltip({ score }: { score: Score }) {
       <NutriScoreBadge score={score} />
       {open && (
         <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 z-50 whitespace-nowrap bg-foreground text-background text-[11px] rounded-lg px-3 py-2">
-          {SCORE_TEXT[score]}
+          {NUTRI_SCORE_TEXT[score]}
           <span
             className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0"
             style={{

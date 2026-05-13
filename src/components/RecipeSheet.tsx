@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { X, Salad, Clock, Users, Utensils, Heart } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
+import { NutriScoreBadge } from "@/components/ui/nutri-score-badge";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
 interface Props {
@@ -195,7 +196,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
               <Utensils size={12} strokeWidth={2} />
               <span>1 portion</span>
               <span className="text-foreground/30">·</span>
-              <Pill variant="score-a">A</Pill>
+              <NutriScoreBadge score="A" />
             </div>
           </div>
 

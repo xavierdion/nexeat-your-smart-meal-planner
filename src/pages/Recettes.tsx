@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, Clock, Utensils, Bookmark } from "lucide-react";
-import { Pill } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
 import { usePreferences } from "@/contexts/PreferencesContext";
+import { NutriScoreBadge, NUTRI_SCORE_TEXT } from "@/components/ui/nutri-score-badge";
 
 type Score = "A" | "B" | "C" | "D" | "E";
 interface Recipe {
@@ -21,10 +21,6 @@ const SAVED_MOCK: Recipe[] = [
   { id: "s4", title: "Pâtes au pesto de basilic et noix", prep: "15 min", portions: "3 portions", score: "C" },
 ];
 
-function ScorePill({ score }: { score: Score }) {
-  return <Pill variant={`score-${score.toLowerCase()}` as "score-a"}>{score}</Pill>;
-}
-
 function RecipeCard({ recipe, saved }: { recipe: Recipe; saved?: boolean }) {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-card flex flex-col">
@@ -34,18 +30,23 @@ function RecipeCard({ recipe, saved }: { recipe: Recipe; saved?: boolean }) {
             <Heart size={14} className="text-accent" fill="#E07A5F" strokeWidth={2} />
           </div>
         )}
+        <div className="absolute top-2 left-2">
+          <NutriScoreBadge score={recipe.score} />
+        </div>
         <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-2 gap-1.5 text-[10px] text-foreground">
           <Clock size={12} strokeWidth={2} />
           <span>{recipe.prep}</span>
           <span className="text-foreground/30">·</span>
           <Utensils size={12} strokeWidth={2} />
           <span>{recipe.portions}</span>
-          <span className="ml-auto"><ScorePill score={recipe.score} /></span>
         </div>
       </div>
       <div className="p-2.5">
         <p className="text-[13px] font-medium text-foreground leading-snug line-clamp-2">
           {recipe.title}
+        </p>
+        <p className="text-[10px] text-foreground/50 mt-1 line-clamp-1">
+          {NUTRI_SCORE_TEXT[recipe.score]}
         </p>
       </div>
     </div>
