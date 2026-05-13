@@ -21,6 +21,7 @@ function ScorePillWithTooltip({ score }: { score: Score }) {
   return (
     <span
       className="relative inline-flex"
+      aria-describedby={open ? `nutri-tooltip-${score}` : undefined}
       onClick={(e) => {
         e.stopPropagation();
         setOpen((v) => !v);
@@ -28,7 +29,11 @@ function ScorePillWithTooltip({ score }: { score: Score }) {
     >
       <NutriScoreBadge score={score} />
       {open && (
-        <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 z-50 whitespace-nowrap bg-foreground text-background text-[11px] rounded-lg px-3 py-2">
+        <span
+          role="tooltip"
+          id={`nutri-tooltip-${score}`}
+          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 z-50 whitespace-nowrap bg-foreground text-background text-[11px] rounded-lg px-3 py-2"
+        >
           {NUTRI_SCORE_TEXT[score]}
           <span
             className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0"
