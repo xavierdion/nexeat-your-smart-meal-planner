@@ -130,9 +130,9 @@ All colors MUST be HSL.
   body {
     @apply text-foreground;
     background:
-      radial-gradient(ellipse at top right, #E55838 0%, transparent 50%),
-      radial-gradient(ellipse at bottom right, #84D1BF 0%, transparent 55%),
-      radial-gradient(ellipse at bottom left, #033744 0%, transparent 70%),
+      radial-gradient(ellipse 70% 45% at 100% 0%, #E55838 0%, rgba(229,88,56,0.35) 25%, transparent 60%),
+      radial-gradient(ellipse 80% 55% at 100% 60%, #84D1BF 0%, rgba(132,209,191,0.4) 30%, transparent 65%),
+      radial-gradient(ellipse 90% 70% at 0% 100%, #022530 0%, transparent 70%),
       #033744;
     background-attachment: fixed;
     color: #FFFFFF;
