@@ -76,9 +76,9 @@ const Recettes = () => {
   return (
     <div className="flex flex-col min-h-full bg-surface-warm pb-6">
       {/* Header */}
-      <header className="bg-white px-4 pt-6 pb-0 border-b border-border">
-        <h1 className="font-display text-display-xl text-foreground mt-1">Mes Recettes</h1>
-        <div className="flex gap-6 mt-3">
+      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+        <h1 className="font-display text-display-xl text-foreground">Mes Recettes</h1>
+        <div className="flex gap-6 mt-3 -mb-4">
           {[
             { id: "saved", label: "Sauvegardées" },
             { id: "mine", label: "Mes recettes" },
