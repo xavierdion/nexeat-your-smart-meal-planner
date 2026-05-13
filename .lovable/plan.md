@@ -1,33 +1,28 @@
-## Plan — Conformité ODNQ dans Profil.tsx
+## Changements dans `src/pages/Semaine.tsx`
 
-Deux modifications ciblées dans `src/pages/Profil.tsx` uniquement.
-
-### 1. Reformuler `SCORE_LINES` (haut du fichier)
-
-Remplacer les textes prescriptifs des scores D et E par des descriptifs neutres. A, B, C inchangés.
-
-```ts
-const SCORE_LINES: { score: "a" | "b" | "c" | "d" | "e"; label: string; text: string }[] = [
-  { score: "a", label: "A", text: "Recette très équilibrée" },
-  { score: "b", label: "B", text: "Recette bien équilibrée" },
-  { score: "c", label: "C", text: "Équilibre moyen" },
-  { score: "d", label: "D", text: "Choix occasionnel" },
-  { score: "e", label: "E", text: "Recette plaisir" },
-];
-```
-
-### 2. Ajouter une mention légale dans la section "Comprendre le score"
-
-Juste après le `<p>` existant ("Indice agrégé à partir des ingrédients via Open Food Facts."), ajouter un second paragraphe à l'intérieur de la même `<section>` :
+### 1. Supprimer la barre de progression
+Retirer entièrement le bloc situé sous les day pills :
 
 ```tsx
-<p className="mt-2 text-[11px] leading-relaxed text-[hsl(var(--text-subtle))]">
-  Indice descriptif basé sur Open Food Facts. NexEat n'est pas un service de nutrition et ne remplace pas un avis professionnel.
-</p>
+{/* Progress bar — sous les day pills */}
+<div className="px-4 mt-3 flex items-center gap-2">
+  <div className="flex-1 h-[3px] rounded-full bg-secondary/30 overflow-hidden">
+    <div className="h-full bg-primary rounded-full transition-all"
+      style={{ width: `${progressPct}%` }} />
+  </div>
+  <span className="text-[11px] text-foreground/50 whitespace-nowrap">
+    {confirmedMeals}/{TOTAL_MEALS}
+  </span>
+</div>
 ```
 
-### Hors scope (verrouillé)
+Les variables `TOTAL_MEALS`, `confirmedMeals`, `progressPct` deviennent inutilisées → les retirer également pour garder le fichier propre. `planAccepted` / `setPlanAccepted` restent utilisés par le CTA.
 
-- Aucun autre fichier
-- Aucune autre section de `Profil.tsx`
-- `Pill`, structure de `SCORE_LINES`, tokens CSS : intacts
+### 2. Recentrer le point orange du jour actuel
+Dans le rendu d'un day pill, le point indicateur (today/completed) est actuellement rendu via `flex justify-center gap-0.5` ce qui le décale légèrement à gauche quand un seul point est présent. De plus, la mini-barre de progression interne `w-[28px] h-1` du pill (qui simule le temps de cuisson) ajoute un espace visuel non aligné.
+
+Pour recentrer le point orange « aujourd'hui » sous le label :
+- Remplacer le conteneur `<div className="flex justify-center gap-0.5 mt-1">` par un simple `<div className="mt-1 flex items-center justify-center">` avec une largeur explicite (`w-full`) afin que le point unique soit parfaitement centré sous le numéro.
+- Garder le rendu conditionnel (today + completed) tel quel, mais sans `gap-0.5` quand il n'y a qu'un seul point visible.
+
+Aucune autre modification : layout des pills, navigation, MealCards, CTA sticky et sheets restent identiques.
