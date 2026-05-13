@@ -52,7 +52,7 @@ const OnboardingFit = () => {
         <p className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold">
           QUI MANGE
         </p>
-        <h1 className="font-display text-display-lg italic text-foreground mt-1">
+        <h1 className="font-display text-display-lg text-foreground mt-1">
           Tu manges seul, ou pas ?
         </h1>
 
@@ -93,7 +93,7 @@ const OnboardingFit = () => {
           <p className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold">
             CE QUE TU ÉVITES
           </p>
-          <h2 className="font-display text-display-md italic text-foreground mt-1">
+          <h2 className="font-display text-display-md text-foreground mt-1">
             Des contraintes ?
           </h2>
           <p className="mt-2 text-sm text-foreground/60">

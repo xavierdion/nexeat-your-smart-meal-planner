@@ -73,7 +73,7 @@ const OnboardingFallback = () => {
         <p className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold">
           DERNIÈRE ÉTAPE — PROMIS
         </p>
-        <h1 className="font-display text-display-xl italic text-foreground mt-1">
+        <h1 className="font-display text-display-xl text-foreground mt-1">
           Quand t'es brûlé.
         </h1>
         <p className="mt-3 text-sm text-foreground/60">
