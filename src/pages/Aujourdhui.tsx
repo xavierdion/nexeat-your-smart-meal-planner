@@ -106,6 +106,26 @@ const Aujourdhui = () => {
         <p className="text-[14px] text-foreground/60 mt-1">{subtitle}</p>
       </header>
 
+      {/* Banner proactif */}
+      <div
+        className="mx-4 mt-4 rounded-2xl p-4 border border-accent/20"
+        style={{ background: "hsl(var(--accent-soft))" }}
+      >
+        <p className="text-[10px] uppercase tracking-wide font-semibold text-accent">
+          ▸ EXAMEN IFT-2008 · DANS 45 MIN
+        </p>
+        <p className="font-display text-[17px] text-foreground mt-1 leading-snug">
+          Ton dîner est prêt en 12 min — commence maintenant.
+        </p>
+        <button
+          type="button"
+          onClick={() => setRecipeOpen(true)}
+          className="text-[13px] font-semibold text-accent mt-2 underline underline-offset-2"
+        >
+          Voir la recette →
+        </button>
+      </div>
+
       {/* Timeline verticale */}
       <EditorialSection eyebrow="Ta journée" className="py-4">
         <div className="bg-white rounded-xl px-5 py-5 shadow-card">
