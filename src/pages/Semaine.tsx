@@ -5,7 +5,7 @@ import { Zap, Calendar, ShoppingBag, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
-import SwapSheet from "@/components/SwapSheet";
+import TinderSwapSheet from "@/components/TinderSwapSheet";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
@@ -131,6 +131,7 @@ const Semaine = () => {
   const [removedRestes, setRemovedRestes] = useState<Set<string>>(new Set());
   const [longPressSlot, setLongPressSlot] = useState<{ dayKey: string; mealIdx: number } | null>(null);
   const [deletedSlots, setDeletedSlots] = useState<Set<string>>(new Set());
+  const [activeSlot, setActiveSlot] = useState<{ dayKey: string; mealIdx: number } | null>(null);
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const navigate = useNavigate();
   const { planAccepted, setPlanAccepted } = usePreferences();
@@ -419,7 +420,10 @@ const Semaine = () => {
                   prep={meal.prep}
                   score={meal.score}
                   proactiveContext={isReste ? undefined : meal.badge}
-                  onClick={() => setRecipeOpen(true)}
+                  onClick={() => {
+                    setActiveSlot({ dayKey: day.key, mealIdx: i });
+                    setRecipeOpen(true);
+                  }}
                   onSwipeLeft={() =>
                     isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, 1)
                   }
@@ -478,11 +482,21 @@ const Semaine = () => {
         onClose={() => setRecipeOpen(false)}
         onSwap={() => setSwapOpen(true)}
       />
-      <SwapSheet
-        open={swapOpen}
-        onClose={() => setSwapOpen(false)}
-        contextLabel={`${day.label.toUpperCase()}`}
-      />
+      {(() => {
+        const slot = activeSlot ?? { dayKey: day.key, mealIdx: 0 };
+        const slotDay = DAYS.find((d) => d.key === slot.dayKey) ?? day;
+        const slotMeal = slotDay.meals[slot.mealIdx] ?? slotDay.meals[0];
+        return (
+          <TinderSwapSheet
+            open={swapOpen}
+            onClose={() => setSwapOpen(false)}
+            dayLabel={slotDay.label}
+            mealType={slotMeal.type}
+            hasCalendarEvent={!!slotMeal.badge}
+            calendarEventLabel={slotMeal.badge}
+          />
+        );
+      })()}
       <Sheet open={!!longPressSlot} onOpenChange={(v) => !v && setLongPressSlot(null)}>
         <SheetContent side="bottom" className="rounded-t-[20px] bg-white">
           <SheetTitle className="font-display text-display-md text-foreground">
@@ -492,6 +506,7 @@ const Semaine = () => {
             <button
               type="button"
               onClick={() => {
+                if (longPressSlot) setActiveSlot(longPressSlot);
                 setLongPressSlot(null);
                 setSwapOpen(true);
               }}
