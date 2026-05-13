@@ -25,11 +25,6 @@ function RecipeCard({ recipe, saved }: { recipe: Recipe; saved?: boolean }) {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-card flex flex-col">
       <div className="relative h-[120px] bg-secondary rounded-t-xl">
-        {saved && (
-          <div className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center">
-            <Heart size={14} className="text-accent" fill="#E07A5F" strokeWidth={2} />
-          </div>
-        )}
         <div className="absolute top-2 left-2">
           <NutriScoreBadge score={recipe.score} />
         </div>
@@ -42,9 +37,19 @@ function RecipeCard({ recipe, saved }: { recipe: Recipe; saved?: boolean }) {
         </div>
       </div>
       <div className="p-2.5">
-        <p className="text-[13px] font-medium text-foreground leading-snug line-clamp-2">
-          {recipe.title}
-        </p>
+        <div className="flex items-start gap-1.5">
+          <p className="text-[13px] font-medium text-foreground leading-snug line-clamp-2 flex-1 min-w-0">
+            {recipe.title}
+          </p>
+          {saved && (
+            <Heart
+              size={14}
+              className="text-accent shrink-0 mt-[2px]"
+              fill="currentColor"
+              strokeWidth={2}
+            />
+          )}
+        </div>
         <p className="text-[10px] text-foreground/50 mt-1 line-clamp-1">
           {NUTRI_SCORE_TEXT[recipe.score]}
         </p>
