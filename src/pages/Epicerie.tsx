@@ -124,8 +124,7 @@ const Epicerie = () => {
     <div className="flex flex-col">
       {/* Header éditorial */}
       <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
-        <p className="text-eyebrow uppercase text-primary/70">SEMAINE DU 17 MAI</p>
-        <h1 className="font-display text-display-xl text-foreground mt-1">Ton épicerie</h1>
+        <h1 className="font-display text-display-xl text-foreground">Ton épicerie</h1>
         <p className="text-[14px] text-foreground/60 mt-1">
           {totalItems} articles · {CATEGORIES.length} catégories
         </p>

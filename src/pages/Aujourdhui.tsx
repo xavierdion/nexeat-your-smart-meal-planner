@@ -100,8 +100,7 @@ const Aujourdhui = () => {
     <div className="flex flex-col pb-6 bg-surface-warm min-h-full">
       {/* Header éditorial */}
       <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
-        <p className="text-eyebrow uppercase text-primary/70">LUNDI 17 MAI</p>
-        <h1 className="font-display text-display-xl text-foreground mt-1">
+        <h1 className="font-display text-display-xl text-foreground">
           {greeting}
         </h1>
         <p className="text-[14px] text-foreground/60 mt-1">{subtitle}</p>
