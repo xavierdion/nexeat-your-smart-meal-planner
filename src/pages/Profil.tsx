@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Pill } from "@/components/ui/pill";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import CalendarStatusModule from "@/components/CalendarStatusModule";
+import DeleteAccountDialog from "@/components/DeleteAccountDialog";
 import { cn } from "@/lib/utils";
 
 const RESTRICTIONS = [
@@ -29,6 +31,7 @@ const SCORE_LINES: { score: "a" | "b" | "c" | "d" | "e"; label: string; text: st
 
 const Profil = () => {
   const { restrictions, setRestrictions, budget, setBudget } = usePreferences();
+  const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
 
   const toggle = (chip: string) => {
     if (chip === NONE) {
@@ -152,6 +155,56 @@ const Profil = () => {
         </button>
       </section>
 
+      {/* Mes données */}
+      <section className="mx-4 mt-3 bg-white rounded-2xl shadow-card overflow-hidden">
+        <p className="px-4 pt-4 text-eyebrow uppercase text-primary/70">MES DONNÉES</p>
+        <h2 className="px-4 pb-3 font-display text-display-md text-foreground mt-1">
+          Gérer mes informations
+        </h2>
+        <button
+          type="button"
+          onClick={() => console.log("export TODO")}
+          className="w-full flex items-center justify-between px-4 py-[14px] border-b border-border text-left"
+        >
+          <span className="text-[14px] text-foreground">Exporter mes données (JSON)</span>
+          <ChevronRight size={18} className="text-foreground/40" />
+        </button>
+        <button
+          type="button"
+          onClick={() => console.log("nav privacy TODO")}
+          className="w-full flex items-center justify-between px-4 py-[14px] border-b border-border text-left"
+        >
+          <span className="text-[14px] text-foreground">Politique de confidentialité</span>
+          <ChevronRight size={18} className="text-foreground/40" />
+        </button>
+        <button
+          type="button"
+          onClick={() => console.log("consult TODO")}
+          className="w-full flex items-center justify-between px-4 py-[14px] text-left"
+        >
+          <span className="text-[14px] text-foreground">Consulter mes données</span>
+          <ChevronRight size={18} className="text-foreground/40" />
+        </button>
+      </section>
+
+      {/* Zone dangereuse */}
+      <section className="mx-4 mt-6 bg-white rounded-2xl shadow-card overflow-hidden border border-destructive/20">
+        <p className="px-4 pt-4 text-eyebrow uppercase text-destructive">ZONE DANGEREUSE</p>
+        <button
+          type="button"
+          onClick={() => setDeleteAccountOpen(true)}
+          className="w-full flex items-center justify-between px-4 py-[14px] text-left"
+        >
+          <div>
+            <p className="text-[14px] text-destructive font-medium">Supprimer mon compte</p>
+            <p className="text-[12px] text-[hsl(var(--text-subtle))] mt-0.5">
+              Action irréversible — toutes tes données seront effacées
+            </p>
+          </div>
+          <ChevronRight size={18} className="text-destructive/60" />
+        </button>
+      </section>
+
       {/* Logout */}
       <div className="mx-4 mt-6 mb-6">
         <button
@@ -161,6 +214,8 @@ const Profil = () => {
           Se déconnecter
         </button>
       </div>
+
+      <DeleteAccountDialog open={deleteAccountOpen} onOpenChange={setDeleteAccountOpen} />
     </div>
   );
 };
