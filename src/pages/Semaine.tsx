@@ -321,8 +321,8 @@ const Semaine = () => {
           <div
             className="absolute left-7 border-l border-dashed border-secondary/40 pointer-events-none"
             style={{
-              top: `${batchInDay.sourcePos * 220 + 180}px`,
-              height: `${(batchInDay.lastPos - batchInDay.sourcePos) * 220 - 80}px`,
+              top: `${batchInDay.sourcePos * 110 + 90}px`,
+              height: `${(batchInDay.lastPos - batchInDay.sourcePos) * 110 - 40}px`,
             }}
           />
         )}
@@ -340,52 +340,61 @@ const Semaine = () => {
               : `Alternative ${altIdx}/3`;
           const isReste = !!original.restOf;
           const isBatchSource = !!original.batchId;
+          const hasContext = !isReste && !!meal.badge;
+          const ctx = hasContext ? parseBadge(meal.badge!, day.label) : null;
           return (
-            <div key={i}>
-              <div className="relative">
-                <MealCard
-                  variant="full"
-                  draggable
-                  mealType={meal.type}
-                  title={meal.name}
-                  category={meal.category}
-                  isNew={meal.isNew && !isReste && !isBatchSource}
-                  prep={meal.prep}
-                  score={meal.score}
-                  proactiveContext={isReste ? undefined : meal.badge}
-                  onClick={() => setRecipeOpen(true)}
-                  onSwipeLeft={() =>
-                    isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, 1)
-                  }
-                  onSwipeRight={() =>
-                    isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, -1)
-                  }
+            <div key={i} className="relative">
+              {ctx && (
+                <ProactiveContextBlock
+                  variant="marginalia"
+                  eventLabel={ctx.eventLabel}
+                  eventDay={ctx.eventDay}
+                  eventTime={ctx.eventTime}
+                  rationale={ctx.rationale}
                 />
-                {isBatchSource && (
-                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-primary text-white text-[10px] font-bold px-3 py-1">
-                    ×{original.batchPortions} portions
-                  </span>
-                )}
-                {isReste && (
-                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-secondary text-foreground text-[10px] font-medium px-3 py-1">
-                    🍱 Restes
-                  </span>
-                )}
-              </div>
+              )}
+              {isBatchSource && (
+                <p className="font-mono text-kicker-mono uppercase text-primary mt-3">
+                  BATCH · ×{original.batchPortions} PORTIONS
+                </p>
+              )}
+              {isReste && (
+                <p className="font-mono text-kicker-mono uppercase text-secondary-foreground/70 mt-3">
+                  RESTES
+                </p>
+              )}
+              <MealCard
+                variant="editorial"
+                draggable
+                mealType={meal.type}
+                time={meal.type === "DÉJEUNER" ? "07:30" : meal.type === "DÎNER" ? "12:15" : "18:30"}
+                title={meal.name}
+                category={meal.category}
+                isNew={meal.isNew && !isReste && !isBatchSource}
+                prep={meal.prep}
+                score={meal.score}
+                onClick={() => setRecipeOpen(true)}
+                onSwipeLeft={() =>
+                  isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, 1)
+                }
+                onSwipeRight={() =>
+                  isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, -1)
+                }
+              />
               {isReste && original.restOf && (
-                <p className="text-[11px] italic text-foreground/55 -mt-3 mb-4 px-1">
-                  Restes de {original.restOf.name}
+                <p className="font-mono text-meta-mono italic text-mute mt-1 mb-2">
+                  Restes de « {original.restOf.name} »
                 </p>
               )}
               {altLabel && (
-                <div className="text-center text-[11px] uppercase tracking-wide text-primary -mt-3 mb-5">
+                <p className="font-mono text-kicker-mono uppercase text-primary text-center mt-2 mb-2">
                   {altLabel}
-                </div>
+                </p>
               )}
               {showHint && (
-                <div className="text-center text-[12px] text-secondary -mt-3 mb-5">
-                  ← Glisse pour découvrir d'autres options →
-                </div>
+                <p className="font-mono text-meta-mono text-secondary-foreground/70 text-center mt-2 mb-2">
+                  ← Glisse pour échanger →
+                </p>
               )}
             </div>
           );
