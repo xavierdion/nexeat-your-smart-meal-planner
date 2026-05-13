@@ -95,6 +95,7 @@ const Epicerie = () => {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [adjustOpen, setAdjustOpen] = useState(false);
   const [adjustSelected, setAdjustSelected] = useState<Record<string, boolean>>({});
+  const [deliveryOpen, setDeliveryOpen] = useState(false);
 
   const toggle = (key: string) =>
     setChecked((c) => ({ ...c, [key]: !c[key] }));
@@ -239,8 +240,26 @@ const Epicerie = () => {
 
       {/* Sticky bottom CTA */}
       <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40">
-        <button className="w-full h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[15px] font-semibold">
-          Partager la liste
+        <button
+          type="button"
+          onClick={() => setAdjustOpen(true)}
+          className={cn(
+            "w-full h-11 rounded-xl border-[1.5px] text-[14px] font-semibold mb-2",
+            overBudget
+              ? "bg-[hsl(var(--warning-soft))] text-[hsl(var(--warning))] border-[hsl(var(--warning))]"
+              : "bg-white text-primary border-primary",
+          )}
+        >
+          {overBudget
+            ? `Ajuster mon panier · +${(BUDGET_CURRENT - BUDGET_TARGET).toFixed(2)} $`
+            : "Ajuster mon panier"}
+        </button>
+        <button
+          type="button"
+          onClick={() => setDeliveryOpen(true)}
+          className="w-full h-12 rounded-xl bg-accent text-white text-[15px] font-semibold"
+        >
+          Commander en ligne
         </button>
       </div>
       <div className="h-24" aria-hidden />
