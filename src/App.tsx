@@ -9,6 +9,7 @@ import Onboarding from "./pages/Onboarding";
 import OnboardingStep2 from "./pages/OnboardingStep2";
 import OnboardingConnect from "./pages/OnboardingConnect";
 import OnboardingDemo from "./pages/OnboardingDemo";
+import OnboardingFit from "./pages/OnboardingFit";
 import Generation from "./pages/Generation";
 import Semaine from "./pages/Semaine";
 import Aujourdhui from "./pages/Aujourdhui";
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/onboarding/2" element={<OnboardingStep2 />} />
           <Route path="/onboarding/demo" element={<OnboardingDemo />} />
           <Route path="/onboarding/connect" element={<OnboardingConnect />} />
+          <Route path="/onboarding/fit" element={<OnboardingFit />} />
           <Route path="/onboarding/3" element={<OnboardingConnect />} />
           <Route path="/generation" element={<Generation />} />
           <Route element={<AppShell />}>
