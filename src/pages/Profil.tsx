@@ -1,7 +1,8 @@
-import { Calendar, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Pill } from "@/components/ui/pill";
 import { usePreferences } from "@/contexts/PreferencesContext";
+import CalendarStatusModule from "@/components/CalendarStatusModule";
 import { cn } from "@/lib/utils";
 
 const RESTRICTIONS = [
@@ -104,22 +105,14 @@ const Profil = () => {
 
       {/* Google Calendar */}
       <section className="mx-4 mt-3 bg-white rounded-2xl shadow-card p-4">
-        <p className="text-eyebrow uppercase text-primary/70">CALENDRIER</p>
-        <div className="mt-3 flex items-center gap-3">
-          <span className="w-9 h-9 rounded-full bg-[hsl(var(--sage))]/30 inline-flex items-center justify-center shrink-0">
-            <Calendar size={18} className="text-[hsl(var(--sage))]" strokeWidth={2} />
-          </span>
-          <div className="flex-1 min-w-0">
-            <p className="text-[14px] text-foreground">Connecté</p>
-            <p className="text-[12px] text-foreground/60 truncate">xavier@ulaval.ca</p>
-          </div>
-          <button
-            type="button"
-            className="px-3 h-9 rounded-lg border-[1.5px] border-primary text-[13px] text-primary font-medium"
-          >
-            Déconnecter
-          </button>
-        </div>
+        <CalendarStatusModule
+          email="xavier@ulaval.ca"
+          isConnected={true}
+          lastSyncAt={new Date(Date.now() - 23 * 60 * 1000)}
+          eventsThisWeek={12}
+          nextSyncAt={new Date(Date.now() + (3 * 60 + 37) * 60 * 1000)}
+          onDisconnect={() => console.log("disconnect TODO")}
+        />
       </section>
 
       {/* Comprendre le score */}
