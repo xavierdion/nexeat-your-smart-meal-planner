@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { X, Salad, Clock, Users, Utensils, Heart } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
 
@@ -7,6 +8,7 @@ interface Props {
   onClose: () => void;
   imageUrl?: string;
   onSwap?: () => void;
+  context?: "plan" | "library";
 }
 
 const INGREDIENTS = [
@@ -29,7 +31,7 @@ const Eyebrow = ({ children, className = "" }: { children: React.ReactNode; clas
   <p className={`text-eyebrow uppercase text-primary/70 ${className}`}>{children}</p>
 );
 
-const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
+const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Props) => {
   const [isLiked, setIsLiked] = useState(false);
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
@@ -189,7 +191,19 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
 
         {/* Sticky CTA */}
         <div className="sticky bottom-0 bg-white border-t border-border px-4 py-3">
-          {onSwap ? (
+          {context === "library" ? (
+            <button
+              onClick={() => {
+                toast.success("Ajouté au dîner de mardi", {
+                  description: "Contexte étude respecté · Modifier →",
+                });
+                onClose();
+              }}
+              className="w-full h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-cta"
+            >
+              Ajouter à ma semaine
+            </button>
+          ) : onSwap ? (
             <div className="flex gap-2">
               <button
                 onClick={() => {
@@ -198,7 +212,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
                 }}
                 className="flex-1 h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[16px] font-semibold"
               >
-                Échanger
+                Changer ce repas
               </button>
               <button
                 onClick={onClose}
