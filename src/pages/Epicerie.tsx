@@ -308,6 +308,47 @@ const Epicerie = () => {
           </button>
         </SheetContent>
       </Sheet>
+
+      <Sheet open={deliveryOpen} onOpenChange={setDeliveryOpen}>
+        <SheetContent side="bottom" className="rounded-t-[20px] max-h-[85vh] bg-white overflow-y-auto">
+          <SheetTitle className="font-display text-display-md text-foreground">
+            Commander en ligne
+          </SheetTitle>
+          <p className="text-sm text-foreground/60 mt-1">
+            Livraison à domicile · Québec
+          </p>
+          <div className="mt-4 flex flex-col gap-3">
+            {[
+              { name: "Voilà", total: "89,43 $", fee: "Livraison 6,99 $", eta: "Demain avant 18h" },
+              { name: "IGA en ligne", total: "91,20 $", fee: "Livraison gratuite · 75 $ min ✓", eta: "Après-demain" },
+              { name: "Metro", total: "93,50 $", fee: "Livraison 9,99 $", eta: "Après-demain" },
+            ].map((d) => (
+              <div
+                key={d.name}
+                className="bg-white rounded-2xl p-4 border border-border shadow-card flex justify-between items-start gap-3"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="font-display font-bold text-lg text-foreground leading-none">
+                    {d.name}
+                  </p>
+                  <p className="mt-2 text-[15px] text-primary font-semibold">{d.total}</p>
+                  <p className="text-[12px] text-foreground/60 mt-0.5">{d.fee}</p>
+                  <p className="text-[12px] text-foreground/60">{d.eta}</p>
+                </div>
+                <button
+                  type="button"
+                  className="shrink-0 bg-accent text-white rounded-xl px-4 py-2 text-sm font-semibold"
+                >
+                  Commander →
+                </button>
+              </div>
+            ))}
+          </div>
+          <p className="text-[10px] text-foreground/40 text-center mt-4">
+            Prix indicatifs · Simulation NexEat — redirige vers le site du détaillant
+          </p>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
