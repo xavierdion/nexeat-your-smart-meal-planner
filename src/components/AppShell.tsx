@@ -43,8 +43,8 @@ const AppShell = () => {
     ));
 
   return (
-    <div className="min-h-screen w-full flex justify-center text-white">
-      <div className="relative w-full max-w-[390px] min-h-screen flex flex-col">
+    <div className="min-h-screen w-full bg-background flex justify-center">
+      <div className="relative w-full max-w-[390px] min-h-screen bg-background flex flex-col">
         <div
           className="shrink-0"
           style={{ height: "max(env(safe-area-inset-top), 44px)" }}
