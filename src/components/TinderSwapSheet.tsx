@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import { toast } from "sonner";
 import { motion, type PanInfo } from "framer-motion";
+import { usePreferences } from "@/contexts/PreferencesContext";
 
 type MealType = "DÉJEUNER" | "DÎNER" | "SOUPER";
 type Source = "nexeat" | "favori";
@@ -31,6 +32,18 @@ const ALTS_BY_TYPE: Record<MealType, TinderAlt[]> = {
   ],
 };
 
+const MEAL_TAGS: Record<string, string[]> = {
+  "Pâtes pesto-tomates cerises-parmesan": ["dairy"],
+  "Saumon teriyaki-edamames-riz": ["fish", "animal"],
+  "Wrap poulet-légumes grillés": ["animal"],
+  "Riz sauté tofu-légumes-gingembre": ["vegan-ok"],
+  "Salade quinoa-pois chiches-feta": ["dairy"],
+  "Curry lentilles-épinards-riz basmati": ["vegan-ok"],
+  "Bol açaï-granola-banane": ["vegan-ok"],
+  "Tartines avocat-œuf poché": ["animal"],
+  "Yogourt grec-fruits-miel": ["dairy"],
+};
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -48,6 +61,7 @@ const TinderSwapSheet = ({
   hasCalendarEvent,
   calendarEventLabel,
 }: Props) => {
+  const { restrictions } = usePreferences();
   const [index, setIndex] = useState(0);
   useEffect(() => {
     if (open) setIndex(0);
@@ -55,8 +69,18 @@ const TinderSwapSheet = ({
 
   if (!open) return null;
 
-  const alts = ALTS_BY_TYPE[mealType];
-  const current = alts[index % alts.length];
+  const isAllowed = (name: string) => {
+    const tags = MEAL_TAGS[name] ?? [];
+    if (restrictions.includes("Végétalien") && (tags.includes("dairy") || tags.includes("animal") || tags.includes("fish"))) return false;
+    if (restrictions.includes("Végétarien") && (tags.includes("animal") || tags.includes("fish"))) return false;
+    if (restrictions.includes("Sans produits laitiers") && tags.includes("dairy")) return false;
+    if (restrictions.includes("Sans fruits de mer") && tags.includes("fish")) return false;
+    return true;
+  };
+
+  const alts = ALTS_BY_TYPE[mealType].filter((alt) => isAllowed(alt.name));
+  const safeAlts = alts.length > 0 ? alts : ALTS_BY_TYPE[mealType];
+  const current = safeAlts[index % safeAlts.length];
 
   const dislike = () => setIndex((i) => i + 1);
   const like = () => {
