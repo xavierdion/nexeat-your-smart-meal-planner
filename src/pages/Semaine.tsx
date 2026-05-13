@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Zap, Calendar, ShoppingBag, Plus } from "lucide-react";
+import { Calendar, Soup, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
@@ -242,16 +242,27 @@ const Semaine = () => {
         <h1 className="font-display text-display-xl text-foreground">
           Ta semaine, déjà pensée
         </h1>
-        <div className="flex items-center gap-1 mt-2 pb-1 text-[11px] text-foreground/50">
-          <Zap size={12} strokeWidth={2} />
-          <span>3 ajustements</span>
-          <span className="text-foreground/30 mx-1">·</span>
-          <Calendar size={12} strokeWidth={2} />
-          <span>exam</span>
-          <span className="text-foreground/30 mx-1">·</span>
-          <ShoppingBag size={12} strokeWidth={2} />
-          <span>budget</span>
-        </div>
+        {(() => {
+          const todayMeals = DAYS.find((d) => d.key === TODAY_KEY)?.meals ?? [];
+          const hasExamToday = todayMeals.some((m) => m.badge?.toLowerCase().includes("examen"));
+          const restesCount = DAYS.reduce(
+            (acc, d) => acc + d.meals.filter((m) => m.restOf).length,
+            0,
+          );
+          return (
+            <div className="flex items-center gap-1 mt-2 pb-1 text-[11px] text-foreground/50">
+              {hasExamToday && (
+                <>
+                  <Calendar size={12} strokeWidth={2} className="text-accent" />
+                  <span className="text-accent font-medium">Examen aujourd'hui</span>
+                  <span className="text-foreground/30 mx-1">·</span>
+                </>
+              )}
+              <Soup size={12} strokeWidth={2} />
+              <span>{restesCount} repas issus du batch cooking</span>
+            </div>
+          );
+        })()}
       </header>
 
       {/* Day pills */}
