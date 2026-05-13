@@ -9,6 +9,14 @@ export type FallbackMeal =
   | "skip"
   | null;
 
+export interface SavedRecipe {
+  id: string;
+  title: string;
+  prep: string;
+  portions: string;
+  score: "A" | "B" | "C" | "D" | "E";
+}
+
 interface PreferencesContextValue {
   restrictions: string[];
   budget: number;
@@ -19,6 +27,7 @@ interface PreferencesContextValue {
   groceryStores: string[];
   fallbackMeal: FallbackMeal;
   onboardingCompleted: boolean;
+  savedRecipes: SavedRecipe[];
   setRestrictions: (v: string[]) => void;
   setBudget: (v: number) => void;
   setPlanAccepted: (v: boolean) => void;
@@ -28,6 +37,7 @@ interface PreferencesContextValue {
   setGroceryStores: (v: string[]) => void;
   setFallbackMeal: (v: FallbackMeal) => void;
   setOnboardingCompleted: (v: boolean) => void;
+  setSavedRecipes: (v: SavedRecipe[]) => void;
 }
 
 const PreferencesContext = createContext<PreferencesContextValue | undefined>(undefined);
@@ -47,6 +57,7 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
   const [groceryStores, setGroceryStores] = useState<string[]>([]);
   const [fallbackMeal, setFallbackMeal] = useState<FallbackMeal>(null);
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean>(false);
+  const [savedRecipes, setSavedRecipes] = useState<SavedRecipe[]>([]);
 
   return (
     <PreferencesContext.Provider
@@ -60,6 +71,7 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
         groceryStores,
         fallbackMeal,
         onboardingCompleted,
+        savedRecipes,
         setRestrictions,
         setBudget,
         setPlanAccepted,
@@ -69,6 +81,7 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
         setGroceryStores,
         setFallbackMeal,
         setOnboardingCompleted,
+        setSavedRecipes,
       }}
     >
       {children}

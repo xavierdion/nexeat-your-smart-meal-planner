@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { X, Salad, Clock, Users, Utensils, Heart } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
+import { usePreferences } from "@/contexts/PreferencesContext";
 
 interface Props {
   open: boolean;
@@ -32,7 +33,22 @@ const Eyebrow = ({ children, className = "" }: { children: React.ReactNode; clas
 );
 
 const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Props) => {
-  const [isLiked, setIsLiked] = useState(false);
+  const { savedRecipes, setSavedRecipes } = usePreferences();
+  const currentRecipe = {
+    id: "bibimbap",
+    title: "Bol coréen bibimbap végétarien",
+    prep: "25 min",
+    portions: "1 portion",
+    score: "A" as const,
+  };
+  const isLiked = savedRecipes.some((r) => r.id === currentRecipe.id);
+  const toggleLike = () => {
+    if (isLiked) {
+      setSavedRecipes(savedRecipes.filter((r) => r.id !== currentRecipe.id));
+    } else {
+      setSavedRecipes([...savedRecipes, currentRecipe]);
+    }
+  };
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
@@ -91,7 +107,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
               <X size={18} className="text-foreground" />
             </button>
             <button
-              onClick={() => setIsLiked((v) => !v)}
+              onClick={toggleLike}
               aria-label={isLiked ? "Retirer des favoris" : "Ajouter aux favoris"}
               className="absolute top-4 right-16 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center z-10 transition-transform active:scale-110"
             >
