@@ -30,7 +30,7 @@ const OnboardingDemo = () => {
         <p className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold">
           VOICI POURQUOI
         </p>
-        <h1 className="font-display text-display-lg italic text-foreground mt-1">
+        <h1 className="font-display text-display-lg text-foreground mt-1">
           NexEat existe.
         </h1>
 

@@ -34,7 +34,7 @@ const OnboardingBudget = () => {
         <p className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold">
           TON BUDGET
         </p>
-        <h1 className="font-display text-display-lg italic text-foreground mt-1">
+        <h1 className="font-display text-display-lg text-foreground mt-1">
           Combien par semaine ?
         </h1>
         <p className="mt-3 text-sm text-foreground/60">

@@ -45,7 +45,7 @@ const OnboardingKitchen = () => {
         <p className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold">
           TON ÉQUIPEMENT
         </p>
-        <h1 className="font-display text-display-lg italic text-foreground mt-1 leading-tight">
+        <h1 className="font-display text-display-lg text-foreground mt-1 leading-tight">
           Qu'est-ce que t'as
           <br />
           dans ta cuisine ?
