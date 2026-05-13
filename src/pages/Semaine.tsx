@@ -193,14 +193,21 @@ const Semaine = () => {
 
   return (
     <div className="flex flex-col">
-      {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
-        <p className="text-eyebrow uppercase text-primary/70">
-          MA SEMAINE · 17–23 MAI
+      {/* Header éditorial v2 — The Week As A Spread */}
+      <header className="bg-background px-5 pt-6 pb-5">
+        <p className="font-mono text-kicker-mono uppercase text-mute">
+          SEM. 21 · 17 — 23 MAI
         </p>
-        <h1 className="font-display text-display-xl text-foreground mt-1">
-          Ta semaine, déjà pensée
+        <h1 className="font-display text-display-3xl italic text-ink mt-1.5">
+          Semaine.
         </h1>
+        <p className="text-[13px] text-primary mt-4 leading-[1.55]">
+          {TOTAL_MEALS} repas planifiés.{" "}
+          <span className="text-accent font-medium">
+            {DAYS.reduce((n, d) => n + d.meals.filter((m) => m.badge).length, 0)} ajustements proactifs
+          </span>{" "}
+          pour ta semaine.
+        </p>
       </header>
 
       {/* Day pills */}
