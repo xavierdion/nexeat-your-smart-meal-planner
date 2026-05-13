@@ -254,6 +254,12 @@ const Semaine = () => {
                 >
                   {weekday}
                 </span>
+                <div className="w-[28px] mt-1 h-1 rounded-full overflow-hidden">
+                  <div
+                    className={cn("h-full rounded-full", active ? "bg-white/60" : "bg-secondary")}
+                    style={{ width: `${Math.min((d.cookingMinutes / 60) * 100, 100)}%` }}
+                  />
+                </div>
                 {(d.key === TODAY_KEY || COMPLETED_DAY_KEYS.includes(d.key)) && (
                   <div className="flex justify-center gap-0.5 mt-1">
                     {d.key === TODAY_KEY && (
