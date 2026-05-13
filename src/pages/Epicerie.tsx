@@ -161,18 +161,6 @@ const Epicerie = () => {
         </div>
       </div>
 
-      {overBudget && (
-        <div className="mx-4 mt-3">
-          <button
-            type="button"
-            onClick={() => setAdjustOpen(true)}
-            className="w-full h-11 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[14px] font-semibold"
-          >
-            Suggérer des ajustements
-          </button>
-        </div>
-      )}
-
       {/* List */}
       <div className="px-4 pb-4">
         {CATEGORIES.map((cat) => (
