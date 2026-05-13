@@ -137,7 +137,7 @@ const Semaine = () => {
     });
     toast("Reste retiré du plan", {
       duration: 2000,
-      style: { background: "#2A2D35", color: "#fff", border: "none" },
+      style: { background: "#1A1C20", color: "#FAFAF7", border: "none", fontFamily: "DM Sans, sans-serif" },
     });
   };
 
@@ -147,7 +147,7 @@ const Semaine = () => {
     toast("Plan accepté pour la semaine", {
       description: "Rendez-vous dimanche prochain",
       duration: 5000,
-      style: { background: "#4A6670", color: "#fff", border: "none" },
+      style: { background: "#4A6670", color: "#FAFAF7", border: "none", fontFamily: "DM Sans, sans-serif" },
       action: {
         label: "Annuler",
         onClick: () => setPlanAccepted(false),
@@ -297,21 +297,18 @@ const Semaine = () => {
         </span>
       </div>
 
-      {/* Day context strip */}
+      {/* Day context strip — éditorial */}
       {dayHasContext && (
-        <div className="mx-4 rounded-xl px-4 py-3 mt-4 bg-surface-cool">
-          <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
-            Aujourd'hui en contexte
+        <div className="mx-5 mt-5 pl-3 border-l border-accent/30">
+          <p className="font-mono text-kicker-mono uppercase text-accent">
+            CONTEXTE DU JOUR
           </p>
-          <p className="text-[13px] text-foreground mt-1 leading-relaxed">
-            {contextMeal?.badge}. Tes {day.meals.length} repas sont optimisés
-            pour une énergie stable.
+          <p className="text-[13px] text-ink mt-1.5 leading-[1.5]">
+            {day.meals.length} repas optimisés pour ta journée.
+            {busyWeek && (
+              <span className="text-mute"> · Semaine chargée détectée.</span>
+            )}
           </p>
-          {busyWeek && (
-            <span className="inline-flex items-center mt-3 rounded-full bg-accent text-white text-[11px] font-medium px-3 py-1">
-              📅 Semaine chargée · Plan optimisé
-            </span>
-          )}
         </div>
       )}
 
@@ -402,18 +399,25 @@ const Semaine = () => {
       </div>
 
       {/* Sticky CTA above bottom nav (h-16) */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40">
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-5 py-3 bg-background z-40 border-t border-[hsl(var(--border-soft))]">
         <button
           onClick={planAccepted ? () => navigate("/epicerie") : handleAccept}
           className={cn(
-            "w-full h-[52px] rounded-xl text-white text-[16px] font-semibold transition-colors duration-300",
+            "w-full h-[54px] rounded-xl text-[15px] font-medium font-sans tracking-[0.005em] transition-all duration-200",
             planAccepted
-              ? "bg-primary"
-              : "bg-accent shadow-cta",
+              ? "bg-primary text-off-white"
+              : "bg-accent text-off-white shadow-cta active:opacity-90",
           )}
         >
-          {planAccepted ? "Plan accepté ✓ — Voir l'épicerie →" : "Tout accepter ce plan"}
+          {planAccepted
+            ? `Plan accepté · Voir l'épicerie →`
+            : `Tout accepter · ${TOTAL_MEALS} repas`}
         </button>
+        {!planAccepted && (
+          <p className="font-mono text-kicker-mono uppercase text-mute text-center mt-2.5">
+            OU AJUSTE REPAS PAR REPAS ↑
+          </p>
+        )}
       </div>
       <div className="h-24" aria-hidden />
       <RecipeSheet
