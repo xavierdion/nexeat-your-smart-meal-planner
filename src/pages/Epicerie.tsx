@@ -91,7 +91,8 @@ const ADJUSTMENTS = [
 const Epicerie = () => {
   const { budget } = usePreferences();
   const BUDGET_TARGET = budget;
-  const BUDGET_CURRENT = budget + 9;
+  const OVERRUN = 9;
+  const BUDGET_CURRENT = budget + OVERRUN;
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [adjustOpen, setAdjustOpen] = useState(false);
   const [adjustSelected, setAdjustSelected] = useState<Record<string, boolean>>({});
@@ -141,7 +142,7 @@ const Epicerie = () => {
       <div className="mx-4 mt-4 bg-white rounded-2xl shadow-card p-4 flex justify-between items-start gap-4">
         <div className="flex-1 min-w-0">
           <p className="text-eyebrow uppercase text-primary/70">Budget hebdo</p>
-          <p className="font-display text-display-xl text-primary mt-1 leading-none">94 $</p>
+          <p className="font-display text-display-xl text-primary mt-1 leading-none">{BUDGET_CURRENT} $</p>
           <div className="mt-2 flex items-center gap-1">
             <AlertCircle size={12} className="text-warning" strokeWidth={2.5} />
             <span className="text-[12px] text-warning">
