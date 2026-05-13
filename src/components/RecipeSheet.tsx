@@ -114,6 +114,9 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
 
           {/* Header block */}
           <div className="px-4 pt-5">
+            <p className="text-[11px] text-foreground/50 mt-1">
+              Recette très équilibrée · via Open Food Facts
+            </p>
             <p className="text-eyebrow uppercase text-foreground/50">DÎNER · 12H30</p>
             <h2 className="font-display text-display-lg text-foreground mt-1 leading-snug">
               Bol coréen bibimbap végétarien
