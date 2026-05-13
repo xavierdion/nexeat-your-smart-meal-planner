@@ -15,32 +15,9 @@ interface InlineProps {
   text: string;
 }
 
-interface MarginaliaProps {
-  variant: "marginalia";
-  eventLabel: string;
-  eventDay: string;
-  eventTime: string;
-  rationale?: string;
-}
-
-type Props = BannerProps | InlineProps | MarginaliaProps;
+type Props = BannerProps | InlineProps;
 
 export const ProactiveContextBlock: React.FC<Props> = (props) => {
-  if (props.variant === "marginalia") {
-    return (
-      <div className="relative -mx-5 pl-5 pr-5 py-3 bg-[hsl(var(--coral-wash))] border-l-2 border-accent">
-        <p className="font-mono text-kicker-mono uppercase text-accent">
-          ▸ {props.eventLabel} · {props.eventDay} {props.eventTime}
-        </p>
-        {props.rationale && (
-          <p className="font-mono text-meta-mono text-mute mt-1.5">
-            {props.rationale}
-          </p>
-        )}
-      </div>
-    );
-  }
-
   if (props.variant === "inline") {
     return (
       <div className="flex gap-2 items-start bg-[hsl(var(--accent-soft))] rounded-[10px] px-3 py-2.5">

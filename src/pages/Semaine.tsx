@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
 import SwapSheet from "@/components/SwapSheet";
-import ProactiveContextBlock from "@/components/ProactiveContextBlock";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -137,7 +136,7 @@ const Semaine = () => {
     });
     toast("Reste retiré du plan", {
       duration: 2000,
-      style: { background: "#1A1C20", color: "#FAFAF7", border: "none", fontFamily: "DM Sans, sans-serif" },
+      style: { background: "#2A2D35", color: "#fff", border: "none" },
     });
   };
 
@@ -147,7 +146,7 @@ const Semaine = () => {
     toast("Plan accepté pour la semaine", {
       description: "Rendez-vous dimanche prochain",
       duration: 5000,
-      style: { background: "#4A6670", color: "#FAFAF7", border: "none", fontFamily: "DM Sans, sans-serif" },
+      style: { background: "#4A6670", color: "#fff", border: "none" },
       action: {
         label: "Annuler",
         onClick: () => setPlanAccepted(false),
@@ -192,35 +191,16 @@ const Semaine = () => {
     return sourcePos < lastPos ? { sourcePos, lastPos } : null;
   })();
 
-  // Parse le badge proactif en composantes pour la marginalia
-  // Format attendu: "Examen IFT-2008 ce soir — repas soutenu et digeste"
-  const parseBadge = (badge: string, dayLabel: string) => {
-    const [eventPart, rationalePart] = badge.split("—").map((s) => s.trim());
-    return {
-      eventLabel: eventPart || "Contexte",
-      eventDay: dayLabel.split(" ")[0].toLowerCase().slice(0, 3) + ".",
-      eventTime: "à venir",
-      rationale: rationalePart,
-    };
-  };
-
   return (
     <div className="flex flex-col">
-      {/* Header éditorial v2 — The Week As A Spread */}
-      <header className="bg-background px-5 pt-6 pb-5">
-        <p className="font-mono text-kicker-mono uppercase text-mute">
-          SEM. 21 · 17 — 23 MAI
+      {/* Header éditorial */}
+      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+        <p className="text-eyebrow uppercase text-primary/70">
+          MA SEMAINE · 17–23 MAI
         </p>
-        <h1 className="font-display text-display-3xl italic text-ink mt-1.5">
-          Semaine.
+        <h1 className="font-display text-display-xl text-foreground mt-1">
+          Ta semaine, déjà pensée
         </h1>
-        <p className="text-[13px] text-primary mt-4 leading-[1.55]">
-          {TOTAL_MEALS} repas planifiés.{" "}
-          <span className="text-accent font-medium">
-            {DAYS.reduce((n, d) => n + d.meals.filter((m) => m.badge).length, 0)} ajustements proactifs
-          </span>{" "}
-          pour ta semaine.
-        </p>
       </header>
 
       {/* Day pills */}
@@ -297,18 +277,21 @@ const Semaine = () => {
         </span>
       </div>
 
-      {/* Day context strip — éditorial */}
+      {/* Day context strip */}
       {dayHasContext && (
-        <div className="mx-5 mt-5 pl-3 border-l border-accent/30">
-          <p className="font-mono text-kicker-mono uppercase text-accent">
-            CONTEXTE DU JOUR
+        <div className="mx-4 rounded-xl px-4 py-3 mt-4 bg-surface-cool">
+          <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
+            Aujourd'hui en contexte
           </p>
-          <p className="text-[13px] text-ink mt-1.5 leading-[1.5]">
-            {day.meals.length} repas optimisés pour ta journée.
-            {busyWeek && (
-              <span className="text-mute"> · Semaine chargée détectée.</span>
-            )}
+          <p className="text-[13px] text-foreground mt-1 leading-relaxed">
+            {contextMeal?.badge}. Tes {day.meals.length} repas sont optimisés
+            pour une énergie stable.
           </p>
+          {busyWeek && (
+            <span className="inline-flex items-center mt-3 rounded-full bg-accent text-white text-[11px] font-medium px-3 py-1">
+              📅 Semaine chargée · Plan optimisé
+            </span>
+          )}
         </div>
       )}
 
@@ -318,8 +301,8 @@ const Semaine = () => {
           <div
             className="absolute left-7 border-l border-dashed border-secondary/40 pointer-events-none"
             style={{
-              top: `${batchInDay.sourcePos * 110 + 90}px`,
-              height: `${(batchInDay.lastPos - batchInDay.sourcePos) * 110 - 40}px`,
+              top: `${batchInDay.sourcePos * 220 + 180}px`,
+              height: `${(batchInDay.lastPos - batchInDay.sourcePos) * 220 - 80}px`,
             }}
           />
         )}
@@ -337,61 +320,52 @@ const Semaine = () => {
               : `Alternative ${altIdx}/3`;
           const isReste = !!original.restOf;
           const isBatchSource = !!original.batchId;
-          const hasContext = !isReste && !!meal.badge;
-          const ctx = hasContext ? parseBadge(meal.badge!, day.label) : null;
           return (
-            <div key={i} className="relative">
-              {ctx && (
-                <ProactiveContextBlock
-                  variant="marginalia"
-                  eventLabel={ctx.eventLabel}
-                  eventDay={ctx.eventDay}
-                  eventTime={ctx.eventTime}
-                  rationale={ctx.rationale}
+            <div key={i}>
+              <div className="relative">
+                <MealCard
+                  variant="full"
+                  draggable
+                  mealType={meal.type}
+                  title={meal.name}
+                  category={meal.category}
+                  isNew={meal.isNew && !isReste && !isBatchSource}
+                  prep={meal.prep}
+                  score={meal.score}
+                  proactiveContext={isReste ? undefined : meal.badge}
+                  onClick={() => setRecipeOpen(true)}
+                  onSwipeLeft={() =>
+                    isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, 1)
+                  }
+                  onSwipeRight={() =>
+                    isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, -1)
+                  }
                 />
-              )}
-              {isBatchSource && (
-                <p className="font-mono text-kicker-mono uppercase text-primary mt-3">
-                  BATCH · ×{original.batchPortions} PORTIONS
-                </p>
-              )}
-              {isReste && (
-                <p className="font-mono text-kicker-mono uppercase text-secondary-foreground/70 mt-3">
-                  RESTES
-                </p>
-              )}
-              <MealCard
-                variant="editorial"
-                draggable
-                mealType={meal.type}
-                time={meal.type === "DÉJEUNER" ? "07:30" : meal.type === "DÎNER" ? "12:15" : "18:30"}
-                title={meal.name}
-                category={meal.category}
-                isNew={meal.isNew && !isReste && !isBatchSource}
-                prep={meal.prep}
-                score={meal.score}
-                onClick={() => setRecipeOpen(true)}
-                onSwipeLeft={() =>
-                  isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, 1)
-                }
-                onSwipeRight={() =>
-                  isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, -1)
-                }
-              />
+                {isBatchSource && (
+                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-primary text-white text-[10px] font-bold px-3 py-1">
+                    ×{original.batchPortions} portions
+                  </span>
+                )}
+                {isReste && (
+                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-secondary text-foreground text-[10px] font-medium px-3 py-1">
+                    🍱 Restes
+                  </span>
+                )}
+              </div>
               {isReste && original.restOf && (
-                <p className="font-mono text-meta-mono italic text-mute mt-1 mb-2">
-                  Restes de « {original.restOf.name} »
+                <p className="text-[11px] italic text-foreground/55 -mt-3 mb-4 px-1">
+                  Restes de {original.restOf.name}
                 </p>
               )}
               {altLabel && (
-                <p className="font-mono text-kicker-mono uppercase text-primary text-center mt-2 mb-2">
+                <div className="text-center text-[11px] uppercase tracking-wide text-primary -mt-3 mb-5">
                   {altLabel}
-                </p>
+                </div>
               )}
               {showHint && (
-                <p className="font-mono text-meta-mono text-secondary-foreground/70 text-center mt-2 mb-2">
-                  ← Glisse pour échanger →
-                </p>
+                <div className="text-center text-[12px] text-secondary -mt-3 mb-5">
+                  ← Glisse pour découvrir d'autres options →
+                </div>
               )}
             </div>
           );
@@ -399,25 +373,18 @@ const Semaine = () => {
       </div>
 
       {/* Sticky CTA above bottom nav (h-16) */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-5 py-3 bg-background z-40 border-t border-[hsl(var(--border-soft))]">
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40">
         <button
           onClick={planAccepted ? () => navigate("/epicerie") : handleAccept}
           className={cn(
-            "w-full h-[54px] rounded-xl text-[15px] font-medium font-sans tracking-[0.005em] transition-all duration-200",
+            "w-full h-[52px] rounded-xl text-white text-[16px] font-semibold transition-colors duration-300",
             planAccepted
-              ? "bg-primary text-off-white"
-              : "bg-accent text-off-white shadow-cta active:opacity-90",
+              ? "bg-primary"
+              : "bg-accent shadow-cta",
           )}
         >
-          {planAccepted
-            ? `Plan accepté · Voir l'épicerie →`
-            : `Tout accepter · ${TOTAL_MEALS} repas`}
+          {planAccepted ? "Plan accepté ✓ — Voir l'épicerie →" : "Tout accepter ce plan"}
         </button>
-        {!planAccepted && (
-          <p className="font-mono text-kicker-mono uppercase text-mute text-center mt-2.5">
-            OU AJUSTE REPAS PAR REPAS ↑
-          </p>
-        )}
       </div>
       <div className="h-24" aria-hidden />
       <RecipeSheet

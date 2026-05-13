@@ -42,10 +42,6 @@ export default {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
-        ink: "hsl(var(--ink))",
-        "off-white": "hsl(var(--off-white))",
-        mute: "hsl(var(--mute))",
-        "coral-wash": "hsl(var(--coral-wash))",
         warning: {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
@@ -78,12 +74,8 @@ export default {
       fontFamily: {
         display: ['Fraunces', 'Georgia', 'serif'],
         sans: ['DM Sans', 'system-ui', 'sans-serif'],
-        mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       fontSize: {
-        "display-3xl": ["56px", { lineHeight: "0.92", letterSpacing: "-0.025em", fontWeight: "400", fontStyle: "italic" }],
-        "kicker-mono": ["11px", { lineHeight: "1.2", letterSpacing: "0.2em", fontWeight: "500" }],
-        "meta-mono": ["11px", { lineHeight: "1.4", letterSpacing: "0.04em", fontWeight: "400" }],
         "display-xl": ["40px", { lineHeight: "1.05", letterSpacing: "-0.02em", fontWeight: "600" }],
         "display-2xl": ["48px", { lineHeight: "1", letterSpacing: "-0.02em", fontWeight: "600" }],
         "display-lg": ["32px", { lineHeight: "1.1", letterSpacing: "-0.015em", fontWeight: "600" }],
