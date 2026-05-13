@@ -192,6 +192,18 @@ const Semaine = () => {
     return sourcePos < lastPos ? { sourcePos, lastPos } : null;
   })();
 
+  // Parse le badge proactif en composantes pour la marginalia
+  // Format attendu: "Examen IFT-2008 ce soir — repas soutenu et digeste"
+  const parseBadge = (badge: string, dayLabel: string) => {
+    const [eventPart, rationalePart] = badge.split("—").map((s) => s.trim());
+    return {
+      eventLabel: eventPart || "Contexte",
+      eventDay: dayLabel.split(" ")[0].toLowerCase().slice(0, 3) + ".",
+      eventTime: "à venir",
+      rationale: rationalePart,
+    };
+  };
+
   return (
     <div className="flex flex-col">
       {/* Header éditorial v2 — The Week As A Spread */}
