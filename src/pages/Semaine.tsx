@@ -422,7 +422,9 @@ const Semaine = () => {
                 onMouseDown={() => startLongPress(day.key, i)}
                 onMouseUp={cancelLongPress}
                 onMouseLeave={cancelLongPress}
-                onMouseMove={cancelLongPress}
+              onMouseMove={(e) => {
+                if (Math.abs(e.movementX) > 4 || Math.abs(e.movementY) > 4) cancelLongPress();
+              }}
                 onTouchStart={() => startLongPress(day.key, i)}
                 onTouchEnd={cancelLongPress}
                 onTouchMove={cancelLongPress}
