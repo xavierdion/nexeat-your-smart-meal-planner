@@ -195,10 +195,7 @@ const Semaine = () => {
     <div className="flex flex-col">
       {/* Header éditorial */}
       <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
-        <p className="text-eyebrow uppercase text-primary/70">
-          MA SEMAINE · 17–23 MAI
-        </p>
-        <h1 className="font-display text-display-xl text-foreground mt-1">
+        <h1 className="font-display text-display-xl text-foreground">
           Ta semaine, déjà pensée
         </h1>
       </header>
