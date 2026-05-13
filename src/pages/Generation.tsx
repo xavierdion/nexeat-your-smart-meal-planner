@@ -36,7 +36,13 @@ const Generation = () => {
 
   return (
     <div className="min-h-screen w-full bg-background flex justify-center">
-      <div className="w-full max-w-[390px] min-h-screen flex flex-col px-6 pt-[80px] pb-12">
+      <div className="relative w-full max-w-[390px] min-h-screen flex flex-col px-6 pt-[80px] pb-12">
+        <button
+          onClick={() => navigate(-1)}
+          className="absolute top-5 right-5 text-[12px] text-foreground/35 font-medium hover:text-foreground/60 transition-colors"
+        >
+          Annuler
+        </button>
         <p className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold">
           COMPOSITION EN COURS
         </p>
