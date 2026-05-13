@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { Zap, Calendar, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
@@ -198,6 +199,16 @@ const Semaine = () => {
         <h1 className="font-display text-display-xl text-foreground">
           Ta semaine, déjà pensée
         </h1>
+        <div className="flex items-center gap-1 mt-2 pb-1 text-[11px] text-foreground/50">
+          <Zap size={12} strokeWidth={2} />
+          <span>3 ajustements</span>
+          <span className="text-foreground/30 mx-1">·</span>
+          <Calendar size={12} strokeWidth={2} />
+          <span>exam</span>
+          <span className="text-foreground/30 mx-1">·</span>
+          <ShoppingBag size={12} strokeWidth={2} />
+          <span>budget</span>
+        </div>
       </header>
 
       {/* Day pills */}
