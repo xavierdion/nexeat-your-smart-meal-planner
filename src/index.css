@@ -128,7 +128,14 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background:
+      radial-gradient(ellipse at top right, #E55838 0%, transparent 50%),
+      radial-gradient(ellipse at bottom right, #84D1BF 0%, transparent 55%),
+      radial-gradient(ellipse at bottom left, #033744 0%, transparent 70%),
+      #033744;
+    background-attachment: fixed;
+    color: #FFFFFF;
     font-family: 'DM Sans', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
