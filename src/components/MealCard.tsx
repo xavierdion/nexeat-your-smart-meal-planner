@@ -213,7 +213,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
     }
 
     // FULL
-    const dragX = React.useRef(0);
+    const hasDragged = React.useRef(false);
 
     const content = (
       <div
@@ -256,16 +256,18 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.6}
-          onDragStart={(_, info) => {
-            dragX.current = info.point.x;
+          onDragStart={() => {
+            hasDragged.current = false;
+          }}
+          onDrag={(_, info) => {
+            if (Math.abs(info.offset.x) > 8) hasDragged.current = true;
           }}
           onDragEnd={(_, info: PanInfo) => {
             if (info.offset.x < -100) onSwipeLeft?.();
             else if (info.offset.x > 100) onSwipeRight?.();
           }}
-          onClick={(e) => {
-            const moved = Math.abs(((e as unknown as MouseEvent).clientX) - dragX.current);
-            if (moved < 5) onClick?.();
+          onClick={() => {
+            if (!hasDragged.current) onClick?.();
           }}
           className="mb-5"
         >
