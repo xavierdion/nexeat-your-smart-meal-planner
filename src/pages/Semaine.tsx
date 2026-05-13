@@ -28,11 +28,13 @@ interface Day {
   key: string;
   label: string;
   meals: Meal[];
+  cookingMinutes: number;
 }
 
 const DAYS: Day[] = [
   {
     key: "lun", label: "Lun 17",
+    cookingMinutes: 35,
     meals: [
       { type: "DÉJEUNER", name: "Smoothie bowl mangue-kefir-granola", category: "Végétarien", score: "A", prep: "10 min" },
       { type: "DÎNER", name: "Bol coréen bibimbap végétarien", category: "Nouveau pour toi", score: "A", prep: "25 min", badge: "Examen IFT-2008 ce soir — repas soutenu et digeste", isNew: true },
@@ -41,6 +43,7 @@ const DAYS: Day[] = [
   },
   {
     key: "mar", label: "Mar 18",
+    cookingMinutes: 15,
     meals: [
       { type: "DÉJEUNER", name: "Pancakes sarrasin-bleuets-sirop d'érable", category: "Sans viande", score: "B", prep: "20 min" },
       { type: "DÎNER", name: "Soupe thaï aux lentilles", category: "Restes", score: "A", prep: "5 min", restOf: { batchId: "thai", name: "Soupe thaï aux lentilles" } },
@@ -49,6 +52,7 @@ const DAYS: Day[] = [
   },
   {
     key: "mer", label: "Mer 19",
+    cookingMinutes: 50,
     meals: [
       { type: "DÉJEUNER", name: "Açaï bowl amandes-banane-noix de coco", category: "Nouveau pour toi", score: "A", prep: "8 min", isNew: true },
       { type: "DÎNER", name: "Soupe thaï aux lentilles", category: "Restes", score: "A", prep: "5 min", restOf: { batchId: "thai", name: "Soupe thaï aux lentilles" } },
@@ -57,6 +61,7 @@ const DAYS: Day[] = [
   },
   {
     key: "jeu", label: "Jeu 20",
+    cookingMinutes: 10,
     meals: [
       { type: "DÉJEUNER", name: "Œufs bénédictine végé sur muffin anglais", category: "Protéines", score: "B", prep: "20 min" },
       { type: "DÎNER", name: "Ramen végétarien bouillon miso", category: "Végétarien", score: "B", prep: "25 min" },
@@ -65,6 +70,7 @@ const DAYS: Day[] = [
   },
   {
     key: "ven", label: "Ven 21",
+    cookingMinutes: 40,
     meals: [
       { type: "DÉJEUNER", name: "French toast cannelle-compote de pommes", category: "Sans viande", score: "B", prep: "15 min", badge: "Examen STT-1000 ce soir — bien démarrer la journée" },
       { type: "DÎNER", name: "Dal de lentilles corail", category: "Restes", score: "A", prep: "5 min", restOf: { batchId: "dal", name: "Dal de lentilles corail" } },
@@ -73,6 +79,7 @@ const DAYS: Day[] = [
   },
   {
     key: "sam", label: "Sam 22",
+    cookingMinutes: 25,
     meals: [
       { type: "DÉJEUNER", name: "Crêpes sarrasin-compote-sirop d'érable", category: "Sans viande", score: "B", prep: "25 min" },
       { type: "DÎNER", name: "Buddha bowl quinoa-légumes rôtis-tahini", category: "Végétarien", score: "A", prep: "20 min" },
@@ -81,6 +88,7 @@ const DAYS: Day[] = [
   },
   {
     key: "dim", label: "Dim 23",
+    cookingMinutes: 55,
     meals: [
       { type: "DÉJEUNER", name: "Granola maison-yogourt grec-fruits frais", category: "Végétarien", score: "A", prep: "5 min" },
       { type: "DÎNER", name: "Souvlaki poulet-légumes grillés-riz", category: "Protéines", score: "B", prep: "30 min" },
