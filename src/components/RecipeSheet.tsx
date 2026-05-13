@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { X, Salad, Clock, Users, Utensils } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X, Salad, Clock, Users, Utensils, Heart } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
 
 interface Props {
@@ -30,6 +30,7 @@ const Eyebrow = ({ children, className = "" }: { children: React.ReactNode; clas
 );
 
 const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
+  const [isLiked, setIsLiked] = useState(false);
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
@@ -86,6 +87,17 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap }: Props) => {
               aria-label="Fermer"
             >
               <X size={18} className="text-foreground" />
+            </button>
+            <button
+              onClick={() => setIsLiked((v) => !v)}
+              aria-label={isLiked ? "Retirer des favoris" : "Ajouter aux favoris"}
+              className="absolute top-4 right-16 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center z-10 transition-transform active:scale-110"
+            >
+              {isLiked ? (
+                <Heart size={18} fill="currentColor" className="text-accent" />
+              ) : (
+                <Heart size={18} strokeWidth={2} className="text-foreground/50" />
+              )}
             </button>
             <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
               <Clock size={12} strokeWidth={2} />
