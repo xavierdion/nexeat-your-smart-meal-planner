@@ -131,6 +131,12 @@ const Epicerie = () => {
         </p>
       </header>
 
+      <div className="px-4 pt-3">
+        <p className="text-[11px] uppercase tracking-wide font-semibold text-foreground/50">
+          ▸ Prix optimisés · Maxi — économie estimée de 12 $ vs IGA
+        </p>
+      </div>
+
       {/* Budget card */}
       <div className="mx-4 mt-4 bg-white rounded-2xl shadow-card p-4 flex justify-between items-start gap-4">
         <div className="flex-1 min-w-0">
