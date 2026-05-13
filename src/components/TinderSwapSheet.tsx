@@ -84,11 +84,21 @@ const TinderSwapSheet = ({
 
   const dislike = () => setIndex((i) => i + 1);
   const like = () => {
+    onClose();
     toast(`Repas mis à jour — ${current.name}`, {
       style: { background: "#4A6670", color: "#fff", border: "none" },
-      duration: 2000,
+      duration: 3500,
+      action: {
+        label: "Annuler",
+        onClick: () => {
+          // The sheet was already closed; just notify cancellation
+          toast("Modification annulée", {
+            duration: 2000,
+            style: { background: "#2A2D35", color: "#fff", border: "none" },
+          });
+        },
+      },
     });
-    onClose();
   };
 
   return (
