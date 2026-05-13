@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { X, Salad, Clock, Users, Utensils, Heart } from "lucide-react";
 import { Pill } from "@/components/ui/pill";
