@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Generation = () => {
   const navigate = useNavigate();
@@ -53,18 +54,27 @@ const Generation = () => {
         </h1>
 
         <div className="mt-10 flex flex-col gap-4">
-          {narrative.map((line, i) => (
-            <p
-              key={i}
-              className={cn(
-                "text-sm text-foreground/80 leading-relaxed transition-opacity duration-500",
-                revealedLines > i ? "opacity-100" : "opacity-0"
-              )}
-            >
-              <span className="text-[hsl(var(--coral))] font-semibold">▸</span>{" "}
-              {line}
-            </p>
-          ))}
+          {revealedLines === 0 ? (
+            <>
+              <Skeleton className="h-4 w-11/12" />
+              <Skeleton className="h-4 w-10/12" />
+              <Skeleton className="h-4 w-9/12" />
+              <Skeleton className="h-4 w-8/12" />
+            </>
+          ) : (
+            narrative.map((line, i) => (
+              <p
+                key={i}
+                className={cn(
+                  "text-sm text-foreground/80 leading-relaxed transition-opacity duration-500",
+                  revealedLines > i ? "opacity-100" : "opacity-0"
+                )}
+              >
+                <span className="text-[hsl(var(--coral))] font-semibold">▸</span>{" "}
+                {line}
+              </p>
+            ))
+          )}
         </div>
 
         <div className="mt-auto pt-8">
