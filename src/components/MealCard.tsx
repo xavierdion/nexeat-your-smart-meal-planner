@@ -8,7 +8,7 @@ type Score = "A" | "B" | "C" | "D" | "E";
 type MealType = "DÉJEUNER" | "DÎNER" | "SOUPER";
 
 export interface MealCardProps {
-  variant?: "full" | "compact";
+  variant?: "full" | "compact" | "editorial";
   mealType: MealType;
   time?: string;
   title: string;
@@ -132,6 +132,68 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
     },
     ref,
   ) => {
+    const dragX = React.useRef(0);
+
+    if (variant === "editorial") {
+      const editorialContent = (
+        <div className="relative py-4 border-b border-[hsl(var(--border-soft))] last:border-b-0">
+          <p className="font-mono text-kicker-mono uppercase text-mute">
+            {mealType}
+            {time ? ` · ${time}` : ""}
+          </p>
+          <h3 className="font-sans text-[15px] font-medium text-ink leading-[1.35] mt-1.5 pr-16">
+            {title}
+          </h3>
+          <p className="font-mono text-meta-mono text-mute mt-2">
+            {prep} · {category}
+            {portions && portions !== "1 portion" ? ` · ${portions}` : ""}
+            {" · "}
+            <span className={cn(
+              "font-medium",
+              score === "A" && "text-[hsl(165,40%,38%)]",
+              score === "B" && "text-[hsl(75,35%,42%)]",
+              score === "C" && "text-[hsl(40,55%,48%)]",
+              score === "D" && "text-warning",
+              score === "E" && "text-[hsl(var(--score-e))]",
+            )}>
+              Nutri-Score {score}
+            </span>
+          </p>
+        </div>
+      );
+
+      if (draggable) {
+        return (
+          <motion.div
+            ref={ref}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.6}
+            onDragStart={(_, info) => {
+              dragX.current = info.point.x;
+            }}
+            onDragEnd={(_, info: PanInfo) => {
+              if (info.offset.x < -100) onSwipeLeft?.();
+              else if (info.offset.x > 100) onSwipeRight?.();
+            }}
+            onClick={(e) => {
+              const moved = Math.abs(((e as unknown as MouseEvent).clientX) - dragX.current);
+              if (moved < 5) onClick?.();
+            }}
+            className={className}
+          >
+            {editorialContent}
+          </motion.div>
+        );
+      }
+
+      return (
+        <div ref={ref} onClick={onClick} className={className}>
+          {editorialContent}
+        </div>
+      );
+    }
+
     if (variant === "compact") {
       return (
         <div
@@ -178,8 +240,6 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
     }
 
     // FULL
-    const dragX = React.useRef(0);
-
     const content = (
       <div
         className={cn(
