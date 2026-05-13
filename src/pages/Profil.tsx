@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Pill } from "@/components/ui/pill";
+import { NutriScoreBadge } from "@/components/ui/nutri-score-badge";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import CalendarStatusModule from "@/components/CalendarStatusModule";
 import DeleteAccountDialog from "@/components/DeleteAccountDialog";
@@ -124,7 +125,7 @@ const Profil = () => {
         <ul className="mt-3 flex flex-col gap-2.5">
           {SCORE_LINES.map(({ score, label, text }) => (
             <li key={score} className="flex items-center gap-3">
-              <Pill variant={`score-${score}` as any}>{label}</Pill>
+              <NutriScoreBadge score={label as "A" | "B" | "C" | "D" | "E"} />
               <span className="text-[14px] text-foreground">{text}</span>
             </li>
           ))}
