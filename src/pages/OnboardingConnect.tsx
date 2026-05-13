@@ -26,7 +26,7 @@ const OnboardingConnect = () => {
   return (
     <OnboardingShell
       step={1}
-      backTo="/onboarding/demo"
+      backTo="/onboarding"
       cta={{
         label: loading ? "Connexion en cours…" : "Connecter Google Calendar",
         onClick: connect,
