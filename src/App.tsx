@@ -7,7 +7,8 @@ import NotFound from "./pages/NotFound.tsx";
 import AppShell from "./components/AppShell";
 import Onboarding from "./pages/Onboarding";
 import OnboardingStep2 from "./pages/OnboardingStep2";
-import OnboardingStep3 from "./pages/OnboardingStep3";
+import OnboardingConnect from "./pages/OnboardingConnect";
+import OnboardingDemo from "./pages/OnboardingDemo";
 import Generation from "./pages/Generation";
 import Semaine from "./pages/Semaine";
 import Aujourdhui from "./pages/Aujourdhui";
@@ -27,7 +28,9 @@ const App = () => (
           <Route path="/" element={<Navigate to="/onboarding" replace />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/onboarding/2" element={<OnboardingStep2 />} />
-          <Route path="/onboarding/3" element={<OnboardingStep3 />} />
+          <Route path="/onboarding/demo" element={<OnboardingDemo />} />
+          <Route path="/onboarding/connect" element={<OnboardingConnect />} />
+          <Route path="/onboarding/3" element={<OnboardingConnect />} />
           <Route path="/generation" element={<Generation />} />
           <Route element={<AppShell />}>
             <Route path="/semaine" element={<Semaine />} />
