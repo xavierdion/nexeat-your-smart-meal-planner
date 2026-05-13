@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
 import SwapSheet from "@/components/SwapSheet";
+import ProactiveContextBlock from "@/components/ProactiveContextBlock";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
 type Score = "A" | "B" | "C" | "D" | "E";
