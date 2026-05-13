@@ -200,12 +200,23 @@ const Semaine = () => {
 
   const cycleAlt = (dayKey: string, type: MealType, dir: 1 | -1) => {
     const k = `${dayKey}-${type}`;
+    let previousIdx: number;
     setMealAlternatives((prev) => {
-      const cur = prev[k] ?? 0;
-      const next = (cur + dir + 3) % 3;
+      previousIdx = prev[k] ?? 0;
+      const next = (previousIdx + dir + 3) % 3;
       return { ...prev, [k]: next };
     });
     setDismissedHint(true);
+    toast("Repas remplacé", {
+      duration: 3500,
+      style: { background: "#2A2D35", color: "#fff", border: "none" },
+      action: {
+        label: "Annuler",
+        onClick: () => {
+          setMealAlternatives((prev) => ({ ...prev, [k]: previousIdx }));
+        },
+      },
+    });
   };
 
   const getDisplayMeal = (dayKey: string, original: Meal): Meal => {
