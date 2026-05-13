@@ -1,4 +1,21 @@
+import * as React from "react";
 import { createContext, useContext, useState, ReactNode } from "react";
+
+function usePersisted<T>(key: string, initial: T) {
+  const [value, setValue] = React.useState<T>(() => {
+    try {
+      const stored = localStorage.getItem(`nexeat_${key}`);
+      return stored !== null ? (JSON.parse(stored) as T) : initial;
+    } catch {
+      return initial;
+    }
+  });
+  const set = (v: T) => {
+    setValue(v);
+    try { localStorage.setItem(`nexeat_${key}`, JSON.stringify(v)); } catch {}
+  };
+  return [value, set] as const;
+}
 
 export type Lifestyle = "solo" | "coloc" | "famille" | null;
 export type FallbackMeal =
@@ -43,11 +60,11 @@ interface PreferencesContextValue {
 const PreferencesContext = createContext<PreferencesContextValue | undefined>(undefined);
 
 export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
-  const [restrictions, setRestrictions] = useState<string[]>([]);
-  const [budget, setBudget] = useState<number>(100);
-  const [planAccepted, setPlanAccepted] = useState<boolean>(false);
-  const [calendarConnected, setCalendarConnected] = useState<boolean>(false);
-  const [lifestyle, setLifestyle] = useState<Lifestyle>(null);
+  const [restrictions, setRestrictions] = usePersisted<string[]>("restrictions", []);
+  const [budget, setBudget] = usePersisted<number>("budget", 100);
+  const [planAccepted, setPlanAccepted] = usePersisted<boolean>("planAccepted", false);
+  const [calendarConnected, setCalendarConnected] = usePersisted<boolean>("calendarConnected", false);
+  const [lifestyle, setLifestyle] = usePersisted<Lifestyle>("lifestyle", null);
   const [kitchenEquipment, setKitchenEquipment] = useState<string[]>([
     "cuisinière",
     "four",
