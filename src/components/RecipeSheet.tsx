@@ -178,17 +178,6 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
             >
               <X size={18} className="text-foreground" />
             </button>
-            <button
-              onClick={toggleLike}
-              aria-label={isLiked ? "Retirer des favoris" : "Ajouter aux favoris"}
-              className="absolute top-4 right-16 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center z-10 transition-transform active:scale-110"
-            >
-              {isLiked ? (
-                <Heart size={18} fill="currentColor" className="text-accent" />
-              ) : (
-                <Heart size={18} strokeWidth={2} className="text-foreground/50" />
-              )}
-            </button>
             <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
               <Clock size={12} strokeWidth={2} />
               <span>25 min</span>
@@ -206,9 +195,22 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
               Recette très équilibrée · via Open Food Facts
             </p>
             <p className="text-eyebrow uppercase text-foreground/50">DÎNER · 12H30</p>
-            <h2 className="font-display text-display-lg text-foreground mt-1 leading-snug">
-              Bol coréen bibimbap végétarien
-            </h2>
+            <div className="flex items-start gap-2 mt-1">
+              <h2 className="font-display text-display-lg text-foreground leading-snug flex-1 min-w-0">
+                Bol coréen bibimbap végétarien
+              </h2>
+              <button
+                onClick={toggleLike}
+                aria-label={isLiked ? "Retirer des favoris" : "Ajouter aux favoris"}
+                className="shrink-0 -mt-1 -mr-2 w-10 h-10 flex items-center justify-center transition-transform active:scale-110"
+              >
+                {isLiked ? (
+                  <Heart size={22} fill="currentColor" className="text-accent" />
+                ) : (
+                  <Heart size={22} strokeWidth={2} className="text-foreground/40" />
+                )}
+              </button>
+            </div>
             <div className="flex gap-3 items-center text-[13px] text-foreground/60 mt-2">
               <span className="flex items-center gap-1">
                 <Clock size={14} className="text-primary/60" />
