@@ -72,12 +72,11 @@ const OnboardingDemo = () => {
           {/* Card 2 — coral suggestion */}
           <div
             className={cn(
-              "rounded-2xl border border-[hsl(var(--coral))]/20 p-4 transition-all duration-500",
+              "rounded-2xl border border-accent/20 p-4 bg-[hsl(var(--accent-soft))] transition-all duration-500",
               revealStep >= 2 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
             )}
-            style={{ background: "hsl(var(--accent-soft))" }}
           >
-            <p className="text-[11px] uppercase tracking-wide text-[hsl(var(--coral))] font-semibold">
+            <p className="text-[11px] uppercase tracking-wide text-accent font-semibold">
               ▸ PRÉ-EXAM · JEU. 12H15
             </p>
             <p className="font-display text-lg text-foreground mt-1">
