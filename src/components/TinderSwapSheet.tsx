@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import { toast } from "sonner";
+import { motion, type PanInfo } from "framer-motion";
 
 type MealType = "DÉJEUNER" | "DÎNER" | "SOUPER";
 type Source = "nexeat" | "favori";
@@ -87,8 +88,15 @@ const TinderSwapSheet = ({
 
       {/* Card */}
       <div className="mx-6 mt-4 flex-1">
-        <div
-          className="relative w-full rounded-2xl overflow-hidden"
+        <motion.div
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.35}
+          onDragEnd={(_, info: PanInfo) => {
+            if (info.offset.x < -80) dislike();
+            else if (info.offset.x > 80) like();
+          }}
+          className="relative w-full rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing"
           style={{
             height: 280,
             background:
@@ -103,7 +111,7 @@ const TinderSwapSheet = ({
           >
             {current.source === "nexeat" ? "▸ NexEat" : "♥ Coup de cœur"}
           </span>
-        </div>
+        </motion.div>
         <h3 className="font-display text-xl text-foreground mt-3 leading-snug">
           {current.name}
         </h3>
