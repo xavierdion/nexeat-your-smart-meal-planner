@@ -233,6 +233,24 @@ const Epicerie = () => {
         ))}
       </div>
 
+      {(() => {
+        const allDone = CATEGORIES.every((cat) =>
+          cat.items.every((it) => !!checked[`${cat.name}-${it.name}`])
+        );
+        if (!allDone) return null;
+        return (
+          <div className="mx-4 mt-6 rounded-2xl bg-white border border-secondary/30 shadow-card px-6 py-8 flex flex-col items-center text-center gap-3">
+            <span className="text-3xl">🛒</span>
+            <p className="font-display text-display-md text-foreground">
+              Épicerie complète
+            </p>
+            <p className="text-[13px] text-foreground/60 leading-relaxed">
+              Tout est coché. Tu es prêt·e pour la semaine.
+            </p>
+          </div>
+        );
+      })()}
+
       {/* Sticky bottom CTA */}
       <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40">
         <button
