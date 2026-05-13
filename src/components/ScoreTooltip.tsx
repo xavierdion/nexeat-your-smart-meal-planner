@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Pill } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
+import { NutriScoreBadge, NUTRI_SCORE_TEXT } from "@/components/ui/nutri-score-badge";
 
 type Score = "A" | "B" | "C" | "D" | "E";
 
@@ -11,9 +11,6 @@ interface ScoreTooltipProps {
 }
 
 const ScoreTooltip = ({ score, className }: ScoreTooltipProps) => {
-  const variant = `score-${score.toLowerCase()}` as
-    | "score-a" | "score-b" | "score-c" | "score-d" | "score-e";
-
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -23,7 +20,7 @@ const ScoreTooltip = ({ score, className }: ScoreTooltipProps) => {
           className={cn("inline-flex outline-none", className)}
           aria-label={`Indice d'équilibre ${score}`}
         >
-          <Pill variant={variant}>{score}</Pill>
+          <NutriScoreBadge score={score} />
         </button>
       </PopoverTrigger>
       <PopoverContent
@@ -32,7 +29,7 @@ const ScoreTooltip = ({ score, className }: ScoreTooltipProps) => {
         className="z-50 w-auto max-w-[240px] rounded-xl border-0 bg-white p-3 shadow-card"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="text-[13px] font-semibold text-foreground">Équilibre culinaire</p>
+        <p className="text-[13px] font-semibold text-foreground">{NUTRI_SCORE_TEXT[score]}</p>
         <p className="mt-1 text-[12px] text-foreground/70 leading-relaxed">
           Calculé sur l'ensemble des ingrédients
         </p>
