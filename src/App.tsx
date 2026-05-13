@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "./pages/NotFound.tsx";
 import AppShell from "./components/AppShell";
 import Onboarding from "./pages/Onboarding";
-import OnboardingStep2 from "./pages/OnboardingStep2";
+import OnboardingBudget from "./pages/OnboardingBudget";
 import OnboardingConnect from "./pages/OnboardingConnect";
 import OnboardingDemo from "./pages/OnboardingDemo";
 import OnboardingFit from "./pages/OnboardingFit";
@@ -30,7 +30,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Navigate to="/onboarding" replace />} />
           <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/onboarding/2" element={<OnboardingStep2 />} />
+          <Route path="/onboarding/budget" element={<OnboardingBudget />} />
+          <Route path="/onboarding/2" element={<OnboardingBudget />} />
           <Route path="/onboarding/demo" element={<OnboardingDemo />} />
           <Route path="/onboarding/connect" element={<OnboardingConnect />} />
           <Route path="/onboarding/fit" element={<OnboardingFit />} />
