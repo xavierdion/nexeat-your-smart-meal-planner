@@ -286,6 +286,8 @@ const Semaine = () => {
               <button
                 key={d.key}
                 onClick={() => setActiveKey(d.key)}
+                aria-label={`Voir les repas de ${d.label}`}
+                aria-pressed={active}
                 className={cn(
                   "shrink-0 flex flex-col items-center justify-center rounded-full transition-all duration-200",
                   active
