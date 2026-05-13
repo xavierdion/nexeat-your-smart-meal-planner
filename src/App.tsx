@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound.tsx";
 import AppShell from "./components/AppShell";
 import Onboarding from "./pages/Onboarding";
 import OnboardingBudget from "./pages/OnboardingBudget";
+import OnboardingFallback from "./pages/OnboardingFallback";
 import OnboardingConnect from "./pages/OnboardingConnect";
 import OnboardingDemo from "./pages/OnboardingDemo";
 import OnboardingFit from "./pages/OnboardingFit";
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/onboarding/budget" element={<OnboardingBudget />} />
           <Route path="/onboarding/2" element={<OnboardingBudget />} />
+          <Route path="/onboarding/fallback" element={<OnboardingFallback />} />
           <Route path="/onboarding/demo" element={<OnboardingDemo />} />
           <Route path="/onboarding/connect" element={<OnboardingConnect />} />
           <Route path="/onboarding/fit" element={<OnboardingFit />} />
