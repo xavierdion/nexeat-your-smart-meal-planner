@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -38,6 +39,14 @@ All colors MUST be HSL.
 
     /* Soft variant of accent (coral) — used for proactive badge backgrounds (#FCEEE8 ≈ #FEF0ED) */
     --accent-soft: 14 67% 95%;
+
+    /* Éditorial — tokens additionnels v2 */
+    --ink: 222 11% 11%;               /* #1A1C20 — titres critiques, ink profond */
+    --off-white: 56 33% 98%;          /* #FAFAF7 — texte sur boutons coral */
+    --mute: 222 6% 58%;               /* #8A8F9A — métadonnées mono */
+    --border-soft: 222 11% 18% / 0.12;   /* séparateurs entries */
+    --border-strong: 222 11% 18% / 0.20; /* séparateurs sections */
+    --coral-wash: 14 67% 63% / 0.04;     /* background subtil marginalia */
 
     /* Warning — alertes budget / dépassements (orange brûlé, distinct du coral CTA) */
     --warning: 28 75% 52%;             /* #D9822B */
@@ -135,5 +144,16 @@ All colors MUST be HSL.
 
   h1, h2, h3, h4, h5, h6, .font-display {
     font-family: 'Fraunces', Georgia, serif;
+  }
+
+  /* Tabular numbers + alternate ligatures sur tout le mono — crucial pour alignement vertical des heures/kcal */
+  .font-mono, [class*="font-mono"] {
+    font-feature-settings: "tnum" 1, "calt" 1;
+  }
+
+  /* Selection éditoriale */
+  ::selection {
+    background: hsl(var(--accent));
+    color: hsl(var(--off-white));
   }
 }
