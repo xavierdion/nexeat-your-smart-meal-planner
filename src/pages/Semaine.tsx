@@ -167,6 +167,9 @@ const Semaine = () => {
     });
   };
 
+  const TOTAL_MEALS = 21;
+  const confirmedMeals = planAccepted ? TOTAL_MEALS : 14;
+  const progressPct = (confirmedMeals / TOTAL_MEALS) * 100;
   const busyWeek = WEEK_EVENT_COUNT >= 3;
 
   const removeReste = (dayKey: string, idx: number) => {
@@ -293,7 +296,7 @@ const Semaine = () => {
                   />
                 </div>
                 {(d.key === TODAY_KEY || COMPLETED_DAY_KEYS.includes(d.key)) && (
-                  <div className="w-full mt-1 flex items-center justify-center gap-0.5">
+                  <div className="flex justify-center gap-0.5 mt-1">
                     {d.key === TODAY_KEY && (
                       <span
                         className={cn(
@@ -316,6 +319,19 @@ const Semaine = () => {
             );
           })}
         </div>
+      </div>
+
+      {/* Progress bar — sous les day pills */}
+      <div className="px-4 mt-3 flex items-center gap-2">
+        <div className="flex-1 h-[3px] rounded-full bg-secondary/30 overflow-hidden">
+          <div
+            className="h-full bg-primary rounded-full transition-all"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+        <span className="text-[11px] text-foreground/50 whitespace-nowrap">
+          {confirmedMeals}/{TOTAL_MEALS}
+        </span>
       </div>
 
       {/* Day context strip */}
