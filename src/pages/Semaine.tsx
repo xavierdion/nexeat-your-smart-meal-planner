@@ -434,8 +434,11 @@ const Semaine = () => {
         })}
       </div>
 
-      {/* Sticky CTA above bottom nav (h-16) */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40">
+      {/* Sticky CTA above bottom nav */}
+      <div
+        className="fixed left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40"
+        style={{ bottom: "calc(64px + env(safe-area-inset-bottom))" }}
+      >
         <button
           onClick={planAccepted ? () => navigate("/epicerie") : handleAccept}
           className={cn(
@@ -448,7 +451,7 @@ const Semaine = () => {
           {planAccepted ? "Plan accepté ✓ — Voir l'épicerie →" : "Tout accepter ce plan"}
         </button>
       </div>
-      <div className="h-24" aria-hidden />
+      <div className="h-28" aria-hidden />
       <RecipeSheet
         open={recipeOpen}
         onClose={() => setRecipeOpen(false)}
