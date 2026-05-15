@@ -1,33 +1,15 @@
-## Plan — Conformité ODNQ dans Profil.tsx
+Je vais corriger le problème dans `src/components/TinderSwapSheet.tsx`, car les boutons sélectionnés sont ceux du sheet de remplacement, pas ceux de la page `/semaine`.
 
-Deux modifications ciblées dans `src/pages/Profil.tsx` uniquement.
+Plan ciblé :
 
-### 1. Reformuler `SCORE_LINES` (haut du fichier)
+1. Garder le sheet au-dessus de la navigation
+   - Remplacer le conteneur plein écran par une hauteur dynamique qui exclut la barre de navigation du bas.
+   - Utiliser `height: calc(100dvh - 64px - env(safe-area-inset-bottom))` pour que le sheet s’arrête au-dessus du menu.
 
-Remplacer les textes prescriptifs des scores D et E par des descriptifs neutres. A, B, C inchangés.
+2. Remonter les boutons d’action
+   - Remplacer `bottom-0 pb-8` par un positionnement basé sur `env(safe-area-inset-bottom)`.
+   - Ajouter assez de marge interne en bas pour que les boutons X / ✓ soient toujours visibles sur un écran 390x652.
 
-```ts
-const SCORE_LINES: { score: "a" | "b" | "c" | "d" | "e"; label: string; text: string }[] = [
-  { score: "a", label: "A", text: "Recette très équilibrée" },
-  { score: "b", label: "B", text: "Recette bien équilibrée" },
-  { score: "c", label: "C", text: "Équilibre moyen" },
-  { score: "d", label: "D", text: "Choix occasionnel" },
-  { score: "e", label: "E", text: "Recette plaisir" },
-];
-```
-
-### 2. Ajouter une mention légale dans la section "Comprendre le score"
-
-Juste après le `<p>` existant ("Indice agrégé à partir des ingrédients via Open Food Facts."), ajouter un second paragraphe à l'intérieur de la même `<section>` :
-
-```tsx
-<p className="mt-2 text-[11px] leading-relaxed text-[hsl(var(--text-subtle))]">
-  Indice descriptif basé sur Open Food Facts. NexEat n'est pas un service de nutrition et ne remplace pas un avis professionnel.
-</p>
-```
-
-### Hors scope (verrouillé)
-
-- Aucun autre fichier
-- Aucune autre section de `Profil.tsx`
-- `Pill`, structure de `SCORE_LINES`, tokens CSS : intacts
+3. Ne pas toucher au reste
+   - Aucun changement à `MealCard.tsx`, `RecipeSheet.tsx` ou au menu de navigation.
+   - Aucun changement de logique du TinderSwapSheet, seulement le positionnement responsive.
