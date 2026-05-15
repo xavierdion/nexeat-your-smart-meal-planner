@@ -102,7 +102,10 @@ const TinderSwapSheet = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-background flex flex-col" style={{ height: "100vh" }}>
+    <div
+      className="fixed left-0 right-0 top-0 z-50 bg-background flex flex-col"
+      style={{ bottom: "calc(64px + env(safe-area-inset-bottom))" }}
+    >
       {/* Header */}
       <div className="px-6 pt-12 pb-4 flex items-start justify-between">
         <div>
@@ -155,7 +158,10 @@ const TinderSwapSheet = ({
       </div>
 
       {/* Actions */}
-      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-6 pb-8 flex justify-center gap-4">
+      <div
+        className="absolute left-1/2 -translate-x-1/2 w-full max-w-[390px] px-6 pt-2 flex justify-center gap-4"
+        style={{ bottom: "16px" }}
+      >
         <button
           onClick={dislike}
           aria-label="Passer"
