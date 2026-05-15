@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Calendar, Soup, Plus } from "lucide-react";
+import { Calendar, Soup, Plus, Shuffle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import MealCard from "@/components/MealCard";
@@ -98,24 +98,6 @@ const DAYS: Day[] = [
   },
 ];
 
-const ALTERNATIVES: Record<MealType, Meal[]> = {
-  DÉJEUNER: [
-    { type: "DÉJEUNER", name: "Bol açaï-granola-banane", category: "Végétarien", score: "A", prep: "8 min" },
-    { type: "DÉJEUNER", name: "Tartines avocat-œuf poché", category: "Protéines", score: "B", prep: "12 min" },
-    { type: "DÉJEUNER", name: "Yogourt grec-fruits-miel", category: "Végétarien", score: "A", prep: "5 min" },
-  ],
-  DÎNER: [
-    { type: "DÎNER", name: "Riz sauté tofu-légumes-sauce gingembre", category: "Végétarien", score: "A", prep: "18 min" },
-    { type: "DÎNER", name: "Salade quinoa-pois chiches-feta", category: "Végétarien", score: "A", prep: "15 min" },
-    { type: "DÎNER", name: "Wrap poulet-légumes grillés", category: "Protéines", score: "B", prep: "12 min" },
-  ],
-  SOUPER: [
-    { type: "SOUPER", name: "Pâtes pesto-tomates cerises-parmesan", category: "Végétarien", score: "B", prep: "20 min" },
-    { type: "SOUPER", name: "Curry lentilles-épinards-riz basmati", category: "Végétarien", score: "A", prep: "25 min" },
-    { type: "SOUPER", name: "Saumon teriyaki-edamames-riz", category: "Oméga-3", score: "A", prep: "22 min" },
-  ],
-};
-
 const TODAY_KEY = "lun";
 const COMPLETED_DAY_KEYS: string[] = [];
 
@@ -126,8 +108,6 @@ const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
   const [recipeOpen, setRecipeOpen] = useState(false);
   const [swapOpen, setSwapOpen] = useState(false);
-  const [mealAlternatives, setMealAlternatives] = useState<Record<string, number>>({});
-  const [dismissedHint, setDismissedHint] = useState(false);
   const [removedRestes, setRemovedRestes] = useState<Set<string>>(new Set());
   const [longPressSlot, setLongPressSlot] = useState<{ dayKey: string; mealIdx: number } | null>(null);
   const [deletedSlots, setDeletedSlots] = useState<Set<string>>(new Set());
@@ -196,34 +176,6 @@ const Semaine = () => {
         onClick: () => setPlanAccepted(false),
       },
     });
-  };
-
-  const cycleAlt = (dayKey: string, type: MealType, dir: 1 | -1) => {
-    const k = `${dayKey}-${type}`;
-    let previousIdx: number;
-    setMealAlternatives((prev) => {
-      previousIdx = prev[k] ?? 0;
-      const next = (previousIdx + dir + 3) % 3;
-      return { ...prev, [k]: next };
-    });
-    setDismissedHint(true);
-    toast("Repas remplacé", {
-      duration: 3500,
-      style: { background: "#2A2D35", color: "#fff", border: "none" },
-      action: {
-        label: "Annuler",
-        onClick: () => {
-          setMealAlternatives((prev) => ({ ...prev, [k]: previousIdx }));
-        },
-      },
-    });
-  };
-
-  const getDisplayMeal = (dayKey: string, original: Meal): Meal => {
-    const k = `${dayKey}-${original.type}`;
-    const idx = mealAlternatives[k];
-    if (idx === undefined) return original;
-    return ALTERNATIVES[original.type][idx];
   };
 
   const dayHasContext = day.meals.some((m) => m.badge);
@@ -382,17 +334,6 @@ const Semaine = () => {
           />
         )}
         {visibleMeals.map(({ meal: original, idx: i }) => {
-          const meal = getDisplayMeal(day.key, original);
-          const isFirstDay = day.key === DAYS[0].key;
-          const showHint = isFirstDay && i === 0 && !dismissedHint;
-          const altKey = `${day.key}-${original.type}`;
-          const altIdx = mealAlternatives[altKey];
-          const altLabel =
-            altIdx === undefined
-              ? null
-              : altIdx === 0
-              ? "Choix original"
-              : `Alternative ${altIdx}/3`;
           const isReste = !!original.restOf;
           const isBatchSource = !!original.batchId;
           const slotKey = `${day.key}-${i}`;
@@ -422,9 +363,9 @@ const Semaine = () => {
                 onMouseDown={() => startLongPress(day.key, i)}
                 onMouseUp={cancelLongPress}
                 onMouseLeave={cancelLongPress}
-              onMouseMove={(e) => {
-                if (Math.abs(e.movementX) > 4 || Math.abs(e.movementY) > 4) cancelLongPress();
-              }}
+                onMouseMove={(e) => {
+                  if (Math.abs(e.movementX) > 4 || Math.abs(e.movementY) > 4) cancelLongPress();
+                }}
                 onTouchStart={() => startLongPress(day.key, i)}
                 onTouchEnd={cancelLongPress}
                 onTouchMove={cancelLongPress}
@@ -432,24 +373,17 @@ const Semaine = () => {
               >
                 <MealCard
                   variant="full"
-                  draggable
-                  mealType={meal.type}
-                  title={meal.name}
-                  category={meal.category}
-                  isNew={meal.isNew && !isReste && !isBatchSource}
-                  prep={meal.prep}
-                  score={meal.score}
-                  proactiveContext={isReste ? undefined : meal.badge}
+                  mealType={original.type}
+                  title={original.name}
+                  category={original.category}
+                  isNew={original.isNew && !isReste && !isBatchSource}
+                  prep={original.prep}
+                  score={original.score}
+                  proactiveContext={isReste ? undefined : original.badge}
                   onClick={() => {
                     setActiveSlot({ dayKey: day.key, mealIdx: i });
                     setRecipeOpen(true);
                   }}
-                  onSwipeLeft={() =>
-                    isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, 1)
-                  }
-                  onSwipeRight={() =>
-                    isReste ? removeReste(day.key, i) : cycleAlt(day.key, original.type, -1)
-                  }
                 />
                 {isBatchSource && (
                   <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-primary text-white text-[10px] font-bold px-3 py-1">
@@ -461,21 +395,39 @@ const Semaine = () => {
                     🍱 Restes
                   </span>
                 )}
+                {isReste ? (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeReste(day.key, i);
+                    }}
+                    aria-label={`Retirer le reste de ${day.label}`}
+                    className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-sm text-primary text-[11px] font-semibold px-3 py-1.5 shadow-card hover:bg-white active:scale-95 transition-transform"
+                  >
+                    <X size={12} strokeWidth={2} />
+                    Retirer
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveSlot({ dayKey: day.key, mealIdx: i });
+                      setSwapOpen(true);
+                    }}
+                    aria-label={`Changer le repas ${original.type} de ${day.label}`}
+                    className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-sm text-primary text-[11px] font-semibold px-3 py-1.5 shadow-card hover:bg-white active:scale-95 transition-transform"
+                  >
+                    <Shuffle size={12} strokeWidth={2} />
+                    Changer
+                  </button>
+                )}
               </div>
               {isReste && original.restOf && (
                 <p className="text-[11px] italic text-foreground/55 -mt-3 mb-4 px-1">
                   Restes de {original.restOf.name}
                 </p>
-              )}
-              {altLabel && (
-                <div className="text-center text-[11px] uppercase tracking-wide text-primary -mt-3 mb-5">
-                  {altLabel}
-                </div>
-              )}
-              {showHint && (
-                <div className="text-center text-[12px] text-secondary -mt-3 mb-5">
-                  ← Glisse pour découvrir d'autres options →
-                </div>
               )}
             </div>
           );
