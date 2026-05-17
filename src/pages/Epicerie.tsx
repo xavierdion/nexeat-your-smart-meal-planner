@@ -188,7 +188,7 @@ const Epicerie = () => {
                 );
               })()}
             </div>
-            <div className="bg-white rounded-2xl shadow-card overflow-hidden">
+            <div className="bg-white rounded-[var(--radius-card)] shadow-float overflow-hidden">
               {cat.items.map((item, i) => {
                 const key = `${cat.name}-${item.name}`;
                 const isChecked = !!checked[key];
