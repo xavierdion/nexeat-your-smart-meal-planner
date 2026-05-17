@@ -243,7 +243,7 @@ const Aujourdhui = () => {
       {/* Quick action */}
       <button
         onClick={() => navigate("/epicerie")}
-        className="mt-4 mx-4 h-12 rounded-xl border-[1.5px] border-primary text-primary text-[14px] font-semibold bg-white"
+        className="mt-4 mx-4 h-12 rounded-full border-[1.5px] border-primary text-primary text-[14px] font-semibold bg-white shadow-soft"
       >
         Voir l'épicerie
       </button>
