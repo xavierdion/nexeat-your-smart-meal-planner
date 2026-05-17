@@ -127,7 +127,7 @@ const Aujourdhui = () => {
 
       {/* Timeline verticale */}
       <EditorialSection eyebrow="Ta journée" className="py-4">
-        <div className="bg-white rounded-xl px-5 py-5 shadow-card">
+        <div className="bg-white rounded-[var(--radius-card)] px-5 py-5 shadow-float">
           {(() => {
             // Index where the "Now" row should be inserted
             const nowIndex = TIMELINE.findIndex((it) => it.hour > nowHour);
