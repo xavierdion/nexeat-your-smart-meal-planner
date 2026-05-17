@@ -348,7 +348,7 @@ const Semaine = () => {
           if (deletedSlots.has(slotKey)) {
             return (
               <div key={i} className="mb-5">
-                <div className="rounded-2xl border-2 border-dashed border-border bg-background h-[100px] flex items-center justify-center gap-2 px-4">
+                <div className="rounded-[var(--radius-card)] border-2 border-dashed border-border bg-white h-[100px] flex items-center justify-center gap-2 px-4">
                   <span className="text-[13px] text-foreground/40 italic">
                     {day.label} · {original.type} · Géré par toi
                   </span>
