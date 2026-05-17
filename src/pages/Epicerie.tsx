@@ -270,7 +270,7 @@ const Epicerie = () => {
         <button
           type="button"
           onClick={() => setDeliveryOpen(true)}
-          className="w-full h-12 rounded-xl bg-accent text-white text-[15px] font-semibold"
+          className="w-full h-12 rounded-full bg-accent text-white text-[15px] font-semibold shadow-cta"
         >
           Commander en ligne
         </button>
