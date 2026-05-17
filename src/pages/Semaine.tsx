@@ -454,7 +454,7 @@ const Semaine = () => {
         <button
           onClick={planAccepted ? () => navigate("/epicerie") : handleAccept}
           className={cn(
-            "w-full h-[52px] rounded-xl text-white text-[16px] font-semibold transition-colors duration-300",
+            "w-full h-14 rounded-full text-white text-[16px] font-semibold transition-colors duration-300",
             planAccepted
               ? "bg-primary"
               : "bg-accent shadow-cta",
