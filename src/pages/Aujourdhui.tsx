@@ -108,8 +108,7 @@ const Aujourdhui = () => {
 
       {/* Banner proactif */}
       <div
-        className="mx-4 mt-4 rounded-2xl p-4 border border-accent/20"
-        style={{ background: "hsl(var(--accent-soft))" }}
+        className="mx-4 mt-4 rounded-[var(--radius-card)] p-4 shadow-float bg-white"
       >
         <p className="text-[10px] uppercase tracking-wide font-semibold text-accent">
           ▸ EXAMEN IFT-2008 · DANS 45 MIN
