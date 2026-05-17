@@ -332,7 +332,7 @@ const Epicerie = () => {
             ].map((d) => (
               <div
                 key={d.name}
-                className="bg-white rounded-2xl p-4 border border-border shadow-card flex justify-between items-start gap-3"
+                className="bg-white rounded-[var(--radius-card)] p-4 shadow-float flex justify-between items-start gap-3"
               >
                 <div className="flex-1 min-w-0">
                   <p className="font-display font-bold text-lg text-foreground leading-none">
