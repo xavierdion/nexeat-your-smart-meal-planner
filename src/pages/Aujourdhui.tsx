@@ -97,9 +97,9 @@ const Aujourdhui = () => {
       : `Maintenant · ${now.getHours()}h${String(now.getMinutes()).padStart(2, "0")}`;
 
   return (
-    <div className="flex flex-col pb-6 bg-surface-warm min-h-full">
+    <div className="flex flex-col pb-6 bg-canvas-gradient px-5 min-h-screen">
       {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+      <header className="px-4 pt-6 pb-4">
         <h1 className="font-display text-display-xl text-foreground">
           {greeting}
         </h1>
@@ -108,8 +108,7 @@ const Aujourdhui = () => {
 
       {/* Banner proactif */}
       <div
-        className="mx-4 mt-4 rounded-2xl p-4 border border-accent/20"
-        style={{ background: "hsl(var(--accent-soft))" }}
+        className="mx-4 mt-4 rounded-[var(--radius-card)] p-4 shadow-float bg-white"
       >
         <p className="text-[10px] uppercase tracking-wide font-semibold text-accent">
           ▸ EXAMEN IFT-2008 · DANS 45 MIN
@@ -128,7 +127,7 @@ const Aujourdhui = () => {
 
       {/* Timeline verticale */}
       <EditorialSection eyebrow="Ta journée" className="py-4">
-        <div className="bg-white rounded-xl px-5 py-5 shadow-card">
+        <div className="bg-white rounded-[var(--radius-card)] px-5 py-5 shadow-float">
           {(() => {
             // Index where the "Now" row should be inserted
             const nowIndex = TIMELINE.findIndex((it) => it.hour > nowHour);
@@ -244,7 +243,7 @@ const Aujourdhui = () => {
       {/* Quick action */}
       <button
         onClick={() => navigate("/epicerie")}
-        className="mt-4 mx-4 h-12 rounded-xl border-[1.5px] border-primary text-primary text-[14px] font-semibold bg-white"
+        className="mt-4 mx-4 h-12 rounded-full border-[1.5px] border-primary text-primary text-[14px] font-semibold bg-white shadow-soft"
       >
         Voir l'épicerie
       </button>
