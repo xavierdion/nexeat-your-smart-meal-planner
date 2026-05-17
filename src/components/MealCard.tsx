@@ -173,6 +173,10 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
       onSwipeLeft,
       onSwipeRight,
       className,
+      role,
+      tabIndex,
+      "aria-label": ariaLabel,
+      onKeyDown,
     },
     ref,
   ) => {
