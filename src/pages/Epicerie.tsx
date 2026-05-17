@@ -252,7 +252,7 @@ const Epicerie = () => {
       })()}
 
       {/* Sticky bottom CTA */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40">
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 z-40">
         <button
           type="button"
           onClick={() => setAdjustOpen(true)}
