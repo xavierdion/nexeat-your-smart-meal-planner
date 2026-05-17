@@ -50,25 +50,37 @@ const AppShell = () => {
           style={{ height: "max(env(safe-area-inset-top), 44px)" }}
           aria-hidden
         />
-        <main className="flex-1" style={{ paddingBottom: "calc(64px + env(safe-area-inset-bottom))" }}>
+        <main className="flex-1" style={{ paddingBottom: "calc(80px + env(safe-area-inset-bottom))" }}>
           <Outlet />
         </main>
         <nav
-          className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white border-t border-border flex items-stretch z-50"
-          style={{ paddingBottom: "env(safe-area-inset-bottom)", height: "calc(64px + env(safe-area-inset-bottom))" }}
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[358px] bg-white rounded-full shadow-float flex items-center z-50 px-3 py-2"
+          style={{ paddingBottom: "max(env(safe-area-inset-bottom), 8px)" }}
           aria-label="Navigation principale"
+          role="navigation"
         >
           {renderSide(sideItems)}
 
           {/* Central elevated dashboard tab */}
-          <div className="flex-1 flex justify-center items-start relative">
+          <div className="flex-1 flex justify-center items-center relative">
             <NavLink
               to={centerItem.to}
               aria-label={centerItem.label}
-              className="absolute -top-2 flex flex-col items-center justify-center rounded-full bg-primary text-white shadow-md px-3 pt-2 pb-1.5 transition-transform active:scale-95 gap-0.5"
+              className={({ isActive }) =>
+                cn(
+                  "flex flex-col items-center justify-center rounded-full px-3 pt-2 pb-1.5 transition-all duration-200 ease-out gap-0.5 min-h-[44px] min-w-[44px]",
+                  isActive
+                    ? "bg-primary text-white shadow-float"
+                    : "bg-secondary/40 text-foreground/60"
+                )
+              }
             >
-              <centerItem.icon size={22} strokeWidth={2.25} />
-              <span className="text-[9px] font-semibold leading-none">{centerItem.label}</span>
+              {({ isActive }) => (
+                <>
+                  <centerItem.icon size={22} strokeWidth={isActive ? 2.25 : 2} />
+                  <span className="text-[9px] font-semibold leading-none">{centerItem.label}</span>
+                </>
+              )}
             </NavLink>
           </div>
 
