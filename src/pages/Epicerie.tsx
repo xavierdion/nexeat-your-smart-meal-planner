@@ -257,7 +257,7 @@ const Epicerie = () => {
           type="button"
           onClick={() => setAdjustOpen(true)}
           className={cn(
-            "w-full h-11 rounded-xl border-[1.5px] text-[14px] font-semibold mb-2",
+            "w-full h-11 rounded-full border-[1.5px] text-[14px] font-semibold mb-2 shadow-soft",
             overBudget
               ? "bg-[hsl(var(--warning-soft))] text-[hsl(var(--warning))] border-[hsl(var(--warning))]"
               : "bg-white text-primary border-primary",
