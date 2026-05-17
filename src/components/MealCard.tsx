@@ -286,6 +286,10 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
           onClick={() => {
             if (!hasDragged.current) onClick?.();
           }}
+          role={role}
+          tabIndex={tabIndex}
+          aria-label={ariaLabel}
+          onKeyDown={onKeyDown}
           className="mb-5"
         >
           {content}
@@ -294,7 +298,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
     }
 
     return (
-      <div ref={ref} onClick={onClick} className="mb-5">
+      <div ref={ref} onClick={onClick} role={role} tabIndex={tabIndex} aria-label={ariaLabel} onKeyDown={onKeyDown} className="mb-5">
         {content}
       </div>
     );
