@@ -469,21 +469,6 @@ const Semaine = () => {
         onClose={() => setRecipeOpen(false)}
         onSwap={() => setSwapOpen(true)}
       />
-      {(() => {
-        const slot = activeSlot ?? { dayKey: day.key, mealIdx: 0 };
-        const slotDay = DAYS.find((d) => d.key === slot.dayKey) ?? day;
-        const slotMeal = slotDay.meals[slot.mealIdx] ?? slotDay.meals[0];
-        return (
-          <TinderSwapSheet
-            open={swapOpen}
-            onClose={() => setSwapOpen(false)}
-            dayLabel={slotDay.label}
-            mealType={slotMeal.type}
-            hasCalendarEvent={!!slotMeal.badge}
-            calendarEventLabel={slotMeal.badge}
-          />
-        );
-      })()}
       <Sheet open={!!longPressSlot} onOpenChange={(v) => !v && setLongPressSlot(null)}>
         <SheetContent side="bottom" className="rounded-t-[20px] bg-white">
           <SheetTitle className="font-display text-display-md text-foreground">
