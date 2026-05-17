@@ -67,6 +67,10 @@ export interface MealCardProps {
   onSwipeLeft?: () => void;
   onSwipeRight?: () => void;
   className?: string;
+  role?: string;
+  tabIndex?: number;
+  "aria-label"?: string;
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
 }
 
 function InfoBanner({
