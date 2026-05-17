@@ -237,7 +237,7 @@ const Semaine = () => {
       </header>
 
       {/* Day pills */}
-      <div className="bg-white px-3 pb-4">
+      <div className="px-3 pb-4">
         <div className="flex items-center justify-between gap-2 pt-3">
           {DAYS.map((d) => {
             const active = d.key === activeKey;
