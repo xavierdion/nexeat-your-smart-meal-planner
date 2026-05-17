@@ -97,9 +97,9 @@ const Aujourdhui = () => {
       : `Maintenant · ${now.getHours()}h${String(now.getMinutes()).padStart(2, "0")}`;
 
   return (
-    <div className="flex flex-col pb-6 bg-surface-warm min-h-full">
+    <div className="flex flex-col pb-6 bg-canvas-gradient px-5 min-h-screen">
       {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+      <header className="px-4 pt-6 pb-4">
         <h1 className="font-display text-display-xl text-foreground">
           {greeting}
         </h1>
