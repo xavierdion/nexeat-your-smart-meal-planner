@@ -117,6 +117,14 @@ const Semaine = () => {
   const { planAccepted, setPlanAccepted } = usePreferences();
   const day = DAYS.find((d) => d.key === activeKey)!;
 
+  const navigateToSwap = (dayLabel: string, mealType: MealType, badge?: string) => {
+    const params = new URLSearchParams();
+    params.set("dayLabel", dayLabel);
+    params.set("mealType", mealType);
+    if (badge) params.set("calendarEventLabel", badge);
+    navigate(`/swap?${params.toString()}`);
+  };
+
   const startLongPress = (dayKey: string, mealIdx: number) => {
     if (longPressTimer.current) clearTimeout(longPressTimer.current);
     longPressTimer.current = setTimeout(() => {
