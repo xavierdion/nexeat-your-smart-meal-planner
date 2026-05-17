@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Check, AlertCircle, Apple, Beef, Wheat, Milk, Package, Leaf } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -89,6 +90,7 @@ const ADJUSTMENTS = [
 ];
 
 const Epicerie = () => {
+  const navigate = useNavigate();
   const { budget } = usePreferences();
   const BUDGET_TARGET = budget;
   const OVERRUN = 9;
@@ -239,14 +241,23 @@ const Epicerie = () => {
         );
         if (!allDone) return null;
         return (
-          <div className="mx-4 mt-6 rounded-[var(--radius-card)] bg-white shadow-float px-6 py-8 flex flex-col items-center text-center gap-3">
-            <span className="text-3xl">🛒</span>
-            <p className="font-display text-display-md text-foreground">
-              Épicerie complète
+          <div className="mx-4 mt-6 rounded-[var(--radius-card)] bg-white shadow-float px-6 py-10 flex flex-col items-center text-center gap-2">
+            <p className="text-xs uppercase tracking-[0.2em] text-foreground/50 font-sans">
+              C'EST FAIT
             </p>
-            <p className="text-[13px] text-foreground/60 leading-relaxed">
+            <p className="font-display text-3xl text-foreground">
+              Ta semaine est prête.
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               Tout est coché. Tu es prêt·e pour la semaine.
             </p>
+            <button
+              type="button"
+              onClick={() => navigate("/semaine")}
+              className="mt-4 h-11 rounded-full border-[1.5px] border-primary text-primary text-sm font-semibold bg-white px-6 shadow-soft"
+            >
+              Revenir à ma semaine →
+            </button>
           </div>
         );
       })()}
