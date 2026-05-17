@@ -448,7 +448,7 @@ const Semaine = () => {
 
       {/* Sticky CTA above bottom nav */}
       <div
-        className="fixed left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40"
+        className="fixed left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 z-40"
         style={{ bottom: "calc(64px + env(safe-area-inset-bottom))" }}
       >
         <button
