@@ -406,8 +406,18 @@ const Swap = () => {
         </button>
       </div>
 
+      {/* Context preamble */}
+      <div className="mt-6 text-center">
+        <p className="text-xs uppercase tracking-[0.2em] text-foreground/50 font-sans">
+          POURQUOI CE REPAS
+        </p>
+        <p className="font-display text-lg text-foreground leading-tight mt-1">
+          {getContextLine(calendarEventLabel)}
+        </p>
+      </div>
+
       {/* Stack zone */}
-      <div className="flex-1 flex flex-col items-center justify-center mt-12">
+      <div className="flex-1 flex flex-col items-center justify-center mt-4">
         {!hasAlts ? (
           <div className="text-center max-w-[320px]">
             <h2 className="font-display text-2xl text-foreground">
