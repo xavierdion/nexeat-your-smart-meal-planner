@@ -314,7 +314,7 @@ const Semaine = () => {
 
       {/* Day context strip */}
       {dayHasContext && (
-        <div className="mx-4 rounded-xl px-4 py-3 mt-4 bg-surface-cool">
+        <div className="mx-4 rounded-[var(--radius-card)] px-4 py-3 mt-4 bg-white shadow-float">
           <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
             Aujourd'hui en contexte
           </p>
