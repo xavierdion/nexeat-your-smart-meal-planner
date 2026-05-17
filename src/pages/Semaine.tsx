@@ -388,9 +388,15 @@ const Semaine = () => {
                   prep={original.prep}
                   score={original.score}
                   proactiveContext={isReste ? undefined : original.badge}
-                  onClick={() => {
-                    setActiveSlot({ dayKey: day.key, mealIdx: i });
-                    setRecipeOpen(true);
+                  onClick={() => navigateToSwap(day.label, original.type, original.badge)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Changer le ${original.type.toLowerCase()} du ${day.label}`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      navigateToSwap(day.label, original.type, original.badge);
+                    }
                   }}
                 />
                 {isBatchSource && (
