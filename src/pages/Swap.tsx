@@ -1,7 +1,14 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ChevronLeft, X, RefreshCw, Check } from "lucide-react";
 import { toast } from "sonner";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+  type PanInfo,
+} from "framer-motion";
 import { usePreferences } from "@/contexts/PreferencesContext";
 import { NutriScoreBadge } from "@/components/ui/nutri-score-badge";
 
@@ -64,10 +71,190 @@ const MEAL_TAGS: Record<string, string[]> = {
   "Risotto champignons-thym": ["dairy"],
 };
 
+const usePrefersReducedMotion = () => {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const cb = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener?.("change", cb);
+    return () => mq.removeEventListener?.("change", cb);
+  }, []);
+  return reduced;
+};
+
+const STACK_LAYOUT = [
+  { scale: 1, ty: 0, opacity: 1, z: 30 },
+  { scale: 0.94, ty: 18, opacity: 0.5, z: 20 },
+  { scale: 0.88, ty: 32, opacity: 0.25, z: 10 },
+];
+
+const vibrate = (ms: number) => {
+  if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+    try {
+      navigator.vibrate(ms);
+    } catch {
+      /* noop */
+    }
+  }
+};
+
+interface CardProps {
+  alt: Alt;
+  stackIndex: 0 | 1 | 2;
+  calendarEventLabel?: string;
+  reducedMotion: boolean;
+  nudge: boolean;
+  onCommit?: (dir: "left" | "right") => void;
+}
+
+const SwapCard = ({ alt, stackIndex, calendarEventLabel, reducedMotion, nudge, onCommit }: CardProps) => {
+  const isActive = stackIndex === 0;
+  const layout = STACK_LAYOUT[stackIndex];
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-300, 0, 300], reducedMotion ? [0, 0, 0] : [-9, 0, 9]);
+  const cardOpacity = useTransform(x, [-300, -120, 0, 120, 300], [0, 1, 1, 1, 0]);
+
+  const rightOpacity = useTransform(x, [0, 40, 140], [0, 0.3, 0.9]);
+  const leftOpacity = useTransform(x, [-140, -40, 0], [0.9, 0.3, 0]);
+
+  const [exitTo, setExitTo] = useState<null | "left" | "right">(null);
+
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
+    if (!isActive) return;
+    const threshold = (typeof window !== "undefined" ? window.innerWidth : 390) * 0.35;
+    const dx = info.offset.x;
+    const vx = info.velocity.x;
+    if (dx > threshold || vx > 500) {
+      setExitTo("right");
+      onCommit?.("right");
+    } else if (dx < -threshold || vx < -500) {
+      setExitTo("left");
+      onCommit?.("left");
+    } else {
+      // spring back handled by animate prop reset
+      x.set(0);
+    }
+  };
+
+  return (
+    <motion.article
+      aria-hidden={!isActive}
+      drag={isActive && !reducedMotion ? "x" : false}
+      dragElastic={0.6}
+      dragMomentum={false}
+      onDragEnd={handleDragEnd}
+      style={{
+        x: isActive ? x : 0,
+        rotate: isActive ? rotate : 0,
+        opacity: isActive ? cardOpacity : layout.opacity,
+        zIndex: layout.z,
+        pointerEvents: isActive ? "auto" : "none",
+        borderRadius: "var(--radius-card)",
+        touchAction: isActive ? "pan-y" : "auto",
+      }}
+      initial={false}
+      animate={
+        exitTo
+          ? {
+              x: exitTo === "right" ? 600 : -600,
+              opacity: 0,
+              rotate: reducedMotion ? 0 : exitTo === "right" ? 18 : -18,
+              transition: reducedMotion
+                ? { duration: 0.15 }
+                : { duration: 0.35, ease: "easeOut" },
+            }
+          : nudge && !reducedMotion
+          ? {
+              x: [0, 20, 0],
+              scale: layout.scale,
+              y: layout.ty,
+              transition: { duration: 0.8, ease: "easeOut", delay: 0.6 },
+            }
+          : {
+              x: 0,
+              scale: layout.scale,
+              y: layout.ty,
+              transition: reducedMotion
+                ? { duration: 0.15 }
+                : { type: "spring", stiffness: 300, damping: 30 },
+            }
+      }
+      className="absolute inset-x-0 top-0 bg-white shadow-float p-4 select-none"
+    >
+      {/* Photo */}
+      <div
+        className="relative w-full overflow-hidden"
+        style={{
+          aspectRatio: "4 / 3",
+          borderRadius: "var(--radius-photo)",
+          background:
+            "linear-gradient(135deg, hsl(var(--photo-placeholder-from)), hsl(var(--photo-placeholder-to)))",
+        }}
+        role="img"
+        aria-label={alt.name}
+      >
+        {calendarEventLabel && (
+          <span
+            className="absolute bottom-3 left-3 shadow-soft text-white text-xs uppercase tracking-wide rounded-full"
+            style={{ background: "hsl(var(--accent))", padding: "8px 12px" }}
+          >
+            ▸ {calendarEventLabel}
+          </span>
+        )}
+
+        {/* Drag overlays (active card only) */}
+        {isActive && !reducedMotion && (
+          <>
+            <motion.div
+              style={{
+                opacity: rightOpacity,
+                background: "hsl(var(--accent))",
+                borderRadius: "var(--radius-photo)",
+              }}
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              aria-hidden="true"
+            >
+              <span className="text-white font-display text-2xl flex items-center gap-2">
+                <Check size={24} /> Choisir
+              </span>
+            </motion.div>
+            <motion.div
+              style={{
+                opacity: leftOpacity,
+                background: "hsl(var(--primary) / 0.85)",
+                borderRadius: "var(--radius-photo)",
+              }}
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              aria-hidden="true"
+            >
+              <span className="text-white font-display text-2xl flex items-center gap-2">
+                <RefreshCw size={22} /> Autre
+              </span>
+            </motion.div>
+          </>
+        )}
+      </div>
+
+      {/* Meta */}
+      <div className="px-2 pt-4 pb-2">
+        <h2 className="font-display text-2xl text-foreground leading-snug">{alt.name}</h2>
+        <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+          <span>{alt.prep}</span>
+          <span aria-hidden="true">·</span>
+          <NutriScoreBadge score={alt.score} />
+        </div>
+      </div>
+    </motion.article>
+  );
+};
+
 const Swap = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const { restrictions } = usePreferences();
+  const reducedMotion = usePrefersReducedMotion();
 
   const dayLabel = params.get("dayLabel") ?? "AUJOURD'HUI";
   const mealTypeParam = (params.get("mealType") ?? "DÎNER") as MealType;
@@ -75,8 +262,6 @@ const Swap = () => {
     ? mealTypeParam
     : "DÎNER";
   const calendarEventLabel = params.get("calendarEventLabel") ?? undefined;
-
-  const [index, setIndex] = useState(0);
 
   const isAllowed = (name: string) => {
     const tags = MEAL_TAGS[name] ?? [];
@@ -96,17 +281,67 @@ const Swap = () => {
   const total = alts.length;
   const hasAlts = total > 0;
 
-  const next = () => setIndex((i) => (i + 1) % Math.max(total, 1));
-  const choose = () => {
-    toast("Repas mis à jour", {
-      style: { background: "#4A6670", color: "#fff", border: "none" },
-      duration: 2500,
-    });
-    navigate(-1);
+  const [index, setIndex] = useState(0);
+  const [seen, setSeen] = useState(1);
+  const [didNudge, setDidNudge] = useState(false);
+  const navTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!reducedMotion && hasAlts) {
+      const t = setTimeout(() => setDidNudge(true), 0);
+      return () => clearTimeout(t);
+    }
+  }, [reducedMotion, hasAlts]);
+
+  useEffect(() => {
+    return () => {
+      if (navTimeoutRef.current) clearTimeout(navTimeoutRef.current);
+    };
+  }, []);
+
+  const allViewed = hasAlts && seen > total;
+
+  const goNext = () => {
+    setIndex((i) => (i + 1) % total);
+    setSeen((s) => s + 1);
   };
 
-  const visible = hasAlts
-    ? [0, 1, 2].map((offset) => alts[(index + offset) % total])
+  const doChoose = () => {
+    const previousIndex = index;
+    vibrate(12);
+    if (navTimeoutRef.current) clearTimeout(navTimeoutRef.current);
+    navTimeoutRef.current = setTimeout(() => {
+      navigate(-1);
+    }, 4000);
+    toast.success("Repas mis à jour", {
+      duration: 4000,
+      action: {
+        label: "Annuler",
+        onClick: () => {
+          if (navTimeoutRef.current) {
+            clearTimeout(navTimeoutRef.current);
+            navTimeoutRef.current = null;
+          }
+          setIndex(previousIndex);
+        },
+      },
+      style: { background: "#4A6670", color: "#fff", border: "none" },
+    });
+  };
+
+  const handleCommit = (dir: "left" | "right") => {
+    if (dir === "right") {
+      doChoose();
+    } else {
+      vibrate(8);
+      goNext();
+    }
+  };
+
+  const currentAlt = hasAlts ? alts[index % total] : null;
+
+  const visible = hasAlts && !allViewed
+    ? ([0, 1, 2].map((offset) => alts[(index + offset) % total]) as Alt[])
     : [];
 
   return (
@@ -120,6 +355,15 @@ const Swap = () => {
         minHeight: "100dvh",
       }}
     >
+      {/* SR live region */}
+      <div role="status" aria-live="polite" className="sr-only">
+        {currentAlt && !allViewed
+          ? `Option ${index + 1} sur ${total} : ${currentAlt.name}`
+          : allViewed
+          ? "Tu as vu toutes les options"
+          : ""}
+      </div>
+
       {/* Top bar */}
       <div className="flex items-start justify-between gap-3">
         <button
@@ -148,69 +392,7 @@ const Swap = () => {
 
       {/* Stack zone */}
       <div className="flex-1 flex flex-col items-center justify-center mt-12">
-        {hasAlts ? (
-          <div className="relative w-full max-w-[360px]" style={{ height: 460 }}>
-            {visible.map((alt, i) => {
-              const styles = [
-                { scale: 1, ty: 0, opacity: 1, z: 30 },
-                { scale: 0.94, ty: 18, opacity: 0.5, z: 20 },
-                { scale: 0.88, ty: 32, opacity: 0.25, z: 10 },
-              ][i];
-              return (
-                <article
-                  key={`${alt.name}-${i}`}
-                  aria-hidden={i !== 0}
-                  className="absolute inset-x-0 top-0 bg-white shadow-float p-4"
-                  style={{
-                    borderRadius: "var(--radius-card)",
-                    transform: `translateY(${styles.ty}px) scale(${styles.scale})`,
-                    opacity: styles.opacity,
-                    pointerEvents: i === 0 ? "auto" : "none",
-                    zIndex: styles.z,
-                    transition: "transform 240ms ease, opacity 240ms ease",
-                  }}
-                >
-                  {/* Photo */}
-                  <div
-                    className="relative w-full"
-                    style={{
-                      aspectRatio: "4 / 3",
-                      borderRadius: "var(--radius-photo)",
-                      background:
-                        "linear-gradient(135deg, hsl(var(--photo-placeholder-from)), hsl(var(--photo-placeholder-to)))",
-                    }}
-                    role="img"
-                    aria-label={alt.name}
-                  >
-                    {calendarEventLabel && (
-                      <span
-                        className="absolute bottom-3 left-3 shadow-soft text-white text-xs uppercase tracking-wide rounded-full"
-                        style={{
-                          background: "hsl(var(--accent))",
-                          padding: "8px 12px",
-                        }}
-                      >
-                        ▸ {calendarEventLabel}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Meta */}
-                  <div className="px-2 pt-4 pb-2">
-                    <h2 className="font-display text-2xl text-foreground leading-snug">
-                      {alt.name}
-                    </h2>
-                    <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-                      <span>{alt.prep}</span>
-                      <span aria-hidden="true">·</span>
-                      <NutriScoreBadge score={alt.score} />
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        ) : (
+        {!hasAlts ? (
           <div className="text-center max-w-[320px]">
             <h2 className="font-display text-2xl text-foreground">
               Aucune option ne correspond à tes restrictions
@@ -226,22 +408,67 @@ const Swap = () => {
               Modifier mes restrictions
             </button>
           </div>
+        ) : allViewed ? (
+          <div className="text-center max-w-[320px]">
+            <h2 className="font-display text-3xl text-foreground">Tu as tout vu</h2>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Garde le repas actuel ou recommence depuis le début.
+            </p>
+            <div className="mt-6 flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="h-12 px-5 rounded-full text-white text-sm font-semibold shadow-cta"
+                style={{ background: "hsl(var(--accent))" }}
+              >
+                Garder le repas actuel
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIndex(0);
+                  setSeen(1);
+                }}
+                className="h-12 px-5 rounded-full bg-white border border-border text-foreground text-sm"
+              >
+                Revoir les options
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="relative w-full max-w-[360px]" style={{ height: 460 }}>
+            <AnimatePresence initial={false}>
+              {visible.map((alt, i) => (
+                <SwapCard
+                  key={`${index}-${i}-${alt.name}`}
+                  alt={alt}
+                  stackIndex={i as 0 | 1 | 2}
+                  calendarEventLabel={calendarEventLabel}
+                  reducedMotion={reducedMotion}
+                  nudge={i === 0 && didNudge && index === 0}
+                  onCommit={i === 0 ? handleCommit : undefined}
+                />
+              ))}
+            </AnimatePresence>
+          </div>
         )}
 
-        {/* Counter */}
-        {hasAlts && (
-          <p className="mt-6 text-sm text-foreground/60" style={{ paddingTop: 24 - 24 }}>
+        {hasAlts && !allViewed && (
+          <p className="mt-6 text-sm text-foreground/60">
             Option {index + 1} sur {total}
           </p>
         )}
       </div>
 
-      {/* Bottom bar */}
-      {hasAlts && (
+      {/* Bottom bar — fallback accessibility */}
+      {hasAlts && !allViewed && (
         <div className="flex gap-3 pt-5">
           <button
             type="button"
-            onClick={next}
+            onClick={() => {
+              vibrate(8);
+              goNext();
+            }}
             className="flex-1 h-14 rounded-full bg-white border border-border text-foreground text-sm font-medium flex items-center justify-center gap-2"
           >
             <RefreshCw size={18} />
@@ -249,7 +476,7 @@ const Swap = () => {
           </button>
           <button
             type="button"
-            onClick={choose}
+            onClick={doChoose}
             className="flex-1 h-14 rounded-full text-white text-sm font-semibold shadow-cta flex items-center justify-center gap-2"
             style={{ background: "hsl(var(--accent))" }}
           >
