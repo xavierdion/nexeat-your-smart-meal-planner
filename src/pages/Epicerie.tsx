@@ -123,7 +123,7 @@ const Epicerie = () => {
   const overBudget = BUDGET_CURRENT > BUDGET_TARGET;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-canvas-gradient px-5 min-h-screen">
       {/* Header éditorial */}
       <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
         <h1 className="font-display text-display-xl text-foreground">Ton épicerie</h1>
