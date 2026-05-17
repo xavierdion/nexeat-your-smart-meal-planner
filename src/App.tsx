@@ -18,6 +18,7 @@ import Aujourdhui from "./pages/Aujourdhui";
 import Epicerie from "./pages/Epicerie";
 import Profil from "./pages/Profil";
 import Recettes from "./pages/Recettes";
+import Swap from "./pages/Swap";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/onboarding/budget" element={<OnboardingBudget />} />
           <Route path="/onboarding/fallback" element={<OnboardingFallback />} />
           <Route path="/generation" element={<Generation />} />
+          <Route path="/swap" element={<Swap />} />
           <Route element={<AppShell />}>
             <Route path="/semaine" element={<Semaine />} />
             <Route path="/aujourd-hui" element={<Aujourdhui />} />
