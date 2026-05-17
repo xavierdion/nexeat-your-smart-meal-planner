@@ -209,7 +209,7 @@ const Semaine = () => {
   return (
     <div className="flex flex-col bg-canvas-gradient px-5 min-h-screen">
       {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+      <header className="px-4 pt-6 pb-4">
         <h1 className="font-display text-display-xl text-foreground">
           Ta semaine, déjà pensée
         </h1>
