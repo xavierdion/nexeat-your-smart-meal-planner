@@ -425,11 +425,9 @@ const Semaine = () => {
                 ) : (
                   <button
                     type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveSlot({ dayKey: day.key, mealIdx: i });
-                      setSwapOpen(true);
-                    }}
+                    onClick={() => navigateToSwap(day.label, original.type, original.badge)}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onTouchStart={(e) => e.stopPropagation()}
                     aria-label={`Changer le repas ${original.type} de ${day.label}`}
                     className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-sm text-primary text-[11px] font-semibold px-3 py-1.5 shadow-card hover:bg-white active:scale-95 transition-transform"
                   >
