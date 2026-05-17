@@ -185,6 +185,10 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
         <div
           ref={ref}
           onClick={onClick}
+          role={role}
+          tabIndex={tabIndex}
+          aria-label={ariaLabel}
+          onKeyDown={onKeyDown}
           className={cn(
             "flex gap-3 p-3 bg-white rounded-2xl shadow-card",
             onClick && "cursor-pointer",
