@@ -207,9 +207,9 @@ const Semaine = () => {
   })();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-canvas-gradient px-5 min-h-screen">
       {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+      <header className="px-4 pt-6 pb-4">
         <h1 className="font-display text-display-xl text-foreground">
           Ta semaine, déjà pensée
         </h1>
@@ -237,7 +237,7 @@ const Semaine = () => {
       </header>
 
       {/* Day pills */}
-      <div className="bg-white px-3 pb-4">
+      <div className="px-3 pb-4">
         <div className="flex items-center justify-between gap-2 pt-3">
           {DAYS.map((d) => {
             const active = d.key === activeKey;
@@ -314,7 +314,7 @@ const Semaine = () => {
 
       {/* Day context strip */}
       {dayHasContext && (
-        <div className="mx-4 rounded-xl px-4 py-3 mt-4 bg-surface-cool">
+        <div className="mx-4 rounded-[var(--radius-card)] px-4 py-3 mt-4 bg-white shadow-float">
           <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
             Aujourd'hui en contexte
           </p>
@@ -348,7 +348,7 @@ const Semaine = () => {
           if (deletedSlots.has(slotKey)) {
             return (
               <div key={i} className="mb-5">
-                <div className="rounded-2xl border-2 border-dashed border-border bg-background h-[100px] flex items-center justify-center gap-2 px-4">
+                <div className="rounded-[var(--radius-card)] border-2 border-dashed border-border bg-white h-[100px] flex items-center justify-center gap-2 px-4">
                   <span className="text-[13px] text-foreground/40 italic">
                     {day.label} · {original.type} · Géré par toi
                   </span>
@@ -448,13 +448,13 @@ const Semaine = () => {
 
       {/* Sticky CTA above bottom nav */}
       <div
-        className="fixed left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40"
+        className="fixed left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 z-40"
         style={{ bottom: "calc(64px + env(safe-area-inset-bottom))" }}
       >
         <button
           onClick={planAccepted ? () => navigate("/epicerie") : handleAccept}
           className={cn(
-            "w-full h-[52px] rounded-xl text-white text-[16px] font-semibold transition-colors duration-300",
+            "w-full h-14 rounded-full text-white text-[16px] font-semibold transition-colors duration-300",
             planAccepted
               ? "bg-primary"
               : "bg-accent shadow-cta",
