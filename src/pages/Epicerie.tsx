@@ -139,7 +139,7 @@ const Epicerie = () => {
       </div>
 
       {/* Budget card */}
-      <div className="mx-4 mt-4 bg-white rounded-2xl shadow-card p-4 flex justify-between items-start gap-4">
+      <div className="mx-4 mt-4 bg-white rounded-[var(--radius-card)] shadow-float p-5 flex justify-between items-start gap-4">
         <div className="flex-1 min-w-0">
           <p className="text-eyebrow uppercase text-primary/70">Budget hebdo</p>
           <p className="font-display text-display-xl text-primary mt-1 leading-none">{BUDGET_CURRENT} $</p>
