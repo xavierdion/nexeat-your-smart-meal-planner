@@ -50,6 +50,22 @@ const ALTS_BY_TYPE: Record<MealType, Alt[]> = {
   ],
 };
 
+const CONTEXT_COPY: Record<string, string> = {
+  "examen": "Avant ton examen, on vise léger et soutenu pour rester concentré·e.",
+  "session": "Session d'étude longue ? Ce repas tient l'énergie stable sans lourdeur.",
+  "travail": "Travail d'équipe à l'horizon — repas simple et rapide avant de partir.",
+  "soir": "Ce soir, on privilégie un repas digeste et réconfortant.",
+};
+
+const getContextLine = (label?: string): string => {
+  if (!label) return "Choisi pour ton jour, pour ton moment.";
+  const lower = label.toLowerCase();
+  if (lower.includes("examen")) return CONTEXT_COPY["examen"];
+  if (lower.includes("session") || lower.includes("étude")) return CONTEXT_COPY["session"];
+  if (lower.includes("travail") || lower.includes("équipe")) return CONTEXT_COPY["travail"];
+  return CONTEXT_COPY["soir"];
+};
+
 const MEAL_TAGS: Record<string, string[]> = {
   "Pâtes pesto-tomates cerises-parmesan": ["dairy"],
   "Saumon teriyaki-edamames-riz": ["fish", "animal"],
