@@ -90,6 +90,7 @@ const ADJUSTMENTS = [
 ];
 
 const Epicerie = () => {
+  const navigate = useNavigate();
   const { budget } = usePreferences();
   const BUDGET_TARGET = budget;
   const OVERRUN = 9;
