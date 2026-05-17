@@ -84,6 +84,23 @@ All colors MUST be HSL.
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* New Swap page tokens */
+    --sage-deep: 165 28% 66%;
+    --sage-mid: 165 20% 80%;
+    --gradient-canvas: linear-gradient(180deg,
+      hsl(var(--sage-deep)) 0%,
+      hsl(var(--sage-mid)) 40%,
+      hsl(var(--background)) 100%);
+
+    --shadow-card-soft: 0 4px 16px hsl(222 11% 18% / 0.06);
+    --shadow-card-float: 0 18px 40px hsl(222 11% 18% / 0.14);
+    --shadow-cta: 0 10px 24px hsl(var(--accent) / 0.32);
+
+    --radius-card: 1.75rem;
+    --radius-photo: 1.25rem;
+
+    --ring: 14 67% 63%;   /* focus ring coral, conservé */
   }
 
   .dark {
@@ -127,6 +144,21 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  *:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: inherit;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: 'DM Sans', system-ui, sans-serif;
@@ -135,5 +167,22 @@ All colors MUST be HSL.
 
   h1, h2, h3, h4, h5, h6, .font-display {
     font-family: 'Fraunces', Georgia, serif;
+  }
+}
+
+@layer utilities {
+  .bg-canvas-gradient {
+    background: var(--gradient-canvas);
+    background-attachment: fixed;
+    min-height: 100dvh;
+  }
+  .shadow-float {
+    box-shadow: var(--shadow-card-float);
+  }
+  .shadow-soft {
+    box-shadow: var(--shadow-card-soft);
+  }
+  .shadow-cta {
+    box-shadow: var(--shadow-cta);
   }
 }
