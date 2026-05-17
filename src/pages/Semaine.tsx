@@ -210,7 +210,10 @@ const Semaine = () => {
     <div className="flex flex-col bg-canvas-gradient px-5 min-h-screen">
       {/* Header éditorial */}
       <header className="px-4 pt-6 pb-4">
-        <h1 className="font-display text-display-xl text-foreground">
+        <p className="text-xs uppercase tracking-[0.2em] text-foreground/50 font-sans">
+          TA SEMAINE
+        </p>
+        <h1 className="font-display text-4xl text-foreground leading-tight">
           Ta semaine, déjà pensée
         </h1>
         {(() => {
@@ -231,6 +234,8 @@ const Semaine = () => {
               )}
               <Soup size={12} strokeWidth={2} />
               <span>{restesCount} repas issus du batch cooking</span>
+              <span className="text-foreground/30 mx-1">·</span>
+              <span>{confirmedMeals} repas · {DAYS.reduce((acc,d)=>acc+d.cookingMinutes,0)} min de cuisson</span>
             </div>
           );
         })()}
