@@ -239,7 +239,7 @@ const Epicerie = () => {
         );
         if (!allDone) return null;
         return (
-          <div className="mx-4 mt-6 rounded-2xl bg-white border border-secondary/30 shadow-card px-6 py-8 flex flex-col items-center text-center gap-3">
+          <div className="mx-4 mt-6 rounded-[var(--radius-card)] bg-white shadow-float px-6 py-8 flex flex-col items-center text-center gap-3">
             <span className="text-3xl">🛒</span>
             <p className="font-display text-display-md text-foreground">
               Épicerie complète
