@@ -190,7 +190,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
           aria-label={ariaLabel}
           onKeyDown={onKeyDown}
           className={cn(
-            "flex gap-3 p-3 bg-white rounded-2xl shadow-card",
+            "flex gap-3 p-3 bg-white rounded-[var(--radius-card)] shadow-float",
             onClick && "cursor-pointer",
             className,
           )}
@@ -235,7 +235,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
     const content = (
       <div
         className={cn(
-          "rounded-2xl shadow-card bg-white overflow-hidden",
+          "rounded-[var(--radius-card)] shadow-float bg-white overflow-hidden",
           onClick && !draggable && "cursor-pointer",
           className,
         )}
@@ -253,9 +253,9 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
         {/* Body */}
         <div className="bg-white px-4 py-4">
           {proactiveContext && (
-            <div className="flex items-center gap-2 bg-[hsl(var(--accent-soft))] text-accent rounded-[10px] px-3 py-2.5 mb-3">
+            <div className="flex items-center gap-2 bg-[hsl(var(--accent))] text-white rounded-full px-3 py-1.5 mb-3 shadow-soft">
               <Calendar size={14} className="shrink-0" />
-              <span className="text-[12px] font-medium leading-tight">{proactiveContext}</span>
+              <span className="text-xs uppercase tracking-wide font-medium leading-tight">{proactiveContext}</span>
             </div>
           )}
           <p className="text-eyebrow uppercase text-foreground/50">{mealType}</p>
