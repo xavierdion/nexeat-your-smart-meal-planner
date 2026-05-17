@@ -123,11 +123,11 @@ const Epicerie = () => {
   const overBudget = BUDGET_CURRENT > BUDGET_TARGET;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-canvas-gradient px-5 min-h-screen">
       {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+      <header className="px-4 pt-6 pb-4">
         <h1 className="font-display text-display-xl text-foreground">Ton épicerie</h1>
-        <p className="text-[14px] text-foreground/60 mt-1">
+        <p className="text-[14px] text-foreground/70 mt-1">
           {totalItems} articles · {CATEGORIES.length} catégories
         </p>
       </header>
@@ -139,7 +139,7 @@ const Epicerie = () => {
       </div>
 
       {/* Budget card */}
-      <div className="mx-4 mt-4 bg-white rounded-2xl shadow-card p-4 flex justify-between items-start gap-4">
+      <div className="mx-4 mt-4 bg-white rounded-[var(--radius-card)] shadow-float p-5 flex justify-between items-start gap-4">
         <div className="flex-1 min-w-0">
           <p className="text-eyebrow uppercase text-primary/70">Budget hebdo</p>
           <p className="font-display text-display-xl text-primary mt-1 leading-none">{BUDGET_CURRENT} $</p>
@@ -188,7 +188,7 @@ const Epicerie = () => {
                 );
               })()}
             </div>
-            <div className="bg-white rounded-2xl shadow-card overflow-hidden">
+            <div className="bg-white rounded-[var(--radius-card)] shadow-float overflow-hidden">
               {cat.items.map((item, i) => {
                 const key = `${cat.name}-${item.name}`;
                 const isChecked = !!checked[key];
@@ -198,7 +198,7 @@ const Epicerie = () => {
                     type="button"
                     onClick={() => toggle(key)}
                     className={cn(
-                      "w-full flex items-center gap-3 px-4 py-3 text-left",
+                      "w-full flex items-center gap-3 px-4 py-3.5 min-h-[44px] text-left",
                       i !== cat.items.length - 1 && "border-b border-secondary/15",
                     )}
                   >
@@ -239,7 +239,7 @@ const Epicerie = () => {
         );
         if (!allDone) return null;
         return (
-          <div className="mx-4 mt-6 rounded-2xl bg-white border border-secondary/30 shadow-card px-6 py-8 flex flex-col items-center text-center gap-3">
+          <div className="mx-4 mt-6 rounded-[var(--radius-card)] bg-white shadow-float px-6 py-8 flex flex-col items-center text-center gap-3">
             <span className="text-3xl">🛒</span>
             <p className="font-display text-display-md text-foreground">
               Épicerie complète
@@ -252,12 +252,12 @@ const Epicerie = () => {
       })()}
 
       {/* Sticky bottom CTA */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40">
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 z-40">
         <button
           type="button"
           onClick={() => setAdjustOpen(true)}
           className={cn(
-            "w-full h-11 rounded-xl border-[1.5px] text-[14px] font-semibold mb-2",
+            "w-full h-11 rounded-full border-[1.5px] text-[14px] font-semibold mb-2 shadow-soft",
             overBudget
               ? "bg-[hsl(var(--warning-soft))] text-[hsl(var(--warning))] border-[hsl(var(--warning))]"
               : "bg-white text-primary border-primary",
@@ -270,7 +270,7 @@ const Epicerie = () => {
         <button
           type="button"
           onClick={() => setDeliveryOpen(true)}
-          className="w-full h-12 rounded-xl bg-accent text-white text-[15px] font-semibold"
+          className="w-full h-12 rounded-full bg-accent text-white text-[15px] font-semibold shadow-cta"
         >
           Commander en ligne
         </button>
@@ -332,7 +332,7 @@ const Epicerie = () => {
             ].map((d) => (
               <div
                 key={d.name}
-                className="bg-white rounded-2xl p-4 border border-border shadow-card flex justify-between items-start gap-3"
+                className="bg-white rounded-[var(--radius-card)] p-4 shadow-float flex justify-between items-start gap-3"
               >
                 <div className="flex-1 min-w-0">
                   <p className="font-display font-bold text-lg text-foreground leading-none">
@@ -344,7 +344,7 @@ const Epicerie = () => {
                 </div>
                 <button
                   type="button"
-                  className="shrink-0 bg-accent text-white rounded-xl px-4 py-2 text-sm font-semibold"
+                  className="shrink-0 bg-accent text-white rounded-full px-4 py-2 text-sm font-semibold shadow-cta"
                 >
                   Commander →
                 </button>
