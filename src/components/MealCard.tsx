@@ -67,6 +67,10 @@ export interface MealCardProps {
   onSwipeLeft?: () => void;
   onSwipeRight?: () => void;
   className?: string;
+  role?: string;
+  tabIndex?: number;
+  "aria-label"?: string;
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
 }
 
 function InfoBanner({
@@ -169,6 +173,10 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
       onSwipeLeft,
       onSwipeRight,
       className,
+      role,
+      tabIndex,
+      "aria-label": ariaLabel,
+      onKeyDown,
     },
     ref,
   ) => {
@@ -177,6 +185,10 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
         <div
           ref={ref}
           onClick={onClick}
+          role={role}
+          tabIndex={tabIndex}
+          aria-label={ariaLabel}
+          onKeyDown={onKeyDown}
           className={cn(
             "flex gap-3 p-3 bg-white rounded-2xl shadow-card",
             onClick && "cursor-pointer",
@@ -274,6 +286,10 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
           onClick={() => {
             if (!hasDragged.current) onClick?.();
           }}
+          role={role}
+          tabIndex={tabIndex}
+          aria-label={ariaLabel}
+          onKeyDown={onKeyDown}
           className="mb-5"
         >
           {content}
@@ -282,7 +298,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
     }
 
     return (
-      <div ref={ref} onClick={onClick} className="mb-5">
+      <div ref={ref} onClick={onClick} role={role} tabIndex={tabIndex} aria-label={ariaLabel} onKeyDown={onKeyDown} className="mb-5">
         {content}
       </div>
     );

@@ -117,6 +117,14 @@ const Semaine = () => {
   const { planAccepted, setPlanAccepted } = usePreferences();
   const day = DAYS.find((d) => d.key === activeKey)!;
 
+  const navigateToSwap = (dayLabel: string, mealType: MealType, badge?: string) => {
+    const params = new URLSearchParams();
+    params.set("dayLabel", dayLabel);
+    params.set("mealType", mealType);
+    if (badge) params.set("calendarEventLabel", badge);
+    navigate(`/swap?${params.toString()}`);
+  };
+
   const startLongPress = (dayKey: string, mealIdx: number) => {
     if (longPressTimer.current) clearTimeout(longPressTimer.current);
     longPressTimer.current = setTimeout(() => {
@@ -380,9 +388,15 @@ const Semaine = () => {
                   prep={original.prep}
                   score={original.score}
                   proactiveContext={isReste ? undefined : original.badge}
-                  onClick={() => {
-                    setActiveSlot({ dayKey: day.key, mealIdx: i });
-                    setRecipeOpen(true);
+                  onClick={() => navigateToSwap(day.label, original.type, original.badge)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Changer le ${original.type.toLowerCase()} du ${day.label}`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      navigateToSwap(day.label, original.type, original.badge);
+                    }
                   }}
                 />
                 {isBatchSource && (
@@ -411,11 +425,9 @@ const Semaine = () => {
                 ) : (
                   <button
                     type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveSlot({ dayKey: day.key, mealIdx: i });
-                      setSwapOpen(true);
-                    }}
+                    onClick={() => navigateToSwap(day.label, original.type, original.badge)}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onTouchStart={(e) => e.stopPropagation()}
                     aria-label={`Changer le repas ${original.type} de ${day.label}`}
                     className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-sm text-primary text-[11px] font-semibold px-3 py-1.5 shadow-card hover:bg-white active:scale-95 transition-transform"
                   >
@@ -457,21 +469,6 @@ const Semaine = () => {
         onClose={() => setRecipeOpen(false)}
         onSwap={() => setSwapOpen(true)}
       />
-      {(() => {
-        const slot = activeSlot ?? { dayKey: day.key, mealIdx: 0 };
-        const slotDay = DAYS.find((d) => d.key === slot.dayKey) ?? day;
-        const slotMeal = slotDay.meals[slot.mealIdx] ?? slotDay.meals[0];
-        return (
-          <TinderSwapSheet
-            open={swapOpen}
-            onClose={() => setSwapOpen(false)}
-            dayLabel={slotDay.label}
-            mealType={slotMeal.type}
-            hasCalendarEvent={!!slotMeal.badge}
-            calendarEventLabel={slotMeal.badge}
-          />
-        );
-      })()}
       <Sheet open={!!longPressSlot} onOpenChange={(v) => !v && setLongPressSlot(null)}>
         <SheetContent side="bottom" className="rounded-t-[20px] bg-white">
           <SheetTitle className="font-display text-display-md text-foreground">
@@ -481,9 +478,12 @@ const Semaine = () => {
             <button
               type="button"
               onClick={() => {
-                if (longPressSlot) setActiveSlot(longPressSlot);
+                if (longPressSlot) {
+                  const slotDay = DAYS.find((d) => d.key === longPressSlot.dayKey) ?? day;
+                  const slotMeal = slotDay.meals[longPressSlot.mealIdx] ?? slotDay.meals[0];
+                  navigateToSwap(slotDay.label, slotMeal.type, slotMeal.badge);
+                }
                 setLongPressSlot(null);
-                setSwapOpen(true);
               }}
               className="w-full h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[15px] font-semibold"
             >
