@@ -493,9 +493,12 @@ const Semaine = () => {
             <button
               type="button"
               onClick={() => {
-                if (longPressSlot) setActiveSlot(longPressSlot);
+                if (longPressSlot) {
+                  const slotDay = DAYS.find((d) => d.key === longPressSlot.dayKey) ?? day;
+                  const slotMeal = slotDay.meals[longPressSlot.mealIdx] ?? slotDay.meals[0];
+                  navigateToSwap(slotDay.label, slotMeal.type, slotMeal.badge);
+                }
                 setLongPressSlot(null);
-                setSwapOpen(true);
               }}
               className="w-full h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[15px] font-semibold"
             >
