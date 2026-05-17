@@ -198,7 +198,7 @@ const Epicerie = () => {
                     type="button"
                     onClick={() => toggle(key)}
                     className={cn(
-                      "w-full flex items-center gap-3 px-4 py-3 text-left",
+                      "w-full flex items-center gap-3 px-4 py-3.5 min-h-[44px] text-left",
                       i !== cat.items.length - 1 && "border-b border-secondary/15",
                     )}
                   >
