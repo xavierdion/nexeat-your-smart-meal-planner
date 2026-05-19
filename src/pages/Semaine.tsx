@@ -117,14 +117,6 @@ const Semaine = () => {
   const { planAccepted, setPlanAccepted } = usePreferences();
   const day = DAYS.find((d) => d.key === activeKey)!;
 
-  const navigateToSwap = (dayLabel: string, mealType: MealType, badge?: string) => {
-    const params = new URLSearchParams();
-    params.set("dayLabel", dayLabel);
-    params.set("mealType", mealType);
-    if (badge) params.set("calendarEventLabel", badge);
-    navigate(`/swap?${params.toString()}`);
-  };
-
   const startLongPress = (dayKey: string, mealIdx: number) => {
     if (longPressTimer.current) clearTimeout(longPressTimer.current);
     longPressTimer.current = setTimeout(() => {
@@ -207,13 +199,10 @@ const Semaine = () => {
   })();
 
   return (
-    <div className="flex flex-col bg-canvas-gradient px-5 min-h-screen">
+    <div className="flex flex-col">
       {/* Header éditorial */}
-      <header className="px-4 pt-6 pb-4">
-        <p className="text-xs uppercase tracking-[0.2em] text-foreground/50 font-sans">
-          TA SEMAINE
-        </p>
-        <h1 className="font-display text-4xl text-foreground leading-tight">
+      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
+        <h1 className="font-display text-display-xl text-foreground">
           Ta semaine, déjà pensée
         </h1>
         {(() => {
@@ -234,15 +223,13 @@ const Semaine = () => {
               )}
               <Soup size={12} strokeWidth={2} />
               <span>{restesCount} repas issus du batch cooking</span>
-              <span className="text-foreground/30 mx-1">·</span>
-              <span>{confirmedMeals} repas · {DAYS.reduce((acc,d)=>acc+d.cookingMinutes,0)} min de cuisson</span>
             </div>
           );
         })()}
       </header>
 
       {/* Day pills */}
-      <div className="px-3 pb-4">
+      <div className="bg-white px-3 pb-4">
         <div className="flex items-center justify-between gap-2 pt-3">
           {DAYS.map((d) => {
             const active = d.key === activeKey;
@@ -319,7 +306,7 @@ const Semaine = () => {
 
       {/* Day context strip */}
       {dayHasContext && (
-        <div className="mx-4 rounded-[var(--radius-card)] px-4 py-3 mt-4 bg-white shadow-float">
+        <div className="mx-4 rounded-xl px-4 py-3 mt-4 bg-surface-cool">
           <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
             Aujourd'hui en contexte
           </p>
@@ -353,7 +340,7 @@ const Semaine = () => {
           if (deletedSlots.has(slotKey)) {
             return (
               <div key={i} className="mb-5">
-                <div className="rounded-[var(--radius-card)] border-2 border-dashed border-border bg-white h-[100px] flex items-center justify-center gap-2 px-4">
+                <div className="rounded-2xl border-2 border-dashed border-border bg-background h-[100px] flex items-center justify-center gap-2 px-4">
                   <span className="text-[13px] text-foreground/40 italic">
                     {day.label} · {original.type} · Géré par toi
                   </span>
@@ -393,15 +380,9 @@ const Semaine = () => {
                   prep={original.prep}
                   score={original.score}
                   proactiveContext={isReste ? undefined : original.badge}
-                  onClick={() => navigateToSwap(day.label, original.type, original.badge)}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`Changer le ${original.type.toLowerCase()} du ${day.label}`}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      navigateToSwap(day.label, original.type, original.badge);
-                    }
+                  onClick={() => {
+                    setActiveSlot({ dayKey: day.key, mealIdx: i });
+                    setRecipeOpen(true);
                   }}
                 />
                 {isBatchSource && (
@@ -430,9 +411,11 @@ const Semaine = () => {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => navigateToSwap(day.label, original.type, original.badge)}
-                    onMouseDown={(e) => e.stopPropagation()}
-                    onTouchStart={(e) => e.stopPropagation()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveSlot({ dayKey: day.key, mealIdx: i });
+                      setSwapOpen(true);
+                    }}
                     aria-label={`Changer le repas ${original.type} de ${day.label}`}
                     className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-sm text-primary text-[11px] font-semibold px-3 py-1.5 shadow-card hover:bg-white active:scale-95 transition-transform"
                   >
@@ -453,13 +436,13 @@ const Semaine = () => {
 
       {/* Sticky CTA above bottom nav */}
       <div
-        className="fixed left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 z-40"
+        className="fixed left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 py-3 bg-background z-40"
         style={{ bottom: "calc(64px + env(safe-area-inset-bottom))" }}
       >
         <button
           onClick={planAccepted ? () => navigate("/epicerie") : handleAccept}
           className={cn(
-            "w-full h-14 rounded-full text-white text-[16px] font-semibold transition-colors duration-300",
+            "w-full h-[52px] rounded-xl text-white text-[16px] font-semibold transition-colors duration-300",
             planAccepted
               ? "bg-primary"
               : "bg-accent shadow-cta",
@@ -474,6 +457,21 @@ const Semaine = () => {
         onClose={() => setRecipeOpen(false)}
         onSwap={() => setSwapOpen(true)}
       />
+      {(() => {
+        const slot = activeSlot ?? { dayKey: day.key, mealIdx: 0 };
+        const slotDay = DAYS.find((d) => d.key === slot.dayKey) ?? day;
+        const slotMeal = slotDay.meals[slot.mealIdx] ?? slotDay.meals[0];
+        return (
+          <TinderSwapSheet
+            open={swapOpen}
+            onClose={() => setSwapOpen(false)}
+            dayLabel={slotDay.label}
+            mealType={slotMeal.type}
+            hasCalendarEvent={!!slotMeal.badge}
+            calendarEventLabel={slotMeal.badge}
+          />
+        );
+      })()}
       <Sheet open={!!longPressSlot} onOpenChange={(v) => !v && setLongPressSlot(null)}>
         <SheetContent side="bottom" className="rounded-t-[20px] bg-white">
           <SheetTitle className="font-display text-display-md text-foreground">
@@ -483,12 +481,9 @@ const Semaine = () => {
             <button
               type="button"
               onClick={() => {
-                if (longPressSlot) {
-                  const slotDay = DAYS.find((d) => d.key === longPressSlot.dayKey) ?? day;
-                  const slotMeal = slotDay.meals[longPressSlot.mealIdx] ?? slotDay.meals[0];
-                  navigateToSwap(slotDay.label, slotMeal.type, slotMeal.badge);
-                }
+                if (longPressSlot) setActiveSlot(longPressSlot);
                 setLongPressSlot(null);
+                setSwapOpen(true);
               }}
               className="w-full h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[15px] font-semibold"
             >
