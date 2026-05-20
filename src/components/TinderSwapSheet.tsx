@@ -81,6 +81,9 @@ const TinderSwapSheet = ({
   const alts = ALTS_BY_TYPE[mealType].filter((alt) => isAllowed(alt.name));
   const safeAlts = alts.length > 0 ? alts : ALTS_BY_TYPE[mealType];
   const current = safeAlts[index % safeAlts.length];
+  const next1 = safeAlts[(index + 1) % safeAlts.length];
+  const next2 = safeAlts[(index + 2) % safeAlts.length];
+  const remaining = Math.max(safeAlts.length - 1, 0);
 
   const dislike = () => setIndex((i) => i + 1);
   const like = () => {
@@ -124,8 +127,26 @@ const TinderSwapSheet = ({
       </div>
 
       {/* Card */}
-      <div className="mx-6 mt-4 flex-1">
+      <div className="mx-6 mt-4 flex-1 relative" style={{ minHeight: 320 }}>
+        {/* Stack — back cards peek behind to signal multiple choices */}
+        {safeAlts.length > 2 && (
+          <div
+            key={`back2-${index}`}
+            aria-hidden
+            className="absolute left-0 right-0 rounded-2xl bg-secondary/20 border border-border/40"
+            style={{ top: 16, height: 280, transform: "scale(0.9)", zIndex: 0 }}
+          />
+        )}
+        {safeAlts.length > 1 && (
+          <div
+            key={`back1-${index}`}
+            aria-hidden
+            className="absolute left-0 right-0 rounded-2xl bg-secondary/35 border border-border/60"
+            style={{ top: 8, height: 280, transform: "scale(0.95)", zIndex: 1 }}
+          />
+        )}
         <motion.div
+          key={`front-${index}`}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.35}
@@ -133,9 +154,12 @@ const TinderSwapSheet = ({
             if (info.offset.x < -80) dislike();
             else if (info.offset.x > 80) like();
           }}
-          className="relative w-full rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing"
+          className="relative w-full rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing shadow-card"
+          initial={{ scale: 0.95, y: 8, opacity: 0 }}
+          animate={{ scale: 1, y: 0, opacity: 1 }}
           style={{
             height: 280,
+            zIndex: 2,
             background:
               "linear-gradient(135deg, hsl(var(--photo-placeholder-from)) 0%, hsl(var(--photo-placeholder-to)) 100%)",
           }}
@@ -148,13 +172,29 @@ const TinderSwapSheet = ({
           >
             {current.source === "nexeat" ? "▸ NexEat" : "♥ Coup de cœur"}
           </span>
+          {remaining > 0 && (
+            <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-foreground text-[10px] rounded-full px-2.5 py-1 font-semibold">
+              +{remaining} autres
+            </span>
+          )}
         </motion.div>
-        <h3 className="font-display text-xl text-foreground mt-3 leading-snug">
-          {current.name}
-        </h3>
-        <p className="text-[13px] text-foreground/60 mt-1">
-          {current.prep} · Score {current.score}
-        </p>
+        <div className="relative" style={{ marginTop: 24, zIndex: 2 }}>
+          <h3 className="font-display text-xl text-foreground leading-snug">
+            {current.name}
+          </h3>
+          <p className="text-[13px] text-foreground/60 mt-1">
+            {current.prep} · Score {current.score}
+          </p>
+          {(next1 || next2) && (
+            <p className="text-[11px] text-foreground/45 mt-3">
+              Ensuite&nbsp;:
+              {next1 && <span className="text-foreground/65"> {next1.name}</span>}
+              {next2 && next2.name !== next1?.name && (
+                <span className="text-foreground/45"> · {next2.name}</span>
+              )}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Actions */}
