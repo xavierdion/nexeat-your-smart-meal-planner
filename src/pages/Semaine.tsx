@@ -193,25 +193,9 @@ const Semaine = () => {
     });
   };
 
-  const dayHasContext = day.meals.some((m) => m.badge);
-  const contextMeal = day.meals.find((m) => m.badge);
-
   const visibleMeals = day.meals
     .map((m, i) => ({ meal: m, idx: i }))
     .filter(({ idx }) => !removedRestes.has(`${day.key}-${idx}`));
-
-  // Identify connection line range within the active day (source → last reste of same batch)
-  const batchInDay = (() => {
-    const source = visibleMeals.find((v) => v.meal.batchId);
-    if (!source) return null;
-    const lastReste = [...visibleMeals]
-      .reverse()
-      .find((v) => v.meal.restOf?.batchId === source.meal.batchId);
-    if (!lastReste) return null;
-    const sourcePos = visibleMeals.indexOf(source);
-    const lastPos = visibleMeals.indexOf(lastReste);
-    return sourcePos < lastPos ? { sourcePos, lastPos } : null;
-  })();
 
   return (
     <div className="flex flex-col">
