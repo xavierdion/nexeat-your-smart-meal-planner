@@ -124,12 +124,21 @@ const Epicerie = () => {
 
   return (
     <div className="flex flex-col">
-      {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
-        <h1 className="font-display text-display-xl text-foreground">Ton épicerie</h1>
-        <p className="text-[14px] text-foreground/60 mt-1">
-          {totalItems} articles · {CATEGORIES.length} catégories
+      {/* Header éditorial — cohérent avec /semaine */}
+      <header className="bg-white px-4 pt-6 pb-5 border-b border-border">
+        <p className="text-[11px] uppercase tracking-[1.5px] text-foreground/40 font-semibold">
+          Ton épicerie
         </p>
+        <h1 className="font-display italic text-display-xl text-foreground mt-1 leading-tight">
+          Semaine du 17 au 23 mai
+        </h1>
+        <div className="flex items-center gap-2 mt-2 text-[12px] text-foreground/55">
+          <span>{totalItems} articles</span>
+          <span className="w-[3px] h-[3px] rounded-full bg-foreground/20" />
+          <span>{CATEGORIES.length} catégories</span>
+          <span className="w-[3px] h-[3px] rounded-full bg-foreground/20" />
+          <span>{BUDGET_CURRENT} $ estimés</span>
+        </div>
       </header>
 
       <div className="px-4 pt-3">
