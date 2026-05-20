@@ -40,6 +40,7 @@ interface PreferencesContextValue {
   planAccepted: boolean;
   calendarConnected: boolean;
   lifestyle: Lifestyle;
+  portions: number;
   kitchenEquipment: string[];
   groceryStores: string[];
   fallbackMeal: FallbackMeal;
@@ -50,6 +51,7 @@ interface PreferencesContextValue {
   setPlanAccepted: (v: boolean) => void;
   setCalendarConnected: (v: boolean) => void;
   setLifestyle: (v: Lifestyle) => void;
+  setPortions: (v: number) => void;
   setKitchenEquipment: (v: string[]) => void;
   setGroceryStores: (v: string[]) => void;
   setFallbackMeal: (v: FallbackMeal) => void;
@@ -65,14 +67,15 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
   const [planAccepted, setPlanAccepted] = usePersisted<boolean>("planAccepted", false);
   const [calendarConnected, setCalendarConnected] = usePersisted<boolean>("calendarConnected", false);
   const [lifestyle, setLifestyle] = usePersisted<Lifestyle>("lifestyle", null);
+  const [portions, setPortions] = usePersisted<number>("portions", 1);
   const [kitchenEquipment, setKitchenEquipment] = useState<string[]>([
     "cuisinière",
     "four",
     "frigo",
     "micro-ondes",
   ]);
-  const [groceryStores, setGroceryStores] = useState<string[]>([]);
-  const [fallbackMeal, setFallbackMeal] = useState<FallbackMeal>(null);
+  const [groceryStores, setGroceryStores] = usePersisted<string[]>("groceryStores", []);
+  const [fallbackMeal, setFallbackMeal] = usePersisted<FallbackMeal>("fallbackMeal", null);
   const [onboardingCompleted, setOnboardingCompleted] = useState<boolean>(false);
   const [savedRecipes, setSavedRecipes] = useState<SavedRecipe[]>([]);
 
@@ -84,6 +87,7 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
         planAccepted,
         calendarConnected,
         lifestyle,
+        portions,
         kitchenEquipment,
         groceryStores,
         fallbackMeal,
@@ -94,6 +98,7 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
         setPlanAccepted,
         setCalendarConnected,
         setLifestyle,
+        setPortions,
         setKitchenEquipment,
         setGroceryStores,
         setFallbackMeal,
