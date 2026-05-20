@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Calendar, Soup, Plus, Shuffle, X } from "lucide-react";
+import { Soup, Plus, Shuffle, X, ChevronRight, Coffee, Salad, Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
-import MealCard from "@/components/MealCard";
 import TinderSwapSheet from "@/components/TinderSwapSheet";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { NutriScoreBadge } from "@/components/ui/nutri-score-badge";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
 type Score = "A" | "B" | "C" | "D" | "E";
