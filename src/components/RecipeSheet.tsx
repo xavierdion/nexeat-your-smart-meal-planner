@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { X, Salad, Clock, Users, Utensils, Heart } from "lucide-react";
-import { Pill } from "@/components/ui/pill";
+import { X, Salad, Clock, Flame, ChefHat, Minus, Plus, Timer, Heart } from "lucide-react";
 import { NutriScoreBadge } from "@/components/ui/nutri-score-badge";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
@@ -13,21 +12,36 @@ interface Props {
   context?: "plan" | "library";
 }
 
-const INGREDIENTS = [
-  { name: "Riz cuit", qty: "180 g" },
-  { name: "Carottes râpées", qty: "60 g" },
-  { name: "Épinards", qty: "50 g" },
-  { name: "Œuf", qty: "1" },
-  { name: "Sauce gochujang", qty: "1 c. à soupe" },
-  { name: "Huile de sésame", qty: "1 c. à thé" },
-  { name: "Graines de sésame", qty: "1 c. à thé" },
+const BASE_PORTIONS = 1;
+
+const INGREDIENTS: { name: string; qty: number; unit: string }[] = [
+  { name: "Riz cuit", qty: 180, unit: "g" },
+  { name: "Carottes râpées", qty: 60, unit: "g" },
+  { name: "Épinards", qty: 50, unit: "g" },
+  { name: "Œuf", qty: 1, unit: "" },
+  { name: "Sauce gochujang", qty: 1, unit: "c. à soupe" },
+  { name: "Huile de sésame", qty: 1, unit: "c. à thé" },
+  { name: "Graines de sésame", qty: 1, unit: "c. à thé" },
 ];
 
-const STEPS = [
-  "Faire cuire le riz et le laisser tiédir. Préparer les légumes : râper les carottes, faire sauter les épinards 2 min à feu vif avec un filet d'huile.",
-  "Faire un œuf au plat ou brouillé selon ta préférence. Disposer le riz dans un bol, puis arranger les légumes et l'œuf par-dessus.",
-  "Ajouter la sauce gochujang et l'huile de sésame. Garnir de graines de sésame. Mélanger avant de manger.",
+const STEPS: { text: string; timerMin?: number }[] = [
+  {
+    text: "Faire cuire le riz et le laisser tiédir. Préparer les légumes : râper les carottes, faire sauter les épinards à feu vif avec un filet d'huile.",
+    timerMin: 12,
+  },
+  {
+    text: "Faire un œuf au plat ou brouillé selon ta préférence. Disposer le riz dans un bol, puis arranger les légumes et l'œuf par-dessus.",
+    timerMin: 3,
+  },
+  {
+    text: "Ajouter la sauce gochujang et l'huile de sésame. Garnir de graines de sésame. Mélanger avant de manger.",
+  },
 ];
+
+const formatQty = (q: number) => {
+  const rounded = Math.round(q * 10) / 10;
+  return Number.isInteger(rounded) ? rounded.toString() : rounded.toFixed(1);
+};
 
 type NutrientLevel = "low" | "moderate" | "high";
 
@@ -106,6 +120,8 @@ const Eyebrow = ({ children, className = "" }: { children: React.ReactNode; clas
 
 const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Props) => {
   const { savedRecipes, setSavedRecipes } = usePreferences();
+  void onSwap;
+  void context;
   const currentRecipe = {
     id: "bibimbap",
     title: "Bol coréen bibimbap végétarien",
@@ -113,6 +129,10 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
     portions: "1 portion",
     score: "A" as const,
   };
+  const [portions, setPortions] = useState<number>(BASE_PORTIONS);
+  useEffect(() => {
+    if (open) setPortions(BASE_PORTIONS);
+  }, [open]);
   const isLiked = savedRecipes.some((r) => r.id === currentRecipe.id);
   const toggleLike = () => {
     if (isLiked) {
@@ -131,6 +151,8 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
 
   if (!open) return null;
 
+  const scale = portions / BASE_PORTIONS;
+
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
       <div className="absolute inset-0 bg-black/40 animate-fade-in" onClick={onClose} />
@@ -145,9 +167,9 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
           <div className="w-8 h-1 rounded-full bg-white/60" />
         </div>
 
-        <div className="overflow-y-auto flex-1">
+        <div className="overflow-y-auto flex-1 pb-8">
           {/* Photo hero */}
-          <div className="relative w-full h-[280px] overflow-hidden">
+          <div className="relative w-full h-[240px] overflow-hidden">
             {imageUrl ? (
               <img src={imageUrl} alt="" className="w-full h-full object-cover" />
             ) : (
@@ -163,71 +185,169 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
                 <Salad size={80} className="text-foreground" style={{ opacity: 0.25 }} strokeWidth={1.5} />
               </div>
             )}
-            {/* Bottom gradient overlay */}
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                background:
-                  "linear-gradient(180deg, transparent 60%, rgba(42,45,53,0.4) 100%)",
-              }}
-            />
-            <button
-              onClick={onClose}
-              className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center z-10"
-              aria-label="Fermer"
-            >
-              <X size={18} className="text-foreground" />
-            </button>
-            <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
-              <Clock size={12} strokeWidth={2} />
-              <span>25 min</span>
-              <span className="text-foreground/30">·</span>
-              <Utensils size={12} strokeWidth={2} />
-              <span>1 portion</span>
-              <span className="text-foreground/30">·</span>
-              <NutriScoreBadge score="A" />
-            </div>
-          </div>
-
-          {/* Header block */}
-          <div className="px-4 pt-5">
-            <p className="text-[11px] text-foreground/50 mt-1">
-              Recette très équilibrée · via Open Food Facts
-            </p>
-            <p className="text-eyebrow uppercase text-foreground/50">DÎNER · 12H30</p>
-            <div className="flex items-start gap-2 mt-1">
-              <h2 className="font-display text-display-lg text-foreground leading-snug flex-1 min-w-0">
-                Bol coréen bibimbap végétarien
-              </h2>
+            {/* Top overlay bar — close + favori */}
+            <div className="absolute top-3 left-3 right-3 flex items-center justify-between z-10">
+              <button
+                onClick={onClose}
+                className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center"
+                aria-label="Fermer"
+              >
+                <X size={18} className="text-foreground" />
+              </button>
               <button
                 onClick={toggleLike}
                 aria-label={isLiked ? "Retirer des favoris" : "Ajouter aux favoris"}
-                className="shrink-0 -mt-1 -mr-2 w-10 h-10 flex items-center justify-center transition-transform active:scale-110"
+                className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center transition-transform active:scale-110"
               >
                 {isLiked ? (
-                  <Heart size={22} fill="currentColor" className="text-accent" />
+                  <Heart size={18} fill="currentColor" className="text-accent" />
                 ) : (
-                  <Heart size={22} strokeWidth={2} className="text-foreground/40" />
+                  <Heart size={18} strokeWidth={2} className="text-foreground/60" />
                 )}
               </button>
             </div>
-            <div className="flex gap-3 items-center text-[13px] text-foreground/60 mt-2">
-              <span className="flex items-center gap-1">
-                <Clock size={14} className="text-primary/60" />
-                25 min
-              </span>
-              <span>·</span>
-              <span className="flex items-center gap-1">
-                <Users size={14} className="text-primary/60" />
-                1 portion
-              </span>
-              <span>·</span>
-              <span>540 kcal</span>
+          </div>
+
+          {/* Title block */}
+          <div className="px-4 pt-5">
+            <p className="text-[11px] uppercase tracking-[1.5px] text-foreground/45 font-semibold">
+              Dîner · 25 min
+            </p>
+            <h2 className="font-display italic text-display-lg text-foreground leading-tight mt-2">
+              {currentRecipe.title}
+            </h2>
+            <div className="flex items-center gap-2 mt-3 text-[12px] text-foreground/55">
+              <span>{portions} {portions > 1 ? "portions" : "portion"}</span>
+              <span className="w-[3px] h-[3px] rounded-full bg-foreground/20" />
+              <NutriScoreBadge score={currentRecipe.score} className="scale-90 origin-left" />
+              <span className="w-[3px] h-[3px] rounded-full bg-foreground/20" />
+              <span>~6 $ / portion</span>
+            </div>
+          </div>
+
+          {/* Chips row */}
+          <div className="px-4 mt-4 grid grid-cols-3 gap-2">
+            {[
+              { icon: Flame, label: "Cuisson", value: "15 min" },
+              { icon: Clock, label: "Préparation", value: "10 min" },
+              { icon: ChefHat, label: "Niveau", value: "Facile" },
+            ].map((c) => {
+              const Icon = c.icon;
+              return (
+                <div
+                  key={c.label}
+                  className="bg-surface-paper rounded-xl px-3 py-2.5 flex flex-col gap-0.5"
+                >
+                  <div className="flex items-center gap-1.5 text-foreground/50">
+                    <Icon size={12} strokeWidth={2} />
+                    <span className="text-[10px] uppercase tracking-wide font-semibold">
+                      {c.label}
+                    </span>
+                  </div>
+                  <span className="text-[13px] font-semibold text-foreground">
+                    {c.value}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Ingredients with portion toggle */}
+          <div className="mt-6 px-4">
+            <div className="flex items-center justify-between">
+              <p className="text-[11px] uppercase tracking-[1.5px] text-foreground/45 font-semibold">
+                Ingrédients <span className="text-foreground/35">· {INGREDIENTS.length} articles</span>
+              </p>
+              <div className="flex items-center gap-1 bg-surface-paper rounded-full px-1 py-1">
+                <button
+                  onClick={() => setPortions((p) => Math.max(1, p - 1))}
+                  aria-label="Diminuer les portions"
+                  disabled={portions <= 1}
+                  className="w-6 h-6 rounded-full bg-white border border-border flex items-center justify-center disabled:opacity-40"
+                >
+                  <Minus size={12} strokeWidth={2.25} className="text-foreground" />
+                </button>
+                <span className="text-[12px] font-semibold text-foreground tabular-nums px-1.5">
+                  {portions} {portions > 1 ? "portions" : "portion"}
+                </span>
+                <button
+                  onClick={() => setPortions((p) => Math.min(12, p + 1))}
+                  aria-label="Augmenter les portions"
+                  className="w-6 h-6 rounded-full bg-white border border-border flex items-center justify-center"
+                >
+                  <Plus size={12} strokeWidth={2.25} className="text-foreground" />
+                </button>
+              </div>
+            </div>
+            <div className="bg-surface-paper rounded-xl mt-3 px-4 py-1">
+              {INGREDIENTS.map((ing, i) => (
+                <div
+                  key={ing.name}
+                  className={`flex items-center gap-3 py-2.5 ${
+                    i !== INGREDIENTS.length - 1 ? "border-b border-secondary/15" : ""
+                  }`}
+                >
+                  <span className="text-[14px] font-semibold text-foreground tabular-nums w-[68px] shrink-0">
+                    {formatQty(ing.qty * scale)} {ing.unit}
+                  </span>
+                  <span className="text-[14px] text-foreground/75 flex-1">
+                    {ing.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Steps with inline timer */}
+          <div className="mt-6 px-4">
+            <p className="text-[11px] uppercase tracking-[1.5px] text-foreground/45 font-semibold mb-3">
+              Étapes <span className="text-foreground/35">· {STEPS.length}</span>
+            </p>
+            <div className="flex flex-col gap-3">
+              {STEPS.map((step, i) => (
+                <div
+                  key={i}
+                  className="bg-surface-paper rounded-xl px-3 py-3 flex gap-3"
+                >
+                  <div className="w-7 h-7 rounded-full bg-foreground text-white font-display text-[13px] font-bold flex items-center justify-center shrink-0">
+                    {i + 1}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] text-foreground leading-[1.55]">
+                      {step.text}
+                    </p>
+                    {step.timerMin && (
+                      <div className="flex items-center gap-2 mt-2.5">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            toast(`Timer ${step.timerMin} min démarré`, {
+                              duration: 2000,
+                              style: {
+                                background: "#4A6670",
+                                color: "#fff",
+                                border: "none",
+                              },
+                            })
+                          }
+                          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1.5 text-[12px] font-semibold text-foreground hover:bg-secondary/15 transition-colors"
+                        >
+                          <Timer size={13} strokeWidth={2} className="text-primary" />
+                          Démarrer timer
+                        </button>
+                        <span className="text-[12px] text-foreground/50 tabular-nums">
+                          {step.timerMin} min
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Macros */}
-          <div className="mx-4 mt-5">
+          <div className="px-4 mt-6">
             <Eyebrow className="mb-2">Par portion</Eyebrow>
             <div className="grid grid-cols-2 gap-2">
               {[
@@ -243,39 +363,6 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
                   <div className="font-display text-display-sm text-foreground mt-0.5">
                     {p.value}
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Ingredients */}
-          <div className="mt-5">
-            <Eyebrow className="mb-3 px-4">Ingrédients · {INGREDIENTS.length} éléments</Eyebrow>
-            <div className="bg-surface-paper rounded-xl mx-4 px-4 py-1">
-              {INGREDIENTS.map((ing, i) => (
-                <div
-                  key={ing.name}
-                  className={`flex items-center justify-between py-2.5 ${
-                    i !== INGREDIENTS.length - 1 ? "border-b border-secondary/15" : ""
-                  }`}
-                >
-                  <span className="text-[14px] text-foreground">{ing.name}</span>
-                  <span className="text-[14px] text-foreground/60">{ing.qty}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Préparation */}
-          <div className="mt-5">
-            <Eyebrow className="mb-3 px-4">Préparation · {STEPS.length} étapes</Eyebrow>
-            <div className="px-4 flex flex-col gap-4">
-              {STEPS.map((step, i) => (
-                <div key={i} className="flex gap-3">
-                  <div className="w-6 h-6 rounded-full bg-primary text-white font-display text-[13px] font-bold flex items-center justify-center shrink-0">
-                    {i + 1}
-                  </div>
-                  <p className="text-[14px] text-foreground leading-[1.6] flex-1">{step}</p>
                 </div>
               ))}
             </div>
@@ -343,48 +430,6 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
               remplace pas un avis professionnel.
             </p>
           </div>
-        </div>
-
-        {/* Sticky CTA */}
-        <div className="sticky bottom-0 bg-white border-t border-border px-4 py-3">
-          {context === "library" ? (
-            <button
-              onClick={() => {
-                toast.success("Ajouté au dîner de mardi", {
-                  description: "Contexte étude respecté · Modifier →",
-                });
-                onClose();
-              }}
-              className="w-full h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-cta"
-            >
-              Ajouter à ma semaine
-            </button>
-          ) : onSwap ? (
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  onSwap();
-                  onClose();
-                }}
-                className="flex-1 h-12 rounded-xl border-[1.5px] border-primary bg-white text-primary text-[16px] font-semibold"
-              >
-                Changer ce repas
-              </button>
-              <button
-                onClick={onClose}
-                className="flex-1 h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-cta"
-              >
-                Fermer
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={onClose}
-              className="w-full h-12 rounded-xl bg-accent text-white text-[16px] font-semibold shadow-cta"
-            >
-              Fermer
-            </button>
-          )}
         </div>
       </div>
     </div>
