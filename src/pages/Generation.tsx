@@ -47,7 +47,7 @@ const Generation = () => {
         <p className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold">
           COMPOSITION EN COURS
         </p>
-        <h1 className="font-display text-display-xl italic text-foreground mt-1 leading-tight">
+        <h1 className="font-display text-display-xl text-foreground mt-1 leading-tight">
           Ta semaine,
           <br />
           en construction.

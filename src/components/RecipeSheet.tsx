@@ -213,7 +213,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
             <p className="text-[11px] uppercase tracking-[1.5px] text-foreground/45 font-semibold">
               Dîner · 25 min
             </p>
-            <h2 className="font-display italic text-display-lg text-foreground leading-tight mt-2">
+            <h2 className="font-display text-display-lg text-foreground leading-tight mt-2">
               {currentRecipe.title}
             </h2>
             <div className="flex items-center gap-2 mt-3 text-[12px] text-foreground/55">
@@ -420,7 +420,7 @@ const RecipeSheet = ({ open, onClose, imageUrl, onSwap, context = "plan" }: Prop
                         ))}
                       </ul>
                     </div>
-                    <p className="text-[11px] italic text-foreground/50">Source : {n.source}</p>
+                    <p className="text-[11px] text-foreground/50">Source : {n.source}</p>
                   </div>
                 </details>
               ))}

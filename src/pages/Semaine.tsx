@@ -204,7 +204,7 @@ const Semaine = () => {
         <p className="text-[11px] uppercase tracking-[1.5px] text-foreground/40 font-semibold">
           Ta semaine
         </p>
-        <h1 className="font-display italic text-display-xl text-foreground mt-1 leading-tight">
+        <h1 className="font-display text-display-xl text-foreground mt-1 leading-tight">
           {WEEK_RANGE}
         </h1>
         <div className="flex items-center gap-2 mt-2 text-[12px] text-foreground/55">
@@ -315,7 +315,7 @@ const Semaine = () => {
                 key={i}
                 className="rounded-2xl border-2 border-dashed border-border bg-transparent h-[88px] flex items-center justify-center gap-2 px-4"
               >
-                <span className="text-[13px] text-foreground/40 italic">
+                <span className="text-[13px] text-foreground/40">
                   {original.type} · Géré par toi
                 </span>
                 <button
