@@ -101,8 +101,18 @@ const DAYS: Day[] = [
 const TODAY_KEY = "lun";
 const COMPLETED_DAY_KEYS: string[] = [];
 
-// Mocked weekly calendar event count (≥3 → busy week)
-const WEEK_EVENT_COUNT = 4;
+const MEAL_TIMES: Record<MealType, string> = {
+  DÉJEUNER: "7h30",
+  DÎNER: "12h00",
+  SOUPER: "18h30",
+};
+const MEAL_ICONS: Record<MealType, typeof Coffee> = {
+  DÉJEUNER: Coffee,
+  DÎNER: Salad,
+  SOUPER: Utensils,
+};
+const WEEK_RANGE = "Du 17 au 23 mai";
+const WEEK_COST = 92;
 
 const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
