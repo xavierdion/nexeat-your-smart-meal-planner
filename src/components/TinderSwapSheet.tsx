@@ -127,23 +127,49 @@ const TinderSwapSheet = ({
       </div>
 
       {/* Card */}
-      <div className="mx-6 mt-4 flex-1 relative" style={{ minHeight: 320 }}>
-        {/* Stack — back cards peek behind to signal multiple choices */}
-        {safeAlts.length > 2 && (
+      <div className="mx-6 mt-4 flex-1 relative" style={{ minHeight: 330 }}>
+        {/* Stack — back cards peek under the front to signal multiple choices */}
+        {next2 && safeAlts.length > 2 && (
           <div
             key={`back2-${index}`}
-            aria-hidden
-            className="absolute left-0 right-0 rounded-2xl bg-secondary/20 border border-border/40"
-            style={{ top: 16, height: 280, transform: "scale(0.9)", zIndex: 0 }}
-          />
+            className="absolute rounded-2xl border border-border/60 shadow-sm overflow-hidden"
+            style={{
+              top: 24,
+              left: 16,
+              right: 16,
+              height: 280,
+              zIndex: 0,
+              background:
+                "linear-gradient(135deg, hsl(var(--photo-placeholder-from) / 0.55) 0%, hsl(var(--photo-placeholder-to) / 0.55) 100%)",
+            }}
+          >
+            <div className="absolute bottom-0 left-0 right-0 bg-white/85 backdrop-blur-sm px-3 py-2">
+              <p className="text-[11px] font-semibold text-foreground/70 truncate">
+                {next2.name}
+              </p>
+            </div>
+          </div>
         )}
-        {safeAlts.length > 1 && (
+        {next1 && safeAlts.length > 1 && (
           <div
             key={`back1-${index}`}
-            aria-hidden
-            className="absolute left-0 right-0 rounded-2xl bg-secondary/35 border border-border/60"
-            style={{ top: 8, height: 280, transform: "scale(0.95)", zIndex: 1 }}
-          />
+            className="absolute rounded-2xl border border-border/70 shadow-sm overflow-hidden"
+            style={{
+              top: 12,
+              left: 8,
+              right: 8,
+              height: 280,
+              zIndex: 1,
+              background:
+                "linear-gradient(135deg, hsl(var(--photo-placeholder-from) / 0.8) 0%, hsl(var(--photo-placeholder-to) / 0.8) 100%)",
+            }}
+          >
+            <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm px-3 py-2">
+              <p className="text-[12px] font-semibold text-foreground truncate">
+                {next1.name}
+              </p>
+            </div>
+          </div>
         )}
         <motion.div
           key={`front-${index}`}
@@ -154,7 +180,7 @@ const TinderSwapSheet = ({
             if (info.offset.x < -80) dislike();
             else if (info.offset.x > 80) like();
           }}
-          className="relative w-full rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing shadow-card"
+          className="absolute left-0 right-0 top-0 rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing shadow-card"
           initial={{ scale: 0.95, y: 8, opacity: 0 }}
           animate={{ scale: 1, y: 0, opacity: 1 }}
           style={{
@@ -178,22 +204,18 @@ const TinderSwapSheet = ({
             </span>
           )}
         </motion.div>
-        <div className="relative" style={{ marginTop: 24, zIndex: 2 }}>
+        <div className="relative" style={{ paddingTop: 320, zIndex: 3 }}>
           <h3 className="font-display text-xl text-foreground leading-snug">
             {current.name}
           </h3>
           <p className="text-[13px] text-foreground/60 mt-1">
             {current.prep} · Score {current.score}
           </p>
-          {(next1 || next2) && (
-            <p className="text-[11px] text-foreground/45 mt-3">
-              Ensuite&nbsp;:
-              {next1 && <span className="text-foreground/65"> {next1.name}</span>}
-              {next2 && next2.name !== next1?.name && (
-                <span className="text-foreground/45"> · {next2.name}</span>
-              )}
-            </p>
-          )}
+          <p className="text-[11px] text-foreground/45 mt-2 flex items-center gap-1.5">
+            <span aria-hidden>←</span>
+            Glisse à gauche pour passer, à droite pour garder
+            <span aria-hidden>→</span>
+          </p>
         </div>
       </div>
 
