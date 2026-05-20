@@ -129,7 +129,7 @@ const Epicerie = () => {
         <p className="text-[11px] uppercase tracking-[1.5px] text-foreground/40 font-semibold">
           Ton épicerie
         </p>
-        <h1 className="font-display italic text-display-xl text-foreground mt-1 leading-tight">
+        <h1 className="font-display text-display-xl text-foreground mt-1 leading-tight">
           Semaine du 17 au 23 mai
         </h1>
         <div className="flex items-center gap-2 mt-2 text-[12px] text-foreground/55">

@@ -120,7 +120,7 @@ const Profil = () => {
         <p className="text-[11px] uppercase tracking-[1.5px] text-foreground/40 font-semibold">
           Tes préférences
         </p>
-        <h1 className="font-display italic text-display-xl text-foreground mt-1 leading-tight">
+        <h1 className="font-display text-display-xl text-foreground mt-1 leading-tight">
           Ton profil
         </h1>
         <p className="text-[13px] text-foreground/55 mt-2">
