@@ -160,7 +160,12 @@ const Semaine = () => {
   const TOTAL_MEALS = 21;
   const confirmedMeals = planAccepted ? TOTAL_MEALS : 14;
   const progressPct = (confirmedMeals / TOTAL_MEALS) * 100;
-  const busyWeek = WEEK_EVENT_COUNT >= 3;
+  const totalCookingMin = DAYS.reduce((s, d) => s + d.cookingMinutes, 0);
+  const totalHours = Math.floor(totalCookingMin / 60);
+  const totalMins = totalCookingMin % 60;
+  const totalCookingLabel = totalMins
+    ? `${totalHours}h${totalMins.toString().padStart(2, "0")} de cuisine`
+    : `${totalHours}h de cuisine`;
 
   const removeReste = (dayKey: string, idx: number) => {
     setRemovedRestes((prev) => {
