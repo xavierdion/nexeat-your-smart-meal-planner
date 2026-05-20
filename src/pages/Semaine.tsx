@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Calendar, Soup, Plus, Shuffle, X } from "lucide-react";
+import { Plus, Shuffle, X, ChevronRight, Coffee, Salad, Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
-import MealCard from "@/components/MealCard";
 import TinderSwapSheet from "@/components/TinderSwapSheet";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { NutriScoreBadge } from "@/components/ui/nutri-score-badge";
 import { usePreferences } from "@/contexts/PreferencesContext";
 
 type Score = "A" | "B" | "C" | "D" | "E";
@@ -101,8 +101,18 @@ const DAYS: Day[] = [
 const TODAY_KEY = "lun";
 const COMPLETED_DAY_KEYS: string[] = [];
 
-// Mocked weekly calendar event count (≥3 → busy week)
-const WEEK_EVENT_COUNT = 4;
+const MEAL_TIMES: Record<MealType, string> = {
+  DÉJEUNER: "7h30",
+  DÎNER: "12h00",
+  SOUPER: "18h30",
+};
+const MEAL_ICONS: Record<MealType, typeof Coffee> = {
+  DÉJEUNER: Coffee,
+  DÎNER: Salad,
+  SOUPER: Utensils,
+};
+const WEEK_RANGE = "Du 17 au 23 mai";
+const WEEK_COST = 92;
 
 const Semaine = () => {
   const [activeKey, setActiveKey] = useState(DAYS[0].key);
@@ -150,7 +160,12 @@ const Semaine = () => {
   const TOTAL_MEALS = 21;
   const confirmedMeals = planAccepted ? TOTAL_MEALS : 14;
   const progressPct = (confirmedMeals / TOTAL_MEALS) * 100;
-  const busyWeek = WEEK_EVENT_COUNT >= 3;
+  const totalCookingMin = DAYS.reduce((s, d) => s + d.cookingMinutes, 0);
+  const totalHours = Math.floor(totalCookingMin / 60);
+  const totalMins = totalCookingMin % 60;
+  const totalCookingLabel = totalMins
+    ? `${totalHours}h${totalMins.toString().padStart(2, "0")} de cuisine`
+    : `${totalHours}h de cuisine`;
 
   const removeReste = (dayKey: string, idx: number) => {
     setRemovedRestes((prev) => {
@@ -178,54 +193,27 @@ const Semaine = () => {
     });
   };
 
-  const dayHasContext = day.meals.some((m) => m.badge);
-  const contextMeal = day.meals.find((m) => m.badge);
-
   const visibleMeals = day.meals
     .map((m, i) => ({ meal: m, idx: i }))
     .filter(({ idx }) => !removedRestes.has(`${day.key}-${idx}`));
 
-  // Identify connection line range within the active day (source → last reste of same batch)
-  const batchInDay = (() => {
-    const source = visibleMeals.find((v) => v.meal.batchId);
-    if (!source) return null;
-    const lastReste = [...visibleMeals]
-      .reverse()
-      .find((v) => v.meal.restOf?.batchId === source.meal.batchId);
-    if (!lastReste) return null;
-    const sourcePos = visibleMeals.indexOf(source);
-    const lastPos = visibleMeals.indexOf(lastReste);
-    return sourcePos < lastPos ? { sourcePos, lastPos } : null;
-  })();
-
   return (
     <div className="flex flex-col">
-      {/* Header éditorial */}
-      <header className="bg-white px-4 pt-6 pb-4 border-b border-border">
-        <h1 className="font-display text-display-xl text-foreground">
-          Ta semaine, déjà pensée
+      {/* Header éditorial — résumé de la semaine */}
+      <header className="bg-white px-4 pt-6 pb-5 border-b border-border">
+        <p className="text-[11px] uppercase tracking-[1.5px] text-foreground/40 font-semibold">
+          Ta semaine
+        </p>
+        <h1 className="font-display italic text-display-xl text-foreground mt-1 leading-tight">
+          {WEEK_RANGE}
         </h1>
-        {(() => {
-          const todayMeals = DAYS.find((d) => d.key === TODAY_KEY)?.meals ?? [];
-          const hasExamToday = todayMeals.some((m) => m.badge?.toLowerCase().includes("examen"));
-          const restesCount = DAYS.reduce(
-            (acc, d) => acc + d.meals.filter((m) => m.restOf).length,
-            0,
-          );
-          return (
-            <div className="flex items-center gap-1 mt-2 pb-1 text-[11px] text-foreground/50">
-              {hasExamToday && (
-                <>
-                  <Calendar size={12} strokeWidth={2} className="text-accent" />
-                  <span className="text-accent font-medium">Examen aujourd'hui</span>
-                  <span className="text-foreground/30 mx-1">·</span>
-                </>
-              )}
-              <Soup size={12} strokeWidth={2} />
-              <span>{restesCount} repas issus du batch cooking</span>
-            </div>
-          );
-        })()}
+        <div className="flex items-center gap-2 mt-2 text-[12px] text-foreground/55">
+          <span>{TOTAL_MEALS} repas</span>
+          <span className="w-[3px] h-[3px] rounded-full bg-foreground/20" />
+          <span>{WEEK_COST} $ estimés</span>
+          <span className="w-[3px] h-[3px] rounded-full bg-foreground/20" />
+          <span>{totalCookingLabel}</span>
+        </div>
       </header>
 
       {/* Day pills */}
@@ -304,130 +292,125 @@ const Semaine = () => {
         </span>
       </div>
 
-      {/* Day context strip */}
-      {dayHasContext && (
-        <div className="mx-4 rounded-xl px-4 py-3 mt-4 bg-surface-cool">
-          <p className="text-[11px] uppercase tracking-wide font-semibold text-accent">
-            Aujourd'hui en contexte
-          </p>
-          <p className="text-[13px] text-foreground mt-1 leading-relaxed">
-            {contextMeal?.badge}. Tes {day.meals.length} repas sont optimisés
-            pour une énergie stable.
-          </p>
-          {busyWeek && (
-            <span className="inline-flex items-center mt-3 rounded-full bg-accent text-white text-[11px] font-medium px-3 py-1">
-              📅 Semaine chargée · Plan optimisé
-            </span>
-          )}
-        </div>
-      )}
+      {/* Day summary */}
+      <div className="flex items-baseline justify-between mt-4 px-4">
+        <p className="text-[11px] uppercase tracking-[1.5px] font-bold text-foreground">
+          {day.label}
+        </p>
+        <p className="text-[12px] text-foreground/45">
+          {day.cookingMinutes} min de cuisine
+        </p>
+      </div>
 
-      {/* Meals */}
-      <div className="pt-5 pb-2 px-4 relative">
-        {batchInDay && (
-          <div
-            className="absolute left-7 border-l border-dashed border-secondary/40 pointer-events-none"
-            style={{
-              top: `${batchInDay.sourcePos * 220 + 180}px`,
-              height: `${(batchInDay.lastPos - batchInDay.sourcePos) * 220 - 80}px`,
-            }}
-          />
-        )}
+      {/* Meals — compact slot cards */}
+      <div className="pt-3 pb-2 px-4 flex flex-col gap-3">
         {visibleMeals.map(({ meal: original, idx: i }) => {
           const isReste = !!original.restOf;
           const isBatchSource = !!original.batchId;
           const slotKey = `${day.key}-${i}`;
+          const MealIcon = MEAL_ICONS[original.type];
           if (deletedSlots.has(slotKey)) {
             return (
-              <div key={i} className="mb-5">
-                <div className="rounded-2xl border-2 border-dashed border-border bg-background h-[100px] flex items-center justify-center gap-2 px-4">
-                  <span className="text-[13px] text-foreground/40 italic">
-                    {day.label} · {original.type} · Géré par toi
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => reactivateSlot(day.key, i)}
-                    aria-label="Réactiver ce repas"
-                    className="ml-1"
-                  >
-                    <Plus size={16} className="text-foreground/30" />
-                  </button>
-                </div>
+              <div
+                key={i}
+                className="rounded-2xl border-2 border-dashed border-border bg-transparent h-[88px] flex items-center justify-center gap-2 px-4"
+              >
+                <span className="text-[13px] text-foreground/40 italic">
+                  {original.type} · Géré par toi
+                </span>
+                <button
+                  type="button"
+                  onClick={() => reactivateSlot(day.key, i)}
+                  aria-label="Réactiver ce repas"
+                  className="ml-1"
+                >
+                  <Plus size={16} className="text-foreground/30" />
+                </button>
               </div>
             );
           }
           return (
-            <div key={i}>
-              <div
-                className="relative"
-                onMouseDown={() => startLongPress(day.key, i)}
-                onMouseUp={cancelLongPress}
-                onMouseLeave={cancelLongPress}
-                onMouseMove={(e) => {
-                  if (Math.abs(e.movementX) > 4 || Math.abs(e.movementY) > 4) cancelLongPress();
+            <div
+              key={i}
+              className="relative bg-white rounded-2xl border border-border shadow-card overflow-hidden"
+              onMouseDown={() => startLongPress(day.key, i)}
+              onMouseUp={cancelLongPress}
+              onMouseLeave={cancelLongPress}
+              onTouchStart={() => startLongPress(day.key, i)}
+              onTouchEnd={cancelLongPress}
+              onTouchMove={cancelLongPress}
+              onTouchCancel={cancelLongPress}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveSlot({ dayKey: day.key, mealIdx: i });
+                  setRecipeOpen(true);
                 }}
-                onTouchStart={() => startLongPress(day.key, i)}
-                onTouchEnd={cancelLongPress}
-                onTouchMove={cancelLongPress}
-                onTouchCancel={cancelLongPress}
+                className="w-full text-left p-3 flex items-center gap-3"
               >
-                <MealCard
-                  variant="full"
-                  mealType={original.type}
-                  title={original.name}
-                  category={original.category}
-                  isNew={original.isNew && !isReste && !isBatchSource}
-                  prep={original.prep}
-                  score={original.score}
-                  proactiveContext={isReste ? undefined : original.badge}
-                  onClick={() => {
-                    setActiveSlot({ dayKey: day.key, mealIdx: i });
-                    setRecipeOpen(true);
+                {/* Photo placeholder */}
+                <div className="w-[68px] h-[68px] rounded-xl bg-secondary/25 shrink-0 flex items-center justify-center">
+                  <MealIcon size={24} strokeWidth={1.75} className="text-primary/60" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[10px] uppercase tracking-[1px] font-semibold text-foreground/50">
+                      {original.type} · {MEAL_TIMES[original.type]}
+                    </span>
+                    {isBatchSource && (
+                      <span className="text-[9px] font-bold uppercase tracking-wide bg-primary text-white px-2 py-[2px] rounded-full">
+                        ×{original.batchPortions}
+                      </span>
+                    )}
+                    {isReste && (
+                      <span className="text-[9px] font-bold uppercase tracking-wide bg-foreground text-white px-2 py-[2px] rounded-full">
+                        Restes
+                      </span>
+                    )}
+                    {!isReste && original.badge && (
+                      <span className="text-[9px] font-bold uppercase tracking-wide bg-accent text-white px-2 py-[2px] rounded-full line-clamp-1 max-w-[160px]">
+                        {original.badge.split(" — ")[0]}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[14px] font-semibold text-foreground leading-snug mt-1 line-clamp-2 pr-7">
+                    {original.name}
+                  </p>
+                  <div className="flex items-center gap-2 mt-1.5 text-[11px] text-foreground/50">
+                    <span>{isReste ? "0 min · réchauffer" : original.prep}</span>
+                    <span className="w-[3px] h-[3px] rounded-full bg-foreground/20" />
+                    <NutriScoreBadge score={original.score} className="scale-90 origin-left" />
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-foreground/30 shrink-0 self-center" />
+              </button>
+              {/* Swap / remove action — top right floating button */}
+              {isReste ? (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeReste(day.key, i);
                   }}
-                />
-                {isBatchSource && (
-                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-primary text-white text-[10px] font-bold px-3 py-1">
-                    ×{original.batchPortions} portions
-                  </span>
-                )}
-                {isReste && (
-                  <span className="absolute top-3 left-3 z-10 inline-flex items-center rounded-full bg-secondary text-foreground text-[10px] font-medium px-3 py-1">
-                    🍱 Restes
-                  </span>
-                )}
-                {isReste ? (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeReste(day.key, i);
-                    }}
-                    aria-label={`Retirer le reste de ${day.label}`}
-                    className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-sm text-primary text-[11px] font-semibold px-3 py-1.5 shadow-card hover:bg-white active:scale-95 transition-transform"
-                  >
-                    <X size={12} strokeWidth={2} />
-                    Retirer
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveSlot({ dayKey: day.key, mealIdx: i });
-                      setSwapOpen(true);
-                    }}
-                    aria-label={`Changer le repas ${original.type} de ${day.label}`}
-                    className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-sm text-primary text-[11px] font-semibold px-3 py-1.5 shadow-card hover:bg-white active:scale-95 transition-transform"
-                  >
-                    <Shuffle size={12} strokeWidth={2} />
-                    Changer
-                  </button>
-                )}
-              </div>
-              {isReste && original.restOf && (
-                <p className="text-[11px] italic text-foreground/55 -mt-3 mb-4 px-1">
-                  Restes de {original.restOf.name}
-                </p>
+                  aria-label={`Retirer le reste de ${day.label}`}
+                  className="absolute top-2 right-2 w-7 h-7 rounded-full bg-secondary/30 hover:bg-secondary/50 flex items-center justify-center active:scale-95 transition-transform"
+                >
+                  <X size={13} strokeWidth={2.25} className="text-foreground/70" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveSlot({ dayKey: day.key, mealIdx: i });
+                    setSwapOpen(true);
+                  }}
+                  aria-label={`Changer le repas ${original.type} de ${day.label}`}
+                  className="absolute top-2 right-2 w-7 h-7 rounded-full bg-secondary/30 hover:bg-secondary/50 flex items-center justify-center active:scale-95 transition-transform"
+                >
+                  <Shuffle size={13} strokeWidth={2.25} className="text-primary" />
+                </button>
               )}
             </div>
           );
