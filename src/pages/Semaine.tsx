@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Soup, Plus, Shuffle, X, ChevronRight, Coffee, Salad, Utensils } from "lucide-react";
+import { Plus, Shuffle, X, ChevronRight, Coffee, Salad, Utensils } from "lucide-react";
 import { cn } from "@/lib/utils";
 import RecipeSheet from "@/components/RecipeSheet";
 import TinderSwapSheet from "@/components/TinderSwapSheet";
