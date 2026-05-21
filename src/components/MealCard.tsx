@@ -79,12 +79,12 @@ function InfoBanner({
   score: Score;
 }) {
   return (
-    <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-[11px] text-foreground">
-      <Clock size={12} className="text-foreground" strokeWidth={2} />
-      <span>{prep}</span>
+    <div className="absolute bottom-0 left-0 right-0 h-7 bg-white/90 backdrop-blur-sm flex items-center px-3 gap-2 text-sm text-muted-foreground">
+      <Clock size={12} className="text-muted-foreground" strokeWidth={2} />
+      <span className="text-sm text-muted-foreground">{prep}</span>
       <span className="text-foreground/30">·</span>
-      <Utensils size={12} className="text-foreground" strokeWidth={2} />
-      <span>{portions}</span>
+      <Utensils size={12} className="text-muted-foreground" strokeWidth={2} />
+      <span className="text-sm text-muted-foreground">{portions}</span>
       <span className="text-foreground/30">·</span>
       <ScorePillWithTooltip score={score} />
     </div>
@@ -112,7 +112,7 @@ function PhotoPlaceholder({
   const Icon = MEAL_ICONS[mealType];
   return (
     <div
-      className={cn("relative w-full h-full overflow-hidden", rounded)}
+      className={cn("relative w-full h-full overflow-hidden object-cover", rounded)}
       style={{ background: PLACEHOLDER_BG }}
     >
       <div
@@ -178,7 +178,7 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
           ref={ref}
           onClick={onClick}
           className={cn(
-            "flex gap-3 p-3 bg-white rounded-2xl shadow-card",
+            "flex gap-3 p-4 bg-white rounded-2xl shadow-card",
             onClick && "cursor-pointer",
             className,
           )}
@@ -196,19 +196,24 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
                 <StatusPill status={status} />
               </div>
             )}
-            <p className={cn("text-eyebrow uppercase text-foreground/50", status && "mt-1.5")}>
+            <p
+              className={cn(
+                "text-[11px] uppercase tracking-[0.08em] font-semibold text-muted-foreground",
+                status && "mt-1.5",
+              )}
+            >
               {mealType}
               {time ? ` · ${time}` : ""}
             </p>
-            <h3 className="font-display text-display-sm text-foreground line-clamp-2 mt-0.5">
+            <h3 className="font-display text-[17px] leading-snug font-semibold text-foreground line-clamp-2 mt-1">
               {title}
             </h3>
-            <div className="flex items-center gap-2 mt-2 text-[11px] text-foreground">
-              <Clock size={12} strokeWidth={2} />
-              <span>{prep}</span>
+            <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+              <Clock size={12} className="text-muted-foreground" strokeWidth={2} />
+              <span className="text-sm text-muted-foreground">{prep}</span>
               <span className="text-foreground/30">·</span>
-              <Utensils size={12} strokeWidth={2} />
-              <span>{portions}</span>
+              <Utensils size={12} className="text-muted-foreground" strokeWidth={2} />
+              <span className="text-sm text-muted-foreground">{portions}</span>
               <span className="text-foreground/30">·</span>
               <ScorePillWithTooltip score={score} />
             </div>
@@ -229,25 +234,28 @@ export const MealCard = React.forwardRef<HTMLDivElement, MealCardProps>(
         )}
       >
         {/* Photo hero */}
-        <div className="relative w-full" style={{ aspectRatio: "16 / 10" }}>
+        <div className="relative w-full aspect-[16/9]">
           {imageUrl ? (
             <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
           ) : (
             <PhotoPlaceholder mealType={mealType} iconSize={56} rounded="" />
           )}
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-foreground/10 to-transparent pointer-events-none" />
           <InfoBanner prep={prep} portions={portions} score={score} />
         </div>
 
         {/* Body */}
-        <div className="bg-white px-4 py-4">
+        <div className="bg-white p-4">
           {proactiveContext && (
             <div className="flex items-center gap-2 bg-[hsl(var(--accent-soft))] text-accent rounded-[10px] px-3 py-2.5 mb-3">
               <Calendar size={14} className="shrink-0" />
               <span className="text-[12px] font-medium leading-tight">{proactiveContext}</span>
             </div>
           )}
-          <p className="text-eyebrow uppercase text-foreground/50">{mealType}</p>
-          <h3 className="font-display text-display-md text-foreground line-clamp-2 mt-1">
+          <p className="text-[11px] uppercase tracking-[0.08em] font-semibold text-muted-foreground">
+            {mealType}
+          </p>
+          <h3 className="font-display text-[22px] leading-tight font-semibold tracking-[-0.01em] text-foreground line-clamp-2 mt-1">
             {title}
           </h3>
         </div>

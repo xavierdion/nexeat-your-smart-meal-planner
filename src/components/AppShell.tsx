@@ -22,19 +22,18 @@ const AppShell = () => {
         to={to}
         className={({ isActive }) =>
           cn(
-            "flex-1 flex flex-col items-center justify-center gap-1 transition-colors",
-            isActive ? "text-primary" : "text-foreground/50"
+            "flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors",
+            isActive ? "text-primary" : "text-muted-foreground opacity-70"
           )
         }
       >
         {({ isActive }) => (
           <>
             <Icon
-              size={22}
+              className="w-5 h-5"
               strokeWidth={isActive ? 2.25 : 2}
-              fill={isActive ? "currentColor" : "none"}
             />
-            <span className={cn("text-[10px]", isActive ? "font-semibold" : "font-medium")}>
+            <span className={cn("text-[10px]", isActive ? "font-medium" : "font-normal")}>
               {label}
             </span>
           </>
@@ -65,9 +64,9 @@ const AppShell = () => {
             <NavLink
               to={centerItem.to}
               aria-label={centerItem.label}
-              className="absolute -top-2 flex flex-col items-center justify-center rounded-full bg-primary text-white shadow-md px-3 pt-2 pb-1.5 transition-transform active:scale-95 gap-0.5"
+              className="absolute -top-2 flex flex-col items-center justify-center rounded-full bg-primary text-white shadow-[0_4px_16px_rgba(74,102,112,0.22)] ring-2 ring-background ring-offset-0 px-3 pt-2 pb-1.5 transition-transform active:scale-95 gap-0.5"
             >
-              <centerItem.icon size={22} strokeWidth={2.25} />
+              <centerItem.icon className="w-6 h-6" strokeWidth={2.25} />
               <span className="text-[9px] font-semibold leading-none">{centerItem.label}</span>
             </NavLink>
           </div>

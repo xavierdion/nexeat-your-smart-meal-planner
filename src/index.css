@@ -32,7 +32,7 @@ All colors MUST be HSL.
     --accent: 14 67% 63%;              /* #E07A5F Coral */
     --accent-foreground: 0 0% 100%;
 
-    --coral: 14 67% 63%;
+    --coral: var(--accent);
     --slate: 199 17% 37%;
     --sage: 165 24% 72%;
 
@@ -99,7 +99,6 @@ All colors MUST be HSL.
     --secondary-foreground: 222 11% 18%;
     --muted: 60 10% 90%;
     --muted-foreground: 222 8% 45%;
-    --accent: 14 67% 63%;
     --accent-foreground: 0 0% 100%;
     --accent-soft: 14 67% 95%;
     --warning: 28 75% 52%;

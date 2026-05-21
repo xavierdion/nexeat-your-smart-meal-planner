@@ -37,27 +37,27 @@ export const OnboardingShell: React.FC<OnboardingShellProps> = ({
             type="button"
             aria-label="Retour"
             onClick={() => backTo && navigate(backTo)}
-            className="absolute top-4 left-2 w-11 h-11 inline-flex items-center justify-center text-foreground z-10"
+            className="absolute top-4 left-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors duration-150 z-10"
           >
             <ChevronLeft size={22} />
           </button>
         )}
 
         <div className="mt-[60px] px-6 flex items-center gap-3">
-          <div className="flex-1 h-1 rounded-full bg-secondary/30 overflow-hidden">
+          <div className="flex-1 h-[3px] rounded-full bg-primary/15 overflow-hidden">
             <div
-              className="h-full bg-primary transition-all duration-300"
+              className="h-full bg-primary rounded-full transition-all duration-300"
               style={{ width: `${progressPct}%` }}
             />
           </div>
-          <span className="text-[11px] uppercase tracking-wide text-foreground/50 font-semibold tabular-nums">
+          <span className="text-[11px] uppercase tracking-[0.08em] font-semibold text-muted-foreground tabular-nums">
             {step + 1} / {totalSteps}
           </span>
         </div>
 
         <div className="flex-1 flex flex-col">{children}</div>
 
-        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 pb-6 pt-4 bg-background flex flex-col items-center gap-3">
+        <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] px-4 pb-6 pt-4 bg-background backdrop-blur-sm border-t border-border/30 shadow-[0_-6px_24px_rgba(42,45,53,0.07)] flex flex-col items-center gap-3">
           <button
             type="button"
             onClick={cta.onClick}

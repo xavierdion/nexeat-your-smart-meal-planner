@@ -19,7 +19,7 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        coral: "hsl(var(--coral))",
+        coral: "hsl(var(--coral))", // alias de accent — voir --coral: var(--accent) dans index.css
         slate: "hsl(var(--slate))",
         sage: "hsl(var(--sage))",
         primary: {
